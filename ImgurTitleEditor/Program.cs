@@ -44,15 +44,17 @@ namespace ImgurTitleEditor
             }
 
             var I = new Imgur(S);
-            if (S.Token.Expires < DateTime.UtcNow.AddDays(7))
+            if (!string.IsNullOrEmpty(S.Token.Access) && S.Token.Expires < DateTime.UtcNow.AddDays(7))
             {
                 if (I.RenewToken().Result)
                 {
                     Tools.SaveSettings(S, SettingsFile);
                 }
+                else
+                {
+                    MessageBox.Show("Unable to refresh your API token.\r\nPlease Authorize the application again.", "Token Refresh Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
             }
-
-            var Settings = I.GetAccountSettings().Result;
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
