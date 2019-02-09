@@ -63,6 +63,19 @@ namespace ImgurTitleEditor
             return false;
         }
 
+        public async Task<bool> SetImageDescription(ImgurImage I, string Title, string Description)
+        {
+            var fd = BuildFormData(new Dictionary<string, string>() {
+                {"title", Title },
+                {"description", Description }
+            });
+            var R = Req(new Uri($"https://api.imgur.com/3/image/{I.id}"), fd);
+            using (var Res = await GetResponse(R))
+            {
+                return !IsErrorCode(Res.StatusCode);
+            }
+        }
+
         public async Task<bool> DeleteImage(ImgurImage I)
         {
             var R = Req(new Uri($"https://api.imgur.com/3/image/{I.deletehash}"));
