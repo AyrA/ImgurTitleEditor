@@ -12,7 +12,7 @@ namespace ImgurTitleEditor
         {
             get
             {
-                if(string.IsNullOrEmpty(_SettingsFile))
+                if (string.IsNullOrEmpty(_SettingsFile))
                 {
                     _SettingsFile = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), CONFIG);
                 }
@@ -27,19 +27,32 @@ namespace ImgurTitleEditor
         static void Main()
         {
             Settings S;
-            if(File.Exists(SettingsFile))
+            if (File.Exists(SettingsFile))
             {
-                S = Settings.Load(File.ReadAllText(SettingsFile));
+                S = Tools.LoadSettings(SettingsFile);
             }
             else
             {
-                S = new Settings() {
-                    Client = new Client() {
+                S = new Settings()
+                {
+                    Client = new Client()
+                    {
                         Id = "a5e26e2dac343b6"
                     }
                 };
-                File.WriteAllText(SettingsFile, S.Save());
+                Tools.SaveSettings(S, SettingsFile);
             }
+
+            var I = new Imgur(S);
+            if (S.Token.Expires < DateTime.UtcNow.AddDays(7))
+            {
+                if (I.RenewToken().Result)
+                {
+                    Tools.SaveSettings(S, SettingsFile);
+                }
+            }
+
+            var Settings = I.GetAccountSettings().Result;
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

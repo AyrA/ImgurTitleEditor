@@ -1,11 +1,71 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Xml.Serialization;
 
 namespace ImgurTitleEditor
 {
     public static class Tools
     {
+        public static T FromJson<T>(this string Source, T Default = default(T))
+        {
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(Source);
+            }
+            catch
+            {
+                return Default;
+            }
+        }
+
+        public static string ToJson(this object o)
+        {
+            return o == null ? "null" : JsonConvert.SerializeObject(o);
+        }
+
+        public static string ToXml(this object o)
+        {
+            if (o == null)
+            {
+                return null;
+            }
+            XmlSerializer S = new XmlSerializer(o.GetType());
+            using (var MS = new MemoryStream())
+            {
+                S.Serialize(MS, o);
+                return Encoding.UTF8.GetString(MS.ToArray());
+            }
+        }
+
+        public static T FromXml<T>(this string s)
+        {
+            if(string.IsNullOrWhiteSpace(s))
+            {
+                return default(T);
+            }
+            XmlSerializer S = new XmlSerializer(typeof(T));
+            using (var TW = new StringReader(s))
+            {
+                return (T)S.Deserialize(TW);
+            }
+        }
+
+        public static string SaveSettings(Settings S, string FileName)
+        {
+            var Ret = S.Save();
+            File.WriteAllText(FileName, Ret);
+            return Ret;
+        }
+
+        public static Settings LoadSettings(string FileName)
+        {
+            return Settings.Load(File.ReadAllText(FileName));
+        }
+
         public static long LongOrDefault(string Source, long Default = long.MinValue)
         {
             long L;
