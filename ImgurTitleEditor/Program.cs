@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace ImgurTitleEditor
@@ -41,6 +42,12 @@ namespace ImgurTitleEditor
                     }
                 };
                 Tools.SaveSettings(S, SettingsFile);
+            }
+
+            //Clear any invalid items from the cache
+            if (Cache.Images != null && Cache.Images.Any(m => m == null))
+            {
+                Cache.Images = Cache.Images.Where(m => m != null).ToArray();
             }
 
             var I = new Imgur(S);
