@@ -36,7 +36,7 @@ namespace ImgurTitleEditor
             {
                 Data = File.ReadAllBytes(tbImage.Text);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show($"Unable to read file. Reason: {ex.Message}", "File read Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -46,12 +46,19 @@ namespace ImgurTitleEditor
                 try
                 {
                     var img = await I.UploadImage(Data, Path.GetFileName(tbImage.Text), tbTitle.Text, tbDescription.Text);
-                    //Add new image
-                    Cache.Images = (new ImgurImage[] { img }).Concat(Cache.Images).ToArray();
-                    DialogResult = DialogResult.OK;
-                    Close();
+                    if (img != null)
+                    {
+                        //Add new image
+                        Cache.Images = (new ImgurImage[] { img }).Concat(Cache.Images).ToArray();
+                        DialogResult = DialogResult.OK;
+                        Close();
+                    }
+                    else
+                    {
+                        throw new Exception("Imgur API did not accept the image");
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     MessageBox.Show($"Unable to upload your image. Reason: {ex.Message}", "File read Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
