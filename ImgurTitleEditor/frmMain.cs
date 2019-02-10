@@ -270,5 +270,10 @@ Resume Layout: {4}",
                 ShowImages((ImageFilter)lvImages.Tag, tbFilter.Text);
             }
         }
+
+        private void uploadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //
+        }
     }
 }

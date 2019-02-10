@@ -39,6 +39,7 @@
             this.withTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.withoutTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbFilter = new System.Windows.Forms.ToolStripTextBox();
+            this.uploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,6 +72,7 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.authorizeToolStripMenuItem,
             this.buildCacheToolStripMenuItem,
+            this.uploadToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 21);
@@ -137,6 +139,13 @@
             this.tbFilter.Leave += new System.EventHandler(this.tbFilter_Leave);
             this.tbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbFilter_KeyDown);
             // 
+            // uploadToolStripMenuItem
+            // 
+            this.uploadToolStripMenuItem.Name = "uploadToolStripMenuItem";
+            this.uploadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.uploadToolStripMenuItem.Text = "&Upload";
+            this.uploadToolStripMenuItem.Click += new System.EventHandler(this.uploadToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -166,6 +175,7 @@
         private System.Windows.Forms.ToolStripMenuItem withTitleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem withoutTitleToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox tbFilter;
+        private System.Windows.Forms.ToolStripMenuItem uploadToolStripMenuItem;
     }
 }
 
