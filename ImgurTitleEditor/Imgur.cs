@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ImgurTitleEditor
@@ -113,13 +114,20 @@ namespace ImgurTitleEditor
                 {"description", Description }
             });
 
-            var R = Req(new Uri($"https://api.imgur.com/3/image"));
+            var R = Req(new Uri($"https://api.imgur.com/3/image"), fd);
             using (var Res = await GetResponse(R))
             {
                 if (!IsErrorCode(Res.StatusCode))
                 {
                     return (await ReadAll(Res.GetResponseStream())).FromJson<ImgurResponse<ImgurImage>>().data;
                 }
+#if DEBUG
+                else
+                {
+                    var Response = await ReadAll(Res.GetResponseStream());
+                    Debug.WriteLine($"File upload error: {Response}");
+                }
+#endif
             }
             return null;
         }
@@ -223,7 +231,19 @@ namespace ImgurTitleEditor
 
         private static string BuildFormData(IDictionary<string, string> Params)
         {
-            return string.Join("&", Params.Select(m => $"{Uri.EscapeDataString(m.Key)}={Uri.EscapeDataString(m.Value)}"));
+            return string.Join("&", Params.Select(m => $"{UrlEncode(m.Key)}={UrlEncode(m.Value)}"));
+        }
+
+        private static string UrlEncode(string S)
+        {
+            //Uri.EscapeDataString has a limit
+            if (S.Length > short.MaxValue)
+            {
+                return string.Join("", Regex.Matches(S, @".{1," + short.MaxValue.ToString() + "}")
+                    .OfType<Match>()
+                    .Select(m => Uri.EscapeDataString(m.Value)));
+            }
+            return Uri.EscapeDataString(S);
         }
 
         public static byte[] GetImage(ImgurImage I, ImgurImageSize Size, bool AllowVideo)
