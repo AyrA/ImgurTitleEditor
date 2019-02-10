@@ -249,6 +249,11 @@ namespace ImgurTitleEditor
 
         private void lvImages_DoubleClick(object sender, EventArgs e)
         {
+            EditSelectedImageTitle();
+        }
+
+        private void EditSelectedImageTitle()
+        {
             if (lvImages.SelectedItems.Count > 0)
             {
                 var I = (ImgurImage)lvImages.SelectedItems[0].Tag;
@@ -304,6 +309,111 @@ namespace ImgurTitleEditor
             S.UI.MainWindowMaximized = WindowState == FormWindowState.Maximized;
             S.UI.MainWindowSize = Size;
             Tools.SaveSettings(S, Program.SettingsFile);
+        }
+
+        private void copyURLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CopySelectedURL();
+        }
+
+        private void CopySelectedURL()
+        {
+            var Links = string.Join("\r\n", lvImages.SelectedItems
+                .OfType<ListViewItem>()
+                .Select(m => ((ImgurImage)m.Tag).GetImageUrl()));
+            Clipboard.SetText(Links);
+        }
+
+        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveSelectedImages(false);
+        }
+
+        private void SaveSelectedImages(bool CacheOnly)
+        {
+            switch (lvImages.SelectedItems.Count)
+            {
+                case 0:
+                    break;
+                case 1:
+                    if (CacheOnly)
+                    {
+                        Cache.GetImage((ImgurImage)lvImages.SelectedItems[0].Tag);
+                    }
+                    else
+                    {
+                        using (var SFD = new SaveFileDialog())
+                        {
+                            var Img = (ImgurImage)lvImages.SelectedItems[0].Tag;
+                            SFD.DefaultExt = Img.link.Split('.').Last();
+                            if (Img.name != null)
+                            {
+                                SFD.FileName = $"{Img.name}.{SFD.DefaultExt}";
+                            }
+                            else
+                            {
+                                SFD.FileName = Img.link.Split('/').Last();
+                            }
+                            SFD.Filter = $"{Img.type}|*.{SFD.DefaultExt}";
+                            SFD.Title = $"Downloading {Img.link}";
+                            if (SFD.ShowDialog(this) == DialogResult.OK)
+                            {
+                                File.WriteAllBytes(SFD.FileName, Cache.GetImage(Img));
+                            }
+                        }
+                    }
+                    break;
+                default:
+                    if (CacheOnly)
+                    {
+                        var Images = lvImages.SelectedItems
+                                    .OfType<ListViewItem>()
+                                    .Select(m => (ImgurImage)m.Tag);
+                        using (var fDownload = new frmDownload(S, Images, null))
+                        {
+                            fDownload.ShowDialog();
+                        }
+                    }
+                    else
+                    {
+                        using (var FBD = new FolderBrowserDialog())
+                        {
+                            FBD.Description = $"Saving {lvImages.SelectedItems.Count} Images";
+                            FBD.ShowNewFolderButton = true;
+                            if (FBD.ShowDialog(this) == DialogResult.OK)
+                            {
+                                var Images = lvImages.SelectedItems
+                                    .OfType<ListViewItem>()
+                                    .Select(m => (ImgurImage)m.Tag);
+                                using (var fDownload = new frmDownload(S, Images, FBD.SelectedPath))
+                                {
+                                    fDownload.ShowDialog();
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+        }
+
+        private void editTitleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EditSelectedImageTitle();
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeleteSelectedImages();
+        }
+
+        private void DeleteSelectedImages()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void addToCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveSelectedImages(true);
         }
     }
 }

@@ -46,6 +46,7 @@
             this.withTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.withoutTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbFilter = new System.Windows.Forms.ToolStripTextBox();
+            this.addToCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CMS.SuspendLayout();
             this.mnuMain.SuspendLayout();
             this.SuspendLayout();
@@ -69,33 +70,38 @@
             this.copyURLToolStripMenuItem,
             this.saveImageToolStripMenuItem,
             this.editTitleToolStripMenuItem,
+            this.addToCacheToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.CMS.Name = "CMS";
-            this.CMS.Size = new System.Drawing.Size(132, 92);
+            this.CMS.Size = new System.Drawing.Size(153, 136);
             // 
             // copyURLToolStripMenuItem
             // 
             this.copyURLToolStripMenuItem.Name = "copyURLToolStripMenuItem";
-            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.copyURLToolStripMenuItem.Text = "&Copy URL";
+            this.copyURLToolStripMenuItem.Click += new System.EventHandler(this.copyURLToolStripMenuItem_Click);
             // 
             // saveImageToolStripMenuItem
             // 
             this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveImageToolStripMenuItem.Text = "&Save Image";
+            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
             // 
             // editTitleToolStripMenuItem
             // 
             this.editTitleToolStripMenuItem.Name = "editTitleToolStripMenuItem";
-            this.editTitleToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.editTitleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.editTitleToolStripMenuItem.Text = "&Edit Title";
+            this.editTitleToolStripMenuItem.Click += new System.EventHandler(this.editTitleToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.deleteToolStripMenuItem.Text = "&Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // mnuMain
             // 
@@ -188,6 +194,13 @@
             this.tbFilter.Leave += new System.EventHandler(this.tbFilter_Leave);
             this.tbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbFilter_KeyDown);
             // 
+            // addToCacheToolStripMenuItem
+            // 
+            this.addToCacheToolStripMenuItem.Name = "addToCacheToolStripMenuItem";
+            this.addToCacheToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addToCacheToolStripMenuItem.Text = "&Add to Cache";
+            this.addToCacheToolStripMenuItem.Click += new System.EventHandler(this.addToCacheToolStripMenuItem_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -227,6 +240,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editTitleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addToCacheToolStripMenuItem;
     }
 }
 
