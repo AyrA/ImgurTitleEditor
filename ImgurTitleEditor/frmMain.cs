@@ -24,6 +24,7 @@ namespace ImgurTitleEditor
         {
             this.S = S;
             InitializeComponent();
+            tbFilter_Leave(null, null);
             //Program.Main already tries to authorize.
             //If the date is still in the past, the user has to do so manually.
             if (S.Token.Expires < DateTime.UtcNow)
@@ -42,6 +43,41 @@ namespace ImgurTitleEditor
             }
             I = new Imgur(S);
             ShowImages(ImageFilter.All);
+        }
+
+        public ImgurImage PrevImage()
+        {
+            if (lvImages.SelectedItems.Count > 0)
+            {
+                var I = lvImages.SelectedItems[0];
+                //Update title in case it was changed in the form
+                I.Text = ((ImgurImage)I.Tag).title;
+                if (I.Index > 0)
+                {
+                    var PrevItem = lvImages.Items[I.Index - 1];
+                    lvImages.SelectedItems.Clear();
+                    PrevItem.Selected = true;
+                    return (ImgurImage)PrevItem.Tag;
+                }
+            }
+            return null;
+        }
+
+        public ImgurImage NextImage()
+        {
+            if (lvImages.SelectedItems.Count > 0)
+            {
+                var I = lvImages.SelectedItems[0];
+                I.Text = ((ImgurImage)I.Tag).title;
+                if (I.Index < lvImages.Items.Count - 1)
+                {
+                    var NextItem = lvImages.Items[I.Index + 1];
+                    lvImages.SelectedItems.Clear();
+                    NextItem.Selected = true;
+                    return (ImgurImage)NextItem.Tag;
+                }
+            }
+            return null;
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -71,15 +107,16 @@ namespace ImgurTitleEditor
                     {
                         Cache.Images = null;
                         Cache.ClearThumbnails();
+                        Cache.ClearImages();
                         ShowImages(ImageFilter.All);
                     }
                 }
             }
         }
 
-        private void ShowImages(ImageFilter Filter)
+        private void ShowImages(ImageFilter Filter, string Search = null)
         {
-            //const int BATCHSIZE = 100;
+            lvImages.Tag = Filter;
             lvImages.Items.Clear();
             var T = new Thread(delegate ()
             {
@@ -96,15 +133,18 @@ namespace ImgurTitleEditor
                         (Filter == ImageFilter.WithTitle && !string.IsNullOrWhiteSpace(I.title)) ||
                         (Filter == ImageFilter.WithoutTitle && string.IsNullOrWhiteSpace(I.title)))
                     {
-                        using (var MS = new MemoryStream(Cache.GetThumbnail(I)))
+                        if (string.IsNullOrEmpty(Search) || IsMatch(I, Search))
                         {
-                            IL.Images.Add(Image.FromStream(MS));
+                            using (var MS = new MemoryStream(Cache.GetThumbnail(I)))
+                            {
+                                IL.Images.Add(Image.FromStream(MS));
+                            }
+                            var Item = new ListViewItem(I.title == null ? string.Empty : I.title);
+                            Item.ImageIndex = IL.Images.Count - 1;
+                            Item.Tag = I;
+                            Item.ToolTipText = $"[{I.name}] {I.description}";
+                            Items.Add(Item);
                         }
-                        var Item = new ListViewItem(I.title == null ? string.Empty : I.title);
-                        Item.ImageIndex = IL.Images.Count - 1;
-                        Item.Tag = I;
-                        Item.ToolTipText = $"[{I.name}] {I.description}";
-                        Items.Add(Item);
                     }
                 }
                 Invoke((MethodInvoker)delegate
@@ -117,19 +157,30 @@ namespace ImgurTitleEditor
                     lvImages.LargeImageList = IL;
                     lvImages.Items.AddRange(Items.ToArray());
                 });
-
-                /*
-                for (var i = 0; i < Items.Count; i += BATCHSIZE)
-                {
-                    Invoke((MethodInvoker)delegate
-                    {
-                        lvImages.Items.AddRange(Items.Skip(i).Take(BATCHSIZE).ToArray());
-                    });
-                }
-                //*/
             });
             T.IsBackground = true;
             T.Start();
+        }
+
+        private static bool IsMatch(ImgurImage I, string Search)
+        {
+            if (string.IsNullOrEmpty(Search))
+            {
+                return true;
+            }
+            var Strings = new string[] {
+                I.title,
+                I.description,
+                I.name
+            }.Where(m => !string.IsNullOrEmpty(m));
+            foreach (var s in Strings)
+            {
+                if (s.ToLower().Contains(Search.ToLower()))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void allImagesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -145,6 +196,47 @@ namespace ImgurTitleEditor
         private void withoutTitleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowImages(ImageFilter.WithoutTitle);
+        }
+
+        private void lvImages_DoubleClick(object sender, EventArgs e)
+        {
+            if (lvImages.SelectedItems.Count > 0)
+            {
+                var I = (ImgurImage)lvImages.SelectedItems[0].Tag;
+                using (var prop = new frmProperties(S, I))
+                {
+                    prop.ShowDialog();
+                }
+            }
+        }
+
+        private void tbFilter_Enter(object sender, EventArgs e)
+        {
+            if ((bool)tbFilter.Tag)
+            {
+                tbFilter.Tag = false;
+                tbFilter.Font = DefaultFont;
+                tbFilter.Text = string.Empty;
+            }
+        }
+
+        private void tbFilter_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(tbFilter.Text))
+            {
+                tbFilter.Tag = true;
+                tbFilter.Text = "Filter";
+                tbFilter.Font = new Font(tbFilter.Font, FontStyle.Italic);
+            }
+        }
+
+        private void tbFilter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                ShowImages((ImageFilter)lvImages.Tag, tbFilter.Text);
+            }
         }
     }
 }

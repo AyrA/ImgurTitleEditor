@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.lvImages = new System.Windows.Forms.ListView();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.mnuMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.authorizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.buildCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -38,7 +38,8 @@
             this.allImagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.withTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.withoutTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
+            this.tbFilter = new System.Windows.Forms.ToolStripTextBox();
+            this.mnuMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // lvImages
@@ -51,17 +52,19 @@
             this.lvImages.Size = new System.Drawing.Size(568, 511);
             this.lvImages.TabIndex = 0;
             this.lvImages.UseCompatibleStateImageBehavior = false;
+            this.lvImages.DoubleClick += new System.EventHandler(this.lvImages_DoubleClick);
             // 
-            // menuStrip1
+            // mnuMain
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.listToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(592, 24);
-            this.menuStrip1.TabIndex = 1;
-            this.menuStrip1.Text = "menuStrip1";
+            this.listToolStripMenuItem,
+            this.tbFilter});
+            this.mnuMain.Location = new System.Drawing.Point(0, 0);
+            this.mnuMain.Name = "mnuMain";
+            this.mnuMain.Size = new System.Drawing.Size(592, 25);
+            this.mnuMain.TabIndex = 1;
+            this.mnuMain.Text = "Main Menu";
             // 
             // fileToolStripMenuItem
             // 
@@ -70,7 +73,7 @@
             this.buildCacheToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(35, 21);
             this.fileToolStripMenuItem.Text = "&File";
             // 
             // authorizeToolStripMenuItem
@@ -101,7 +104,7 @@
             this.withTitleToolStripMenuItem,
             this.withoutTitleToolStripMenuItem});
             this.listToolStripMenuItem.Name = "listToolStripMenuItem";
-            this.listToolStripMenuItem.Size = new System.Drawing.Size(35, 20);
+            this.listToolStripMenuItem.Size = new System.Drawing.Size(35, 21);
             this.listToolStripMenuItem.Text = "&List";
             // 
             // allImagesToolStripMenuItem
@@ -125,17 +128,26 @@
             this.withoutTitleToolStripMenuItem.Text = "With&out Title";
             this.withoutTitleToolStripMenuItem.Click += new System.EventHandler(this.withoutTitleToolStripMenuItem_Click);
             // 
+            // tbFilter
+            // 
+            this.tbFilter.Name = "tbFilter";
+            this.tbFilter.Size = new System.Drawing.Size(100, 21);
+            this.tbFilter.ToolTipText = "Filter";
+            this.tbFilter.Enter += new System.EventHandler(this.tbFilter_Enter);
+            this.tbFilter.Leave += new System.EventHandler(this.tbFilter_Leave);
+            this.tbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbFilter_KeyDown);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(592, 573);
             this.Controls.Add(this.lvImages);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.mnuMain);
             this.Name = "frmMain";
             this.Text = "Main Form";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
+            this.mnuMain.ResumeLayout(false);
+            this.mnuMain.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,7 +156,7 @@
         #endregion
 
         private System.Windows.Forms.ListView lvImages;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip mnuMain;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem authorizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem buildCacheToolStripMenuItem;
@@ -153,6 +165,7 @@
         private System.Windows.Forms.ToolStripMenuItem allImagesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem withTitleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem withoutTitleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox tbFilter;
     }
 }
 
