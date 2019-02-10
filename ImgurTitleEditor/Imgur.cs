@@ -14,10 +14,17 @@ namespace ImgurTitleEditor
 
         private Settings S;
 
-        private HttpWebRequest Req(Uri URL, string BodyContent = null)
+        private HttpWebRequest Req(Uri URL, string BodyContent = null, bool UseAuth = true)
         {
             var R = WebRequest.CreateHttp(URL);
-            R.Headers.Add($"Authorization: Bearer {S.Token.Access}");
+            if (UseAuth)
+            {
+                R.Headers.Add($"Authorization: Bearer {S.Token.Access}");
+            }
+            else
+            {
+                R.Headers.Add($"Authorization: Client-ID {S.Client.Id}");
+            }
             if (BodyContent != null)
             {
                 R.Method = "POST";
@@ -66,14 +73,18 @@ namespace ImgurTitleEditor
         public async Task<bool> SetImageDescription(ImgurImage I, string Title, string Description)
         {
             var fd = BuildFormData(new Dictionary<string, string>() {
-                {"title", Title },
-                {"description", Description }
+                {"title", string.IsNullOrEmpty(Title) ? string.Empty : Title },
+                {"description", string.IsNullOrEmpty(Description) ? string.Empty : Description }
             });
             var R = Req(new Uri($"https://api.imgur.com/3/image/{I.id}"), fd);
             using (var Res = await GetResponse(R))
             {
-                return !IsErrorCode(Res.StatusCode);
+                if(!IsErrorCode(Res.StatusCode))
+                {
+                    return (await ReadAll(Res.GetResponseStream())).FromJson<ImgurResponse<bool>>().data;
+                }
             }
+            return false;
         }
 
         public async Task<bool> DeleteImage(ImgurImage I)
