@@ -116,7 +116,6 @@ namespace ImgurTitleEditor
 
         private void ShowImages(ImageFilter Filter, string Search = null)
         {
-            const int BATCHSIZE = 100;
             lvImages.SuspendLayout();
             lvImages.Tag = Filter;
             lvImages.Items.Clear();
