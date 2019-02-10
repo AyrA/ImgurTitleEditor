@@ -204,21 +204,6 @@ namespace ImgurTitleEditor
                     lvImages.ResumeLayout();
                     Times.Add(DateTime.UtcNow - Current);
                     Current = DateTime.UtcNow;
-                    /*
-#if DEBUG
-                    var msg = string.Format(@"Total time: {0}
-Disposing IL: {1}
-Assigning IL: {2}
-Assigning Items: {3}
-Resume Layout: {4}",
-                        (int)(Current - Start).TotalMilliseconds,
-                        (int)Times[0].TotalMilliseconds,
-                        (int)Times[1].TotalMilliseconds,
-                        (int)Times[2].TotalMilliseconds,
-                        (int)Times[3].TotalMilliseconds);
-                    MessageBox.Show(msg, "Total Times (ms)", MessageBoxButtons.OK, MessageBoxIcon.Information);
-#endif
-                    //*/
                 });
             });
             T.IsBackground = true;
