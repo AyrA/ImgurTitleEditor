@@ -9,10 +9,19 @@ namespace ImgurTitleEditor
 {
     public partial class frmProperties : Form
     {
+        private enum ActionType
+        {
+            None,
+            Older,
+            Newer
+        }
+
         private ImgurImage I;
         private Settings S;
+        private ActionType LastAction;
         public frmProperties(Settings S, ImgurImage I)
         {
+            LastAction = ActionType.None;
             this.S = S;
             InitializeComponent();
             SetImage(I);
@@ -26,8 +35,14 @@ namespace ImgurTitleEditor
             tbDesc.Text = I.description;
             using (var MS = new MemoryStream(Cache.GetImage(I)))
             {
-                pbImage.Image = Image.FromStream(MS);
+                using (var img = Image.FromStream(MS))
+                {
+                    pbImage.Image = (Image)img.Clone();
+                }
             }
+            ScaleImage();
+            tbTitle.Focus();
+            tbTitle.SelectAll();
         }
 
         private bool Save()
@@ -73,6 +88,7 @@ namespace ImgurTitleEditor
         {
             if (Save())
             {
+                LastAction = ActionType.Newer;
                 var img = Application.OpenForms.OfType<frmMain>().First().PrevImage();
                 if (img != null)
                 {
@@ -85,6 +101,7 @@ namespace ImgurTitleEditor
         {
             if (Save())
             {
+                LastAction = ActionType.Older;
                 var img = Application.OpenForms.OfType<frmMain>().First().NextImage();
                 if (img != null)
                 {
@@ -95,6 +112,7 @@ namespace ImgurTitleEditor
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            LastAction = ActionType.None;
             if (Save())
             {
                 DialogResult = DialogResult.OK;
@@ -106,6 +124,62 @@ namespace ImgurTitleEditor
         {
             DialogResult = DialogResult.Cancel;
             Close();
+        }
+
+        private void frmProperties_Resize(object sender, EventArgs e)
+        {
+            ScaleImage();
+        }
+
+        private void ScaleImage()
+        {
+            if (pbImage.Width >= pbImage.Image.Width && pbImage.Height >= pbImage.Image.Height)
+            {
+                pbImage.SizeMode = PictureBoxSizeMode.Normal;
+            }
+            else
+            {
+                pbImage.SizeMode = PictureBoxSizeMode.Zoom;
+            }
+        }
+
+        private void tbTitle_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                HandleNextImage();
+            }
+        }
+
+        private void HandleNextImage()
+        {
+            switch (LastAction)
+            {
+                case ActionType.Newer:
+                    btnPrev_Click(null, null);
+                    break;
+                case ActionType.Older:
+                    btnNext_Click(null, null);
+                    break;
+                case ActionType.None:
+                    btnOK_Click(null, null);
+                    break;
+            }
+        }
+
+        private void frmProperties_Shown(object sender, EventArgs e)
+        {
+            ScaleImage();
+        }
+
+        private void tbDesc_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && e.Modifiers == Keys.Control)
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                HandleNextImage();
+            }
         }
     }
 }

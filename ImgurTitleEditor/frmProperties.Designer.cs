@@ -66,6 +66,7 @@
             this.tbTitle.Name = "tbTitle";
             this.tbTitle.Size = new System.Drawing.Size(302, 20);
             this.tbTitle.TabIndex = 1;
+            this.tbTitle.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbTitle_KeyDown);
             // 
             // tbDesc
             // 
@@ -78,6 +79,7 @@
             this.tbDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbDesc.Size = new System.Drawing.Size(302, 81);
             this.tbDesc.TabIndex = 3;
+            this.tbDesc.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDesc_KeyDown);
             // 
             // pbImage
             // 
@@ -87,7 +89,7 @@
             this.pbImage.Location = new System.Drawing.Point(15, 125);
             this.pbImage.Name = "pbImage";
             this.pbImage.Size = new System.Drawing.Size(365, 207);
-            this.pbImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pbImage.TabIndex = 4;
             this.pbImage.TabStop = false;
             // 
@@ -151,6 +153,8 @@
             this.Controls.Add(this.label1);
             this.Name = "frmProperties";
             this.Text = "Image Properties";
+            this.Shown += new System.EventHandler(this.frmProperties_Shown);
+            this.Resize += new System.EventHandler(this.frmProperties_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
