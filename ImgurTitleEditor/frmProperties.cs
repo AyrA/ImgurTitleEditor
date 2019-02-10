@@ -148,13 +148,16 @@ namespace ImgurTitleEditor
 
         private void ScaleImage()
         {
-            if (pbImage.Width >= pbImage.Image.Width && pbImage.Height >= pbImage.Image.Height)
+            if (pbImage.Image != null)
             {
-                pbImage.SizeMode = PictureBoxSizeMode.Normal;
-            }
-            else
-            {
-                pbImage.SizeMode = PictureBoxSizeMode.Zoom;
+                if (pbImage.Width >= pbImage.Image.Width && pbImage.Height >= pbImage.Image.Height)
+                {
+                    pbImage.SizeMode = PictureBoxSizeMode.Normal;
+                }
+                else
+                {
+                    pbImage.SizeMode = PictureBoxSizeMode.Zoom;
+                }
             }
         }
 
