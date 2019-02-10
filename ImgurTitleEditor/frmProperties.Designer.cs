@@ -154,6 +154,7 @@
             this.Name = "frmProperties";
             this.Text = "Image Properties";
             this.Shown += new System.EventHandler(this.frmProperties_Shown);
+            this.SizeChanged += new System.EventHandler(this.frmProperties_SizeChanged);
             this.Resize += new System.EventHandler(this.frmProperties_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).EndInit();
             this.ResumeLayout(false);

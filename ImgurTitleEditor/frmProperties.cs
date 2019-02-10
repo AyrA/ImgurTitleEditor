@@ -19,11 +19,26 @@ namespace ImgurTitleEditor
         private ImgurImage I;
         private Settings S;
         private ActionType LastAction;
+
         public frmProperties(Settings S, ImgurImage I)
         {
             LastAction = ActionType.None;
             this.S = S;
             InitializeComponent();
+
+            if (S.UI.PropertyWindowMaximized)
+            {
+                WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                var ConfigSize = S.UI.PropertyWindowSize;
+                if (ConfigSize.Height >= MinimumSize.Height && ConfigSize.Width >= MinimumSize.Width)
+                {
+                    Size = ConfigSize;
+                }
+            }
+
             SetImage(I);
         }
 
@@ -180,6 +195,13 @@ namespace ImgurTitleEditor
                 e.Handled = e.SuppressKeyPress = true;
                 HandleNextImage();
             }
+        }
+
+        private void frmProperties_SizeChanged(object sender, EventArgs e)
+        {
+            S.UI.PropertyWindowMaximized = WindowState == FormWindowState.Maximized;
+            S.UI.PropertyWindowSize = Size;
+            Tools.SaveSettings(S, Program.SettingsFile);
         }
     }
 }

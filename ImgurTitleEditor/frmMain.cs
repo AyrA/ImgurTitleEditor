@@ -10,11 +10,11 @@ namespace ImgurTitleEditor
 {
     public partial class frmMain : Form
     {
-        private enum ImageFilter
+        private enum ImageFilter : int
         {
-            All,
-            WithTitle,
-            WithoutTitle
+            All = 0,
+            WithTitle = 1,
+            WithoutTitle = 2
         }
 
         private Imgur I;
@@ -42,7 +42,19 @@ namespace ImgurTitleEditor
                 }
             }
             I = new Imgur(S);
-            ShowImages(ImageFilter.All);
+            if (S.UI.MainWindowMaximized)
+            {
+                WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                var ConfigSize = S.UI.MainWindowSize;
+                if (ConfigSize.Height >= MinimumSize.Height && ConfigSize.Width >= MinimumSize.Width)
+                {
+                    Size = ConfigSize;
+                }
+            }
+            ShowImages((ImageFilter)S.UI.LastView);
         }
 
         public ImgurImage PrevImage()
@@ -119,6 +131,25 @@ namespace ImgurTitleEditor
             lvImages.SuspendLayout();
             lvImages.Tag = Filter;
             lvImages.Items.Clear();
+            foreach (var i in listToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
+            {
+                i.Checked = false;
+            }
+            switch (Filter)
+            {
+                case ImageFilter.All:
+                    allImagesToolStripMenuItem.Checked = true;
+                    break;
+                case ImageFilter.WithoutTitle:
+                    withoutTitleToolStripMenuItem.Checked = true;
+                    break;
+                case ImageFilter.WithTitle:
+                    withTitleToolStripMenuItem.Checked = true;
+                    break;
+            }
+            S.UI.LastView = (int)Filter;
+            Tools.SaveSettings(S, Program.SettingsFile);
+
             var T = new Thread(delegate ()
             {
                 var Index = 0;
@@ -281,6 +312,13 @@ Resume Layout: {4}",
                     ShowImages((ImageFilter)lvImages.Tag, (bool)tbFilter.Tag ? null : tbFilter.Text);
                 }
             }
+        }
+
+        private void frmMain_ResizeEnd(object sender, EventArgs e)
+        {
+            S.UI.MainWindowMaximized = WindowState == FormWindowState.Maximized;
+            S.UI.MainWindowSize = Size;
+            Tools.SaveSettings(S, Program.SettingsFile);
         }
     }
 }
