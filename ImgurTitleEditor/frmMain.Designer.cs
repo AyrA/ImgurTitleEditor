@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lvImages = new System.Windows.Forms.ListView();
             this.mnuMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -40,7 +41,13 @@
             this.withoutTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbFilter = new System.Windows.Forms.ToolStripTextBox();
             this.uploadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.CMS = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMain.SuspendLayout();
+            this.CMS.SuspendLayout();
             this.SuspendLayout();
             // 
             // lvImages
@@ -48,6 +55,7 @@
             this.lvImages.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvImages.ContextMenuStrip = this.CMS;
             this.lvImages.Location = new System.Drawing.Point(12, 50);
             this.lvImages.Name = "lvImages";
             this.lvImages.Size = new System.Drawing.Size(568, 511);
@@ -146,6 +154,40 @@
             this.uploadToolStripMenuItem.Text = "&Upload";
             this.uploadToolStripMenuItem.Click += new System.EventHandler(this.uploadToolStripMenuItem_Click);
             // 
+            // CMS
+            // 
+            this.CMS.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyURLToolStripMenuItem,
+            this.saveImageToolStripMenuItem,
+            this.editTitleToolStripMenuItem,
+            this.deleteToolStripMenuItem});
+            this.CMS.Name = "CMS";
+            this.CMS.Size = new System.Drawing.Size(132, 92);
+            // 
+            // copyURLToolStripMenuItem
+            // 
+            this.copyURLToolStripMenuItem.Name = "copyURLToolStripMenuItem";
+            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.copyURLToolStripMenuItem.Text = "&Copy URL";
+            // 
+            // saveImageToolStripMenuItem
+            // 
+            this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
+            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.saveImageToolStripMenuItem.Text = "&Save Image";
+            // 
+            // editTitleToolStripMenuItem
+            // 
+            this.editTitleToolStripMenuItem.Name = "editTitleToolStripMenuItem";
+            this.editTitleToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.editTitleToolStripMenuItem.Text = "&Edit Title";
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(131, 22);
+            this.deleteToolStripMenuItem.Text = "&Delete";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -157,6 +199,7 @@
             this.Text = "Main Form";
             this.mnuMain.ResumeLayout(false);
             this.mnuMain.PerformLayout();
+            this.CMS.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -176,6 +219,11 @@
         private System.Windows.Forms.ToolStripMenuItem withoutTitleToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox tbFilter;
         private System.Windows.Forms.ToolStripMenuItem uploadToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip CMS;
+        private System.Windows.Forms.ToolStripMenuItem copyURLToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveImageToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editTitleToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
     }
 }
 
