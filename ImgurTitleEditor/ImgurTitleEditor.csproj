@@ -105,6 +105,9 @@
     <EmbeddedResource Include="frmCacheBuilder.resx">
       <DependentUpon>frmCacheBuilder.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmDownload.resx">
+      <DependentUpon>frmDownload.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
