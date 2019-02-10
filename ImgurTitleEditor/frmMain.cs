@@ -273,7 +273,13 @@ Resume Layout: {4}",
 
         private void uploadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //
+            using (var fUpload = new frmUpload(S))
+            {
+                if (fUpload.ShowDialog() == DialogResult.OK)
+                {
+                    ShowImages((ImageFilter)lvImages.Tag, (bool)tbFilter.Tag ? null : tbFilter.Text);
+                }
+            }
         }
     }
 }
