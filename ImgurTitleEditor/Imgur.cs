@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,10 @@ namespace ImgurTitleEditor
 
         private HttpWebRequest Req(Uri URL, string BodyContent = null, bool UseAuth = true)
         {
+#if DEBUG
+            Debug.WriteLine($"Prepare Imgur Request. URL={URL} UseAuth={UseAuth} BodyContent={BodyContent}");
+#endif
+
             var R = WebRequest.CreateHttp(URL);
             if (UseAuth)
             {

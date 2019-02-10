@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,10 @@ namespace ImgurTitleEditor
     {
         public static T FromJson<T>(this string Source, T Default = default(T))
         {
+#if DEBUG
+            Debug.WriteLine($"Deserialize JSON. Source={Source}");
+#endif
+
             try
             {
                 return JsonConvert.DeserializeObject<T>(Source);
