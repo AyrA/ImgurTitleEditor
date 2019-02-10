@@ -39,7 +39,7 @@ namespace ImgurTitleEditor
 
             if (!File.Exists(ImageFile))
             {
-                File.WriteAllBytes(ImageFile, Imgur.GetImage(I, ImgurImageSize.Original));
+                File.WriteAllBytes(ImageFile, Imgur.GetImage(I, ImgurImageSize.Original, false));
             }
             return File.ReadAllBytes(ImageFile);
         }
@@ -67,7 +67,7 @@ namespace ImgurTitleEditor
 
             if (!File.Exists(ThumbFile))
             {
-                File.WriteAllBytes(ThumbFile, Imgur.GetImage(I, ImgurImageSize.BigSquare));
+                File.WriteAllBytes(ThumbFile, Imgur.GetImage(I, ImgurImageSize.BigSquare, false));
             }
             return File.ReadAllBytes(ThumbFile);
         }

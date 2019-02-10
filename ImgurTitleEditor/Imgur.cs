@@ -79,7 +79,7 @@ namespace ImgurTitleEditor
             var R = Req(new Uri($"https://api.imgur.com/3/image/{I.id}"), fd);
             using (var Res = await GetResponse(R))
             {
-                if(!IsErrorCode(Res.StatusCode))
+                if (!IsErrorCode(Res.StatusCode))
                 {
                     return (await ReadAll(Res.GetResponseStream())).FromJson<ImgurResponse<bool>>().data;
                 }
@@ -220,11 +220,15 @@ namespace ImgurTitleEditor
             return string.Join("&", Params.Select(m => $"{Uri.EscapeDataString(m.Key)}={Uri.EscapeDataString(m.Value)}"));
         }
 
-        public static byte[] GetImage(ImgurImage I, ImgurImageSize Size)
+        public static byte[] GetImage(ImgurImage I, ImgurImageSize Size, bool AllowVideo)
         {
             using (var WC = new WebClient())
             {
-                return WC.DownloadData(I.GetImageUrl(Size));
+                if (AllowVideo || !I.type.ToLower().StartsWith("video/"))
+                {
+                    return WC.DownloadData(I.GetImageUrl(Size));
+                }
+                return WC.DownloadData(I.GetImageUrl(Size == ImgurImageSize.Original ? ImgurImageSize.HugeThumbnail : Size));
             }
         }
     }
