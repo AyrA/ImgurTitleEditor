@@ -72,9 +72,18 @@ namespace ImgurTitleEditor
 
                 var imgur = new Imgur(S);
                 var Result = false;
+                Exception TaskException = null;
                 Task.Run(async delegate
                 {
-                    Result = await imgur.SetImageDescription(I, I.title, I.description);
+                    try
+                    {
+                        Result = await imgur.SetImageDescription(I, I.title, I.description);
+                    }
+                    catch (Exception ex)
+                    {
+                        TaskException = ex;
+                        Result = false;
+                    }
                 }).Wait();
                 if (Result)
                 {
@@ -92,7 +101,14 @@ namespace ImgurTitleEditor
                 }
                 else
                 {
-                    MessageBox.Show("Unable to set new image properties", "Unable to update image", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    if (TaskException != null)
+                    {
+                        MessageBox.Show("Unable to set new image properties", "Unable to update image", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Unable to set new image properties. Details: {TaskException.Message}", "Unable to update image", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
                 return false;
             }
@@ -152,7 +168,7 @@ namespace ImgurTitleEditor
             {
                 if (pbImage.Width >= pbImage.Image.Width && pbImage.Height >= pbImage.Image.Height)
                 {
-                    pbImage.SizeMode = PictureBoxSizeMode.Normal;
+                    pbImage.SizeMode = PictureBoxSizeMode.CenterImage;
                 }
                 else
                 {
