@@ -173,7 +173,7 @@ namespace ImgurTitleEditor
                     lvImages.ResumeLayout();
                     Times.Add(DateTime.UtcNow - Current);
                     Current = DateTime.UtcNow;
-
+                    /*
 #if DEBUG
                     var msg = string.Format(@"Total time: {0}
 Disposing IL: {1}
@@ -187,6 +187,7 @@ Resume Layout: {4}",
                         (int)Times[3].TotalMilliseconds);
                     MessageBox.Show(msg, "Total Times (ms)", MessageBoxButtons.OK, MessageBoxIcon.Information);
 #endif
+                    //*/
                 });
             });
             T.IsBackground = true;
