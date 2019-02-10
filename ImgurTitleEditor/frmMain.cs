@@ -116,16 +116,18 @@ namespace ImgurTitleEditor
 
         private void ShowImages(ImageFilter Filter, string Search = null)
         {
+            const int BATCHSIZE = 100;
+            lvImages.SuspendLayout();
             lvImages.Tag = Filter;
             lvImages.Items.Clear();
-            lvImages.SuspendLayout();
             var T = new Thread(delegate ()
             {
+                var Index = 0;
                 var Items = new List<ListViewItem>();
                 var IL = new ImageList()
                 {
-                    ImageSize = new Size(128, 128),
-                    ColorDepth = ColorDepth.Depth16Bit
+                    ImageSize = new Size(160, 160),
+                    ColorDepth = ColorDepth.Depth32Bit
                 };
                 foreach (var I in Cache.Images)
                 {
@@ -141,22 +143,51 @@ namespace ImgurTitleEditor
                                 IL.Images.Add(Image.FromStream(MS));
                             }
                             var Item = new ListViewItem(I.title == null ? string.Empty : I.title);
-                            Item.ImageIndex = IL.Images.Count - 1;
+                            Item.ImageIndex = Index;
                             Item.Tag = I;
                             Item.ToolTipText = $"[{I.name}] {I.description}";
                             Items.Add(Item);
+                            ++Index;
                         }
                     }
                 }
                 Invoke((MethodInvoker)delegate
                 {
+                    var Times = new List<TimeSpan>();
+                    var Start = DateTime.UtcNow;
+                    var Current = Start;
                     if (lvImages.LargeImageList != null)
                     {
                         lvImages.LargeImageList.Dispose();
                     }
+                    Times.Add(DateTime.UtcNow - Current);
+                    Current = DateTime.UtcNow;
+
                     lvImages.LargeImageList = IL;
+                    Times.Add(DateTime.UtcNow - Current);
+                    Current = DateTime.UtcNow;
+
                     lvImages.Items.AddRange(Items.ToArray());
+                    Times.Add(DateTime.UtcNow - Current);
+                    Current = DateTime.UtcNow;
+
                     lvImages.ResumeLayout();
+                    Times.Add(DateTime.UtcNow - Current);
+                    Current = DateTime.UtcNow;
+
+#if DEBUG
+                    var msg = string.Format(@"Total time: {0}
+Disposing IL: {1}
+Assigning IL: {2}
+Assigning Items: {3}
+Resume Layout: {4}",
+                        (int)(Current - Start).TotalMilliseconds,
+                        (int)Times[0].TotalMilliseconds,
+                        (int)Times[1].TotalMilliseconds,
+                        (int)Times[2].TotalMilliseconds,
+                        (int)Times[3].TotalMilliseconds);
+                    MessageBox.Show(msg, "Total Times (ms)", MessageBoxButtons.OK, MessageBoxIcon.Information);
+#endif
                 });
             });
             T.IsBackground = true;
