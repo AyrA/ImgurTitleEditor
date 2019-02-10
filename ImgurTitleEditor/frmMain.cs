@@ -406,14 +406,65 @@ namespace ImgurTitleEditor
             DeleteSelectedImages();
         }
 
-        private void DeleteSelectedImages()
+        private async void DeleteSelectedImages()
         {
-            throw new NotImplementedException();
+            var DelImgur = false;
+            var Images = lvImages.SelectedItems.OfType<ListViewItem>().Select(m => (ImgurImage)m.Tag).ToArray();
+            switch (MessageBox.Show($"You are about to delete {Images.Length} images from the cache.\r\nRemove them from your Imgur Account too?", "Delete Images", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation))
+            {
+                case DialogResult.Yes:
+                    DelImgur = true;
+                    break;
+                case DialogResult.No:
+                    DelImgur = false;
+                    break;
+                default:
+                    MessageBox.Show("No images deleted. Operation cancelled by user.", "Delete Images", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+            }
+            foreach (var Img in Images)
+            {
+                if (Cache.RemoveImage(Img) && DelImgur)
+                {
+                    await I.DeleteImage(Img);
+                }
+            }
+            lvImages.SuspendLayout();
+            foreach(var Item in lvImages.SelectedItems.OfType<ListViewItem>().ToArray())
+            {
+                lvImages.Items.Remove(Item);
+            }
+            lvImages.ResumeLayout();
         }
 
         private void addToCacheToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveSelectedImages(true);
+        }
+
+        private void lvImages_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.A && e.Modifiers == Keys.Control)
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                //It's correct to not use "==" here
+                lvImages.Items.OfType<ListViewItem>().All(m => m.Selected = true);
+            }
+            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                CopySelectedURL();
+            }
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                EditSelectedImageTitle();
+            }
+            if (e.KeyCode == Keys.Delete)
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                DeleteSelectedImages();
+            }
         }
     }
 }

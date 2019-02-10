@@ -33,6 +33,30 @@ namespace ImgurTitleEditor
             }
         }
 
+        public static bool RemoveImage(ImgurImage I)
+        {
+            var ImageFile = Path.Combine(_imageDir, I.GetImageUrl(ImgurImageSize.Original).Segments.Last());
+            var ThumbFile = Path.Combine(_thumbDir, I.GetImageUrl(ImgurImageSize.Original).Segments.Last());
+            try
+            {
+                File.Delete(ImageFile);
+            }
+            catch
+            {
+                return false;
+            }
+            try
+            {
+                File.Delete(ThumbFile);
+            }
+            catch
+            {
+                return false;
+            }
+            Images = Images.Where(m => m.id != I.id).ToArray();
+            return true;
+        }
+
         public static byte[] GetImage(ImgurImage I)
         {
             var ImageFile = Path.Combine(_imageDir, I.GetImageUrl(ImgurImageSize.Original).Segments.Last());

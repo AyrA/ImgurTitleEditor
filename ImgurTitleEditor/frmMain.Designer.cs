@@ -63,6 +63,7 @@
             this.lvImages.TabIndex = 0;
             this.lvImages.UseCompatibleStateImageBehavior = false;
             this.lvImages.DoubleClick += new System.EventHandler(this.lvImages_DoubleClick);
+            this.lvImages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvImages_KeyDown);
             // 
             // CMS
             // 
@@ -73,7 +74,7 @@
             this.addToCacheToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.CMS.Name = "CMS";
-            this.CMS.Size = new System.Drawing.Size(153, 136);
+            this.CMS.Size = new System.Drawing.Size(140, 114);
             // 
             // copyURLToolStripMenuItem
             // 
