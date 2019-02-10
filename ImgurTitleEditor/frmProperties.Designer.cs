@@ -151,6 +151,7 @@
             this.Controls.Add(this.tbTitle);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "frmProperties";
             this.Text = "Image Properties";
             this.Shown += new System.EventHandler(this.frmProperties_Shown);
