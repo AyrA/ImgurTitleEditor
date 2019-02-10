@@ -33,6 +33,7 @@ namespace ImgurTitleEditor
             if (BodyContent != null)
             {
                 R.Method = "POST";
+                R.ContentType = "application/x-www-form-urlencoded";
                 using (var SW = new StreamWriter(R.GetRequestStream()))
                 {
                     SW.Write(BodyContent);
