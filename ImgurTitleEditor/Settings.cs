@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
@@ -10,11 +11,13 @@ namespace ImgurTitleEditor
     {
         public Client Client;
         public Token Token;
+        public UI UI;
 
         public Settings()
         {
             Client = new Client();
             Token = new Token();
+            UI = new UI();
         }
 
         public string Save()
@@ -35,6 +38,16 @@ namespace ImgurTitleEditor
                 return (Settings)X.Deserialize(SR);
             }
         }
+    }
+
+    [Serializable]
+    public class UI
+    {
+        public int LastView;
+        public bool MainWindowMaximized;
+        public Size MainWindowSize;
+        public bool PropertyWindowMaximized;
+        public Size PropertyWindowSize;
     }
 
     [Serializable]
