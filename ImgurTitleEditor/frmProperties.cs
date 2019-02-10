@@ -48,11 +48,26 @@ namespace ImgurTitleEditor
             Text = $"Image Properties [{I.name}] ({I.views} views)";
             tbTitle.Text = I.title;
             tbDesc.Text = I.description;
-            using (var MS = new MemoryStream(Cache.GetImage(I)))
+            if (!I.animated)
             {
-                using (var img = Image.FromStream(MS))
+                using (var MS = new MemoryStream(Cache.GetImage(I)))
                 {
-                    pbImage.Image = (Image)img.Clone();
+                    using (var img = Image.FromStream(MS))
+                    {
+                        pbImage.Image = (Image)img.Clone();
+                    }
+                }
+            }
+            else
+            {
+                var Imgur = new Imgur(S);
+                //This is a temporary solution until I can figure out how to play GIF animations again
+                using (var MS = new MemoryStream(Imgur.GetImage(I, ImgurImageSize.HugeThumbnail, false)))
+                {
+                    using (var img = Image.FromStream(MS))
+                    {
+                        pbImage.Image = (Image)img.Clone();
+                    }
                 }
             }
             ScaleImage();
