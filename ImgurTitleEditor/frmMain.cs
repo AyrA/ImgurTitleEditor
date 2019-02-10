@@ -118,6 +118,7 @@ namespace ImgurTitleEditor
         {
             lvImages.Tag = Filter;
             lvImages.Items.Clear();
+            lvImages.SuspendLayout();
             var T = new Thread(delegate ()
             {
                 var Items = new List<ListViewItem>();
@@ -149,13 +150,13 @@ namespace ImgurTitleEditor
                 }
                 Invoke((MethodInvoker)delegate
                 {
-                    lvImages.Items.Clear();
                     if (lvImages.LargeImageList != null)
                     {
                         lvImages.LargeImageList.Dispose();
                     }
                     lvImages.LargeImageList = IL;
                     lvImages.Items.AddRange(Items.ToArray());
+                    lvImages.ResumeLayout();
                 });
             });
             T.IsBackground = true;
@@ -185,12 +186,13 @@ namespace ImgurTitleEditor
 
         private void allImagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowImages(ImageFilter.All);
+            ShowImages(ImageFilter.WithTitle, (bool)tbFilter.Tag ? null : tbFilter.Text);
         }
 
         private void withTitleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowImages(ImageFilter.WithTitle);
+            //Show images with title and keep filter intact (if set)
+            ShowImages(ImageFilter.WithTitle, (bool)tbFilter.Tag ? null : tbFilter.Text);
         }
 
         private void withoutTitleToolStripMenuItem_Click(object sender, EventArgs e)
