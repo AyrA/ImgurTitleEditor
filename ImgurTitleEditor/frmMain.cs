@@ -410,7 +410,7 @@ namespace ImgurTitleEditor
         {
             var DelImgur = false;
             var Images = lvImages.SelectedItems.OfType<ListViewItem>().Select(m => (ImgurImage)m.Tag).ToArray();
-            switch (MessageBox.Show($"You are about to delete {Images.Length} images from the cache.\r\nRemove them from your Imgur Account too?", "Delete Images", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation))
+            switch (MessageBox.Show($"You are about to delete {Images.Length} images from the cache.\r\nRemove them from your Imgur Account too?", "Delete Images", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button3))
             {
                 case DialogResult.Yes:
                     DelImgur = true;
@@ -430,7 +430,7 @@ namespace ImgurTitleEditor
                 }
             }
             lvImages.SuspendLayout();
-            foreach(var Item in lvImages.SelectedItems.OfType<ListViewItem>().ToArray())
+            foreach (var Item in lvImages.SelectedItems.OfType<ListViewItem>().ToArray())
             {
                 lvImages.Items.Remove(Item);
             }
