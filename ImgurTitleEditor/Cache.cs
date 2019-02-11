@@ -35,8 +35,8 @@ namespace ImgurTitleEditor
 
         public static bool RemoveImage(ImgurImage I)
         {
-            var ImageFile = Path.Combine(_imageDir, I.GetImageUrl(ImgurImageSize.Original).Segments.Last());
-            var ThumbFile = Path.Combine(_thumbDir, I.GetImageUrl(ImgurImageSize.Original).Segments.Last());
+            var ImageFile = Path.Combine(_imageDir, GetImageName(I));
+            var ThumbFile = Path.Combine(_thumbDir, GetThumbnailName(I));
             try
             {
                 File.Delete(ImageFile);
@@ -66,6 +66,11 @@ namespace ImgurTitleEditor
                 File.WriteAllBytes(ImageFile, Imgur.GetImage(I, ImgurImageSize.Original, false));
             }
             return File.ReadAllBytes(ImageFile);
+        }
+
+        public static bool RemoveImage(string Name)
+        {
+            return rm(_imageDir, Name);
         }
 
         public static string GetImageName(ImgurImage I)
@@ -106,6 +111,11 @@ namespace ImgurTitleEditor
             return File.ReadAllBytes(ThumbFile);
         }
 
+        public static bool RemoveThumbnail(string Name)
+        {
+            return rm(_thumbDir, Name);
+        }
+
         public static string GetThumbnailName(ImgurImage I)
         {
             return I.GetImageUrl(ImgurImageSize.Original).Segments.Last();
@@ -139,6 +149,23 @@ namespace ImgurTitleEditor
             _thumbDir = MD("Thumbnail");
             _imageDir = MD("Image");
             _imageList = Path.Combine(MD("Meta"), "images.xml");
+        }
+
+        private static bool rm(string p1,string p2)
+        {
+            var p = Path.Combine(p1, p2);
+            if (p.StartsWith(_imageDir))
+            {
+                try
+                {
+                    File.Delete(p);
+                }
+                catch
+                {
+                    //NOOP
+                }
+            }
+            return false;
         }
 
         private static string MD(string DirName)
