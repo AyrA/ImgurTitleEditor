@@ -40,14 +40,22 @@ namespace ImgurTitleEditor
                     }
                 }
                 Cache.Images = Images.ToArray();
+                var ThumbNames = new List<string>(Cache.GetThumbnails());
+
                 foreach (var img in Images)
                 {
                     Cache.GetThumbnail(img);
+                    ThumbNames.Remove(Cache.GetThumbnailName(img));
                     Invoke((MethodInvoker)delegate { ++pbThumbnail.Value; });
                     if (Exit)
                     {
                         return;
                     }
+                }
+                foreach(var tName in ThumbNames)
+                {
+                    Cache.RemoveThumbnail(tName);
+                    Cache.RemoveImage(tName);
                 }
                 Invoke((MethodInvoker)delegate {
                     DialogResult = Exit ? DialogResult.Cancel : DialogResult.OK;
