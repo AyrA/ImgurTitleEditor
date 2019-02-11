@@ -59,13 +59,23 @@ namespace ImgurTitleEditor
 
         public static byte[] GetImage(ImgurImage I)
         {
-            var ImageFile = Path.Combine(_imageDir, I.GetImageUrl(ImgurImageSize.Original).Segments.Last());
+            var ImageFile = Path.Combine(_imageDir, GetImageName(I));
 
             if (!File.Exists(ImageFile))
             {
                 File.WriteAllBytes(ImageFile, Imgur.GetImage(I, ImgurImageSize.Original, false));
             }
             return File.ReadAllBytes(ImageFile);
+        }
+
+        public static string GetImageName(ImgurImage I)
+        {
+            return I.GetImageUrl(ImgurImageSize.Original).Segments.Last();
+        }
+
+        public static string[] GetImages()
+        {
+            return Directory.GetFiles(_imageDir).Select(m => Path.GetFileName(m)).ToArray();
         }
 
         public static bool ClearImages()
@@ -87,13 +97,23 @@ namespace ImgurTitleEditor
 
         public static byte[] GetThumbnail(ImgurImage I)
         {
-            var ThumbFile = Path.Combine(_thumbDir, I.GetImageUrl(ImgurImageSize.Original).Segments.Last());
+            var ThumbFile = Path.Combine(_thumbDir, GetThumbnailName(I));
 
             if (!File.Exists(ThumbFile))
             {
                 File.WriteAllBytes(ThumbFile, Imgur.GetImage(I, ImgurImageSize.BigSquare, false));
             }
             return File.ReadAllBytes(ThumbFile);
+        }
+
+        public static string GetThumbnailName(ImgurImage I)
+        {
+            return I.GetImageUrl(ImgurImageSize.Original).Segments.Last();
+        }
+
+        public static string[] GetThumbnails()
+        {
+            return Directory.GetFiles(_thumbDir).Select(m => Path.GetFileName(m)).ToArray();
         }
 
         public static bool ClearThumbnails()
