@@ -41,7 +41,7 @@ namespace ImgurTitleEditor
                 }
                 Cache.Images = Images.ToArray();
                 var ThumbNames = new List<string>(Cache.GetThumbnails());
-                var ImageNames = new List<string>(Cache.GetThumbnails());
+                var ImageNames = new List<string>(Cache.GetImages());
 
                 foreach (var img in Images)
                 {
@@ -54,9 +54,12 @@ namespace ImgurTitleEditor
                         return;
                     }
                 }
-                foreach(var tName in ThumbNames)
+                foreach (var tName in ThumbNames)
                 {
                     Cache.RemoveThumbnail(tName);
+                }
+                foreach (var tName in ImageNames)
+                {
                     Cache.RemoveImage(tName);
                 }
                 Invoke((MethodInvoker)delegate {
