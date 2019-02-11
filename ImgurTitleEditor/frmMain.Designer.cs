@@ -60,6 +60,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvImages.ContextMenuStrip = this.CMS;
+            this.lvImages.HideSelection = false;
             this.lvImages.Location = new System.Drawing.Point(12, 62);
             this.lvImages.Name = "lvImages";
             this.lvImages.Size = new System.Drawing.Size(568, 499);

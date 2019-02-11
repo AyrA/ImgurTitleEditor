@@ -268,6 +268,7 @@ namespace ImgurTitleEditor
                     var PrevItem = lvImages.Items[I.Index - 1];
                     lvImages.SelectedItems.Clear();
                     PrevItem.Selected = true;
+                    PrevItem.EnsureVisible();
                     return (ImgurImage)PrevItem.Tag;
                 }
                 else if (CurrentPage > 1)
@@ -275,6 +276,7 @@ namespace ImgurTitleEditor
                     ShowImages((ImageFilter)lvImages.Tag, --CurrentPage, (bool)tbFilter.Tag ? null : tbFilter.Text);
                     I = lvImages.Items.OfType<ListViewItem>().Last();
                     I.Selected = true;
+                    I.EnsureVisible();
                     return (ImgurImage)I.Tag;
                 }
             }
@@ -292,6 +294,7 @@ namespace ImgurTitleEditor
                     var NextItem = lvImages.Items[I.Index + 1];
                     lvImages.SelectedItems.Clear();
                     NextItem.Selected = true;
+                    NextItem.EnsureVisible();
                     return (ImgurImage)NextItem.Tag;
                 }
                 else if (CurrentPage < Pages)
@@ -299,6 +302,7 @@ namespace ImgurTitleEditor
                     ShowImages((ImageFilter)lvImages.Tag, ++CurrentPage, (bool)tbFilter.Tag ? null : tbFilter.Text);
                     I = lvImages.Items[0];
                     I.Selected = true;
+                    I.EnsureVisible();
                     return (ImgurImage)I.Tag;
                 }
             }
