@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -8,6 +9,7 @@ namespace ImgurTitleEditor
     public partial class frmUpload : Form
     {
         private Settings S;
+        private bool UseClipboard = false;
 
         public frmUpload(Settings S)
         {
@@ -26,6 +28,7 @@ namespace ImgurTitleEditor
             if (OFD.ShowDialog() == DialogResult.OK)
             {
                 tbImage.Text = OFD.FileName;
+                UseClipboard = false;
             }
         }
 
@@ -34,7 +37,18 @@ namespace ImgurTitleEditor
             byte[] Data = null;
             try
             {
-                Data = File.ReadAllBytes(tbImage.Text);
+                if (UseClipboard)
+                {
+                    using (var MS = new MemoryStream())
+                    {
+                        pbPreview.Image.Save(MS, ImageFormat.Png);
+                        Data = MS.ToArray();
+                    }
+                }
+                else
+                {
+                    Data = File.ReadAllBytes(tbImage.Text);
+                }
             }
             catch (Exception ex)
             {
@@ -62,6 +76,19 @@ namespace ImgurTitleEditor
                 {
                     MessageBox.Show($"Unable to upload your image. Reason: {ex.Message}", "File read Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void btnClipboard_Click(object sender, EventArgs e)
+        {
+            if (Clipboard.ContainsImage())
+            {
+                pbPreview.Image = Clipboard.GetImage();
+                UseClipboard = true;
+            }
+            else
+            {
+                MessageBox.Show("Your Clipboard has no image", "No Image", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
     }
