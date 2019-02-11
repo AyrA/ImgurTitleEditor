@@ -41,11 +41,13 @@ namespace ImgurTitleEditor
                 }
                 Cache.Images = Images.ToArray();
                 var ThumbNames = new List<string>(Cache.GetThumbnails());
+                var ImageNames = new List<string>(Cache.GetThumbnails());
 
                 foreach (var img in Images)
                 {
                     Cache.GetThumbnail(img);
                     ThumbNames.Remove(Cache.GetThumbnailName(img));
+                    ImageNames.Remove(Cache.GetImageName(img));
                     Invoke((MethodInvoker)delegate { ++pbThumbnail.Value; });
                     if (Exit)
                     {
