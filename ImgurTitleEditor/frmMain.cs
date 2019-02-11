@@ -10,6 +10,10 @@ namespace ImgurTitleEditor
 {
     public partial class frmMain : Form
     {
+        private const int PAGESIZE = 50;
+        private int CurrentPage;
+        private int Pages;
+
         private enum ImageFilter : int
         {
             All = 0,
@@ -54,43 +58,10 @@ namespace ImgurTitleEditor
                     Size = ConfigSize;
                 }
             }
-            ShowImages((ImageFilter)S.UI.LastView);
+            InitPages();
         }
 
-        public ImgurImage PrevImage()
-        {
-            if (lvImages.SelectedItems.Count > 0)
-            {
-                var I = lvImages.SelectedItems[0];
-                //Update title in case it was changed in the form
-                I.Text = ((ImgurImage)I.Tag).title;
-                if (I.Index > 0)
-                {
-                    var PrevItem = lvImages.Items[I.Index - 1];
-                    lvImages.SelectedItems.Clear();
-                    PrevItem.Selected = true;
-                    return (ImgurImage)PrevItem.Tag;
-                }
-            }
-            return null;
-        }
-
-        public ImgurImage NextImage()
-        {
-            if (lvImages.SelectedItems.Count > 0)
-            {
-                var I = lvImages.SelectedItems[0];
-                I.Text = ((ImgurImage)I.Tag).title;
-                if (I.Index < lvImages.Items.Count - 1)
-                {
-                    var NextItem = lvImages.Items[I.Index + 1];
-                    lvImages.SelectedItems.Clear();
-                    NextItem.Selected = true;
-                    return (ImgurImage)NextItem.Tag;
-                }
-            }
-            return null;
-        }
+        #region Events
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -104,7 +75,7 @@ namespace ImgurTitleEditor
                 using (var fCache = new frmCacheBuilder(S))
                 {
                     fCache.ShowDialog();
-                    ShowImages(ImageFilter.All);
+                    InitPages();
                 }
             }
         }
@@ -120,148 +91,31 @@ namespace ImgurTitleEditor
                         Cache.Images = null;
                         Cache.ClearThumbnails();
                         Cache.ClearImages();
-                        ShowImages(ImageFilter.All);
+                        InitPages();
                     }
                 }
             }
-        }
-
-        private void ShowImages(ImageFilter Filter, string Search = null)
-        {
-            lvImages.SuspendLayout();
-            lvImages.Tag = Filter;
-            lvImages.Items.Clear();
-            foreach (var i in listToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
-            {
-                i.Checked = false;
-            }
-            switch (Filter)
-            {
-                case ImageFilter.All:
-                    allImagesToolStripMenuItem.Checked = true;
-                    break;
-                case ImageFilter.WithoutTitle:
-                    withoutTitleToolStripMenuItem.Checked = true;
-                    break;
-                case ImageFilter.WithTitle:
-                    withTitleToolStripMenuItem.Checked = true;
-                    break;
-            }
-            S.UI.LastView = (int)Filter;
-            Tools.SaveSettings(S, Program.SettingsFile);
-
-            var T = new Thread(delegate ()
-            {
-                var Index = 0;
-                var Items = new List<ListViewItem>();
-                var IL = new ImageList()
-                {
-                    ImageSize = new Size(160, 160),
-                    ColorDepth = ColorDepth.Depth32Bit
-                };
-                foreach (var I in Cache.Images)
-                {
-                    if (
-                        Filter == ImageFilter.All ||
-                        (Filter == ImageFilter.WithTitle && !string.IsNullOrWhiteSpace(I.title)) ||
-                        (Filter == ImageFilter.WithoutTitle && string.IsNullOrWhiteSpace(I.title)))
-                    {
-                        if (string.IsNullOrEmpty(Search) || IsMatch(I, Search))
-                        {
-                            using (var MS = new MemoryStream(Cache.GetThumbnail(I)))
-                            {
-                                IL.Images.Add(Image.FromStream(MS));
-                            }
-                            var Item = new ListViewItem(I.title == null ? string.Empty : I.title);
-                            Item.ImageIndex = Index;
-                            Item.Tag = I;
-                            Item.ToolTipText = $"[{I.name}] {I.description}";
-                            Items.Add(Item);
-                            ++Index;
-                        }
-                    }
-                }
-                Invoke((MethodInvoker)delegate
-                {
-                    var Times = new List<TimeSpan>();
-                    var Start = DateTime.UtcNow;
-                    var Current = Start;
-                    if (lvImages.LargeImageList != null)
-                    {
-                        lvImages.LargeImageList.Dispose();
-                    }
-                    Times.Add(DateTime.UtcNow - Current);
-                    Current = DateTime.UtcNow;
-
-                    lvImages.LargeImageList = IL;
-                    Times.Add(DateTime.UtcNow - Current);
-                    Current = DateTime.UtcNow;
-
-                    lvImages.Items.AddRange(Items.ToArray());
-                    Times.Add(DateTime.UtcNow - Current);
-                    Current = DateTime.UtcNow;
-
-                    lvImages.ResumeLayout();
-                    Times.Add(DateTime.UtcNow - Current);
-                    Current = DateTime.UtcNow;
-                });
-            });
-            T.IsBackground = true;
-            T.Start();
-        }
-
-        private static bool IsMatch(ImgurImage I, string Search)
-        {
-            if (string.IsNullOrEmpty(Search))
-            {
-                return true;
-            }
-            var Strings = new string[] {
-                I.title,
-                I.description,
-                I.name
-            }.Where(m => !string.IsNullOrEmpty(m));
-            foreach (var s in Strings)
-            {
-                if (s.ToLower().Contains(Search.ToLower()))
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         private void allImagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowImages(ImageFilter.WithTitle, (bool)tbFilter.Tag ? null : tbFilter.Text);
+            ShowImages(ImageFilter.WithTitle, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
         }
 
         private void withTitleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Show images with title and keep filter intact (if set)
-            ShowImages(ImageFilter.WithTitle, (bool)tbFilter.Tag ? null : tbFilter.Text);
+            ShowImages(ImageFilter.WithTitle, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
         }
 
         private void withoutTitleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowImages(ImageFilter.WithoutTitle);
+            ShowImages(ImageFilter.WithoutTitle, CurrentPage = 1);
         }
 
         private void lvImages_DoubleClick(object sender, EventArgs e)
         {
             EditSelectedImageTitle();
-        }
-
-        private void EditSelectedImageTitle()
-        {
-            if (lvImages.SelectedItems.Count > 0)
-            {
-                var I = (ImgurImage)lvImages.SelectedItems[0].Tag;
-                using (var prop = new frmProperties(S, I))
-                {
-                    prop.ShowDialog();
-                }
-            }
         }
 
         private void tbFilter_Enter(object sender, EventArgs e)
@@ -289,7 +143,7 @@ namespace ImgurTitleEditor
             if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = e.SuppressKeyPress = true;
-                ShowImages((ImageFilter)lvImages.Tag, tbFilter.Text);
+                ShowImages((ImageFilter)lvImages.Tag, CurrentPage = 1, tbFilter.Text);
             }
         }
 
@@ -299,7 +153,7 @@ namespace ImgurTitleEditor
             {
                 if (fUpload.ShowDialog() == DialogResult.OK)
                 {
-                    ShowImages((ImageFilter)lvImages.Tag, (bool)tbFilter.Tag ? null : tbFilter.Text);
+                    ShowImages((ImageFilter)lvImages.Tag, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
                 }
             }
         }
@@ -316,17 +170,246 @@ namespace ImgurTitleEditor
             CopySelectedURL();
         }
 
-        private void CopySelectedURL()
-        {
-            var Links = string.Join("\r\n", lvImages.SelectedItems
-                .OfType<ListViewItem>()
-                .Select(m => ((ImgurImage)m.Tag).GetImageUrl()));
-            Clipboard.SetText(Links);
-        }
-
         private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveSelectedImages(false);
+        }
+
+        private void editTitleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EditSelectedImageTitle();
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeleteSelectedImages();
+        }
+
+        private void addToCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveSelectedImages(true);
+        }
+
+        private void lvImages_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.A && e.Modifiers == Keys.Control)
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                //It's correct to not use "==" here
+                lvImages.Items.OfType<ListViewItem>().All(m => m.Selected = true);
+            }
+            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                CopySelectedURL();
+            }
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                EditSelectedImageTitle();
+            }
+            if (e.KeyCode == Keys.Delete)
+            {
+                e.Handled = e.SuppressKeyPress = true;
+                DeleteSelectedImages();
+            }
+        }
+
+        private void btnPrevPage_Click(object sender, EventArgs e)
+        {
+            if (CurrentPage > 1)
+            {
+                ShowImages((ImageFilter)lvImages.Tag, --CurrentPage, (bool)tbFilter.Tag ? null : tbFilter.Text);
+            }
+        }
+
+        private void btnNextPage_Click(object sender, EventArgs e)
+        {
+            if (CurrentPage < Pages)
+            {
+                ShowImages((ImageFilter)lvImages.Tag, ++CurrentPage, (bool)tbFilter.Tag ? null : tbFilter.Text);
+            }
+        }
+
+        #endregion
+
+        private void InitPages()
+        {
+            CurrentPage = 1;
+            Pages = (int)Math.Ceiling(FilterImages((ImageFilter)S.UI.LastView, null).Count() * 1.0 / PAGESIZE);
+            ShowImages((ImageFilter)S.UI.LastView, CurrentPage);
+        }
+
+        private IEnumerable<ImgurImage> FilterImages(ImageFilter IF, string Search)
+        {
+            if (IF == ImageFilter.WithoutTitle)
+            {
+                return Cache.Images.Where(m => string.IsNullOrEmpty(m.title));
+            }
+            if (string.IsNullOrEmpty(Search))
+            {
+                return IF == ImageFilter.All ? Cache.Images : Cache.Images.Where(m => !string.IsNullOrEmpty(m.title));
+            }
+            else
+            {
+                return Cache.Images.Where(m => IsMatch(m, Search));
+            }
+        }
+
+        public ImgurImage PrevImage()
+        {
+            if (lvImages.SelectedItems.Count > 0)
+            {
+                var I = lvImages.SelectedItems[0];
+                //Update title in case it was changed in the form
+                I.Text = ((ImgurImage)I.Tag).title;
+                if (I.Index > 0)
+                {
+                    var PrevItem = lvImages.Items[I.Index - 1];
+                    lvImages.SelectedItems.Clear();
+                    PrevItem.Selected = true;
+                    return (ImgurImage)PrevItem.Tag;
+                }
+                else if (CurrentPage > 1)
+                {
+                    ShowImages((ImageFilter)lvImages.Tag, --CurrentPage, (bool)tbFilter.Tag ? null : tbFilter.Text);
+                    I = lvImages.Items.OfType<ListViewItem>().Last();
+                    I.Selected = true;
+                    return (ImgurImage)I.Tag;
+                }
+            }
+            return null;
+        }
+
+        public ImgurImage NextImage()
+        {
+            if (lvImages.SelectedItems.Count > 0)
+            {
+                var I = lvImages.SelectedItems[0];
+                I.Text = ((ImgurImage)I.Tag).title;
+                if (I.Index < lvImages.Items.Count - 1)
+                {
+                    var NextItem = lvImages.Items[I.Index + 1];
+                    lvImages.SelectedItems.Clear();
+                    NextItem.Selected = true;
+                    return (ImgurImage)NextItem.Tag;
+                }
+                else if (CurrentPage < Pages)
+                {
+                    ShowImages((ImageFilter)lvImages.Tag, ++CurrentPage, (bool)tbFilter.Tag ? null : tbFilter.Text);
+                    I = lvImages.Items[0];
+                    I.Selected = true;
+                    return (ImgurImage)I.Tag;
+                }
+            }
+            return null;
+        }
+
+        private void ShowImages(ImageFilter Filter, int Page, string Search = null)
+        {
+            var RealPage = Math.Min(Pages, Math.Max(1, Page));
+            lblPage.Text = $"Current Page: {Page}/{Pages}";
+            lvImages.SuspendLayout();
+            lvImages.Tag = Filter;
+            lvImages.Items.Clear();
+            foreach (var i in listToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
+            {
+                i.Checked = false;
+            }
+            switch (Filter)
+            {
+                case ImageFilter.All:
+                    allImagesToolStripMenuItem.Checked = true;
+                    break;
+                case ImageFilter.WithoutTitle:
+                    withoutTitleToolStripMenuItem.Checked = true;
+                    break;
+                case ImageFilter.WithTitle:
+                    withTitleToolStripMenuItem.Checked = true;
+                    break;
+            }
+            S.UI.LastView = (int)Filter;
+            Tools.SaveSettings(S, Program.SettingsFile);
+
+            var Index = 0;
+            var Items = new List<ListViewItem>();
+            var IL = new ImageList()
+            {
+                ImageSize = new Size(160, 160),
+                ColorDepth = ColorDepth.Depth32Bit
+            };
+            foreach (var I in FilterImages(Filter, Search).Skip(PAGESIZE * (RealPage - 1)).Take(PAGESIZE))
+            {
+                using (var MS = new MemoryStream(Cache.GetThumbnail(I)))
+                {
+                    IL.Images.Add(Image.FromStream(MS));
+                }
+                var Item = new ListViewItem(I.title == null ? string.Empty : I.title);
+                Item.ImageIndex = Index;
+                Item.Tag = I;
+                Item.ToolTipText = $"[{I.name}] {I.description}";
+                Items.Add(Item);
+                ++Index;
+            }
+            if (lvImages.LargeImageList != null)
+            {
+                lvImages.LargeImageList.Dispose();
+            }
+            lvImages.LargeImageList = IL;
+            lvImages.Items.AddRange(Items.ToArray());
+            lvImages.ResumeLayout();
+        }
+
+        private static bool IsMatch(ImgurImage I, string Search)
+        {
+            if (string.IsNullOrEmpty(Search))
+            {
+                return true;
+            }
+            var Strings = new string[] {
+                I.title,
+                I.description,
+                I.name
+            }.Where(m => !string.IsNullOrEmpty(m));
+            foreach (var s in Strings)
+            {
+                if (s.ToLower().Contains(Search.ToLower()))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private async void DeleteSelectedImages()
+        {
+            var DelImgur = false;
+            var Images = lvImages.SelectedItems.OfType<ListViewItem>().Select(m => (ImgurImage)m.Tag).ToArray();
+            switch (MessageBox.Show($"You are about to delete {Images.Length} images from the cache.\r\nRemove them from your Imgur Account too?", "Delete Images", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button3))
+            {
+                case DialogResult.Yes:
+                    DelImgur = true;
+                    break;
+                case DialogResult.No:
+                    DelImgur = false;
+                    break;
+                default:
+                    MessageBox.Show("No images deleted. Operation cancelled by user.", "Delete Images", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+            }
+            foreach (var Img in Images)
+            {
+                if (Cache.RemoveImage(Img) && DelImgur)
+                {
+                    await I.DeleteImage(Img);
+                }
+            }
+            lvImages.SuspendLayout();
+            foreach (var Item in lvImages.SelectedItems.OfType<ListViewItem>().ToArray())
+            {
+                lvImages.Items.Remove(Item);
+            }
+            lvImages.ResumeLayout();
         }
 
         private void SaveSelectedImages(bool CacheOnly)
@@ -396,75 +479,24 @@ namespace ImgurTitleEditor
             }
         }
 
-        private void editTitleToolStripMenuItem_Click(object sender, EventArgs e)
+        private void EditSelectedImageTitle()
         {
-            EditSelectedImageTitle();
-        }
-
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DeleteSelectedImages();
-        }
-
-        private async void DeleteSelectedImages()
-        {
-            var DelImgur = false;
-            var Images = lvImages.SelectedItems.OfType<ListViewItem>().Select(m => (ImgurImage)m.Tag).ToArray();
-            switch (MessageBox.Show($"You are about to delete {Images.Length} images from the cache.\r\nRemove them from your Imgur Account too?", "Delete Images", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button3))
+            if (lvImages.SelectedItems.Count > 0)
             {
-                case DialogResult.Yes:
-                    DelImgur = true;
-                    break;
-                case DialogResult.No:
-                    DelImgur = false;
-                    break;
-                default:
-                    MessageBox.Show("No images deleted. Operation cancelled by user.", "Delete Images", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    return;
-            }
-            foreach (var Img in Images)
-            {
-                if (Cache.RemoveImage(Img) && DelImgur)
+                var I = (ImgurImage)lvImages.SelectedItems[0].Tag;
+                using (var prop = new frmProperties(S, I))
                 {
-                    await I.DeleteImage(Img);
+                    prop.ShowDialog();
                 }
             }
-            lvImages.SuspendLayout();
-            foreach (var Item in lvImages.SelectedItems.OfType<ListViewItem>().ToArray())
-            {
-                lvImages.Items.Remove(Item);
-            }
-            lvImages.ResumeLayout();
         }
 
-        private void addToCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopySelectedURL()
         {
-            SaveSelectedImages(true);
-        }
-
-        private void lvImages_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.A && e.Modifiers == Keys.Control)
-            {
-                e.Handled = e.SuppressKeyPress = true;
-                //It's correct to not use "==" here
-                lvImages.Items.OfType<ListViewItem>().All(m => m.Selected = true);
-            }
-            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
-            {
-                e.Handled = e.SuppressKeyPress = true;
-                CopySelectedURL();
-            }
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.Handled = e.SuppressKeyPress = true;
-                EditSelectedImageTitle();
-            }
-            if (e.KeyCode == Keys.Delete)
-            {
-                e.Handled = e.SuppressKeyPress = true;
-                DeleteSelectedImages();
-            }
+            var Links = string.Join("\r\n", lvImages.SelectedItems
+                .OfType<ListViewItem>()
+                .Select(m => ((ImgurImage)m.Tag).GetImageUrl()));
+            Clipboard.SetText(Links);
         }
     }
 }

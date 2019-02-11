@@ -34,6 +34,7 @@
             this.copyURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveImageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addToCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuMain = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,7 +47,9 @@
             this.withTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.withoutTitleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tbFilter = new System.Windows.Forms.ToolStripTextBox();
-            this.addToCacheToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnPrevPage = new System.Windows.Forms.Button();
+            this.btnNextPage = new System.Windows.Forms.Button();
+            this.lblPage = new System.Windows.Forms.Label();
             this.CMS.SuspendLayout();
             this.mnuMain.SuspendLayout();
             this.SuspendLayout();
@@ -57,10 +60,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvImages.ContextMenuStrip = this.CMS;
-            this.lvImages.Location = new System.Drawing.Point(12, 50);
+            this.lvImages.Location = new System.Drawing.Point(12, 62);
             this.lvImages.Name = "lvImages";
-            this.lvImages.Size = new System.Drawing.Size(568, 511);
-            this.lvImages.TabIndex = 0;
+            this.lvImages.Size = new System.Drawing.Size(568, 499);
+            this.lvImages.TabIndex = 4;
             this.lvImages.UseCompatibleStateImageBehavior = false;
             this.lvImages.DoubleClick += new System.EventHandler(this.lvImages_DoubleClick);
             this.lvImages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvImages_KeyDown);
@@ -79,28 +82,35 @@
             // copyURLToolStripMenuItem
             // 
             this.copyURLToolStripMenuItem.Name = "copyURLToolStripMenuItem";
-            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.copyURLToolStripMenuItem.Text = "&Copy URL";
             this.copyURLToolStripMenuItem.Click += new System.EventHandler(this.copyURLToolStripMenuItem_Click);
             // 
             // saveImageToolStripMenuItem
             // 
             this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.saveImageToolStripMenuItem.Text = "&Save Image";
             this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
             // 
             // editTitleToolStripMenuItem
             // 
             this.editTitleToolStripMenuItem.Name = "editTitleToolStripMenuItem";
-            this.editTitleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.editTitleToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.editTitleToolStripMenuItem.Text = "&Edit Title";
             this.editTitleToolStripMenuItem.Click += new System.EventHandler(this.editTitleToolStripMenuItem_Click);
+            // 
+            // addToCacheToolStripMenuItem
+            // 
+            this.addToCacheToolStripMenuItem.Name = "addToCacheToolStripMenuItem";
+            this.addToCacheToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.addToCacheToolStripMenuItem.Text = "&Add to Cache";
+            this.addToCacheToolStripMenuItem.Click += new System.EventHandler(this.addToCacheToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.deleteToolStripMenuItem.Text = "&Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
@@ -113,7 +123,7 @@
             this.mnuMain.Location = new System.Drawing.Point(0, 0);
             this.mnuMain.Name = "mnuMain";
             this.mnuMain.Size = new System.Drawing.Size(592, 25);
-            this.mnuMain.TabIndex = 1;
+            this.mnuMain.TabIndex = 0;
             this.mnuMain.Text = "Main Menu";
             // 
             // fileToolStripMenuItem
@@ -195,23 +205,51 @@
             this.tbFilter.Leave += new System.EventHandler(this.tbFilter_Leave);
             this.tbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbFilter_KeyDown);
             // 
-            // addToCacheToolStripMenuItem
+            // btnPrevPage
             // 
-            this.addToCacheToolStripMenuItem.Name = "addToCacheToolStripMenuItem";
-            this.addToCacheToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.addToCacheToolStripMenuItem.Text = "&Add to Cache";
-            this.addToCacheToolStripMenuItem.Click += new System.EventHandler(this.addToCacheToolStripMenuItem_Click);
+            this.btnPrevPage.Location = new System.Drawing.Point(12, 33);
+            this.btnPrevPage.Name = "btnPrevPage";
+            this.btnPrevPage.Size = new System.Drawing.Size(75, 23);
+            this.btnPrevPage.TabIndex = 1;
+            this.btnPrevPage.Text = "&<<";
+            this.btnPrevPage.UseVisualStyleBackColor = true;
+            this.btnPrevPage.Click += new System.EventHandler(this.btnPrevPage_Click);
+            // 
+            // btnNextPage
+            // 
+            this.btnNextPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnNextPage.Location = new System.Drawing.Point(505, 33);
+            this.btnNextPage.Name = "btnNextPage";
+            this.btnNextPage.Size = new System.Drawing.Size(75, 23);
+            this.btnNextPage.TabIndex = 3;
+            this.btnNextPage.Text = "&>>";
+            this.btnNextPage.UseVisualStyleBackColor = true;
+            this.btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);
+            // 
+            // lblPage
+            // 
+            this.lblPage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblPage.Location = new System.Drawing.Point(93, 33);
+            this.lblPage.Name = "lblPage";
+            this.lblPage.Size = new System.Drawing.Size(406, 23);
+            this.lblPage.TabIndex = 2;
+            this.lblPage.Text = "Current Page: 1";
+            this.lblPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(592, 573);
+            this.Controls.Add(this.lblPage);
+            this.Controls.Add(this.btnNextPage);
+            this.Controls.Add(this.btnPrevPage);
             this.Controls.Add(this.lvImages);
             this.Controls.Add(this.mnuMain);
             this.MinimumSize = new System.Drawing.Size(300, 300);
             this.Name = "frmMain";
-            this.Text = "Main Form";
+            this.Text = "Imgur Gallery";
             this.ResizeEnd += new System.EventHandler(this.frmMain_ResizeEnd);
             this.SizeChanged += new System.EventHandler(this.frmMain_ResizeEnd);
             this.CMS.ResumeLayout(false);
@@ -242,6 +280,9 @@
         private System.Windows.Forms.ToolStripMenuItem editTitleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addToCacheToolStripMenuItem;
+        private System.Windows.Forms.Button btnPrevPage;
+        private System.Windows.Forms.Button btnNextPage;
+        private System.Windows.Forms.Label lblPage;
     }
 }
 
