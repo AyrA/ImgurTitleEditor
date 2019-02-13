@@ -8,6 +8,7 @@ namespace ImgurTitleEditor
     public partial class frmCacheBuilder : Form
     {
         private Imgur I;
+        private Thread T;
         private bool Exit = false;
 
         public frmCacheBuilder(Settings S)
@@ -19,11 +20,16 @@ namespace ImgurTitleEditor
         private void frmCacheBuilder_FormClosed(object sender, FormClosedEventArgs e)
         {
             Exit = true;
+            if(T.IsAlive)
+            {
+                //Give the thread some time to exit
+                T.Join(4000);
+            }
         }
 
         private void frmCacheBuilder_Shown(object sender, EventArgs e)
         {
-            Thread T = new Thread(delegate ()
+            T = new Thread(delegate ()
             {
                 var Images = new List<ImgurImage>();
                 var ImageCount = I.GetAccountImageCount().Result;
@@ -33,11 +39,11 @@ namespace ImgurTitleEditor
                 foreach (var img in I.GetAccountImages())
                 {
                     Images.Add(img);
-                    Invoke((MethodInvoker)delegate { ++pbMeta.Value; });
                     if (Exit)
                     {
                         return;
                     }
+                    Invoke((MethodInvoker)delegate { ++pbMeta.Value; });
                 }
                 Cache.Images = Images.ToArray();
                 var ThumbNames = new List<string>(Cache.GetThumbnails());
@@ -48,11 +54,11 @@ namespace ImgurTitleEditor
                     Cache.GetThumbnail(img);
                     ThumbNames.Remove(Cache.GetThumbnailName(img));
                     ImageNames.Remove(Cache.GetImageName(img));
-                    Invoke((MethodInvoker)delegate { ++pbThumbnail.Value; });
                     if (Exit)
                     {
                         return;
                     }
+                    Invoke((MethodInvoker)delegate { ++pbThumbnail.Value; });
                 }
                 foreach (var tName in ThumbNames)
                 {
@@ -62,9 +68,13 @@ namespace ImgurTitleEditor
                 {
                     Cache.RemoveImage(tName);
                 }
-                Invoke((MethodInvoker)delegate {
-                    DialogResult = Exit ? DialogResult.Cancel : DialogResult.OK;
-                });
+                if (!Exit)
+                {
+                    Invoke((MethodInvoker)delegate
+                    {
+                        DialogResult = Exit ? DialogResult.Cancel : DialogResult.OK;
+                    });
+                }
             });
             T.IsBackground = true;
             T.Start();
