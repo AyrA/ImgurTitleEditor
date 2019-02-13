@@ -82,16 +82,24 @@ namespace ImgurTitleEditor
 
         private void authorizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (S.Token.Expires < DateTime.UtcNow || MessageBox.Show("This app is already authorized and connected to your account. Reauthorization will erase the cache.\r\nContinue?", "Authorization", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
+            if (S.Token.Expires < DateTime.UtcNow || MessageBox.Show($"This app is already authorized until {S.Token.Expires.ToShortDateString()} and connected to your account. Reauthorization will erase the cache.\r\nContinue?", "Authorization", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
                 using (var fAuth = new frmAuth(S))
                 {
                     if (fAuth.ShowDialog() == DialogResult.OK)
                     {
-                        Cache.Images = null;
                         Cache.ClearThumbnails();
                         Cache.ClearImages();
+                        using (var fCache = new frmCacheBuilder(S))
+                        {
+                            fCache.ShowDialog();
+                        }
+                        I = new Imgur(S);
                         InitPages();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Unable to authorize your client. Please try again", "Authorization Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }

@@ -48,7 +48,7 @@ namespace ImgurTitleEditor
 
         public static T FromXml<T>(this string s)
         {
-            if(string.IsNullOrWhiteSpace(s))
+            if (string.IsNullOrWhiteSpace(s))
             {
                 return default(T);
             }
@@ -83,11 +83,11 @@ namespace ImgurTitleEditor
             return int.TryParse(Source, out I) ? I : Default;
         }
 
-        public static Dictionary<string, string> ParseFragment(Uri U)
+        public static Dictionary<string, string> ParseFragment(Uri U, bool UseQueryString)
         {
-            var F = U.Fragment;
+            var F = UseQueryString ? U.Query : U.Fragment;
             var ret = new Dictionary<string, string>();
-            if (!string.IsNullOrWhiteSpace(F) && F[0] == '#')
+            if (!string.IsNullOrWhiteSpace(F) && (F[0] == '#' || F[0] == '?'))
             {
                 foreach (var S in F.Substring(1).Split('&'))
                 {
