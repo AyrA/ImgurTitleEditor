@@ -321,9 +321,7 @@ namespace ImgurTitleEditor
         {
             var RealPage = Math.Min(Pages, Math.Max(1, Page));
             lblPage.Text = $"Current Page: {Page}/{Pages}";
-            lvImages.SuspendLayout();
             lvImages.Tag = Filter;
-            lvImages.Items.Clear();
             foreach (var i in listToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
             {
                 i.Checked = false;
@@ -367,7 +365,9 @@ namespace ImgurTitleEditor
             {
                 lvImages.LargeImageList.Dispose();
             }
+            lvImages.SuspendLayout();
             lvImages.LargeImageList = IL;
+            lvImages.Items.Clear();
             lvImages.Items.AddRange(Items.ToArray());
             lvImages.ResumeLayout();
         }
