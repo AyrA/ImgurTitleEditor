@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -28,6 +29,14 @@ namespace ImgurTitleEditor
             if (OFD.ShowDialog() == DialogResult.OK)
             {
                 tbImage.Text = OFD.FileName;
+                try
+                {
+                    pbPreview.Image = Image.FromFile(tbImage.Text);
+                }
+                catch
+                {
+                    MessageBox.Show("Unable to display the selected image. Imgur might deny your upload request.", "Image Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 UseClipboard = false;
             }
         }
