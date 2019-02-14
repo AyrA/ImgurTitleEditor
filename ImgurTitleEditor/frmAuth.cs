@@ -4,9 +4,20 @@ using System.Windows.Forms;
 
 namespace ImgurTitleEditor
 {
+    /// <summary>
+    /// Form that handles OAuth2 authentication
+    /// </summary>
     public partial class frmAuth : Form
     {
+        /// <summary>
+        /// Current settings
+        /// </summary>
         private Settings S;
+
+        /// <summary>
+        /// Initializes a new authentication form
+        /// </summary>
+        /// <param name="Settings">Current settings</param>
         public frmAuth(Settings Settings)
         {
             S = Settings;
@@ -17,17 +28,32 @@ namespace ImgurTitleEditor
             InitBrowser();
         }
 
+        /// <summary>
+        /// (Re-)initializes the browser control
+        /// </summary>
         private void InitBrowser()
         {
             //We don't really care about the "state" parameter but use it as a neat way to avoid caching
             wbAuth.Navigate($"https://api.imgur.com/oauth2/authorize?client_id={Uri.EscapeDataString(S.Client.Id)}&response_type=token&state={DateTime.UtcNow.Ticks}");
         }
 
+        #region Events
+
+        /// <summary>
+        /// Updates the window title
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void WbAuth_DocumentTitleChanged(object sender, EventArgs e)
         {
             Text = $"Authentication - {wbAuth.DocumentTitle}";
         }
 
+        /// <summary>
+        /// Checks if the navigation target is an authentication success or failure
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void wbAuth_Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
             //Set the current URL in the Textbox
@@ -74,25 +100,42 @@ Do you want to try again?", "Authorization error.", MessageBoxButtons.YesNo, Mes
             }
         }
 
+        /// <summary>
+        /// Closes the authentication form
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// Restarts the authentication process
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void restartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             InitBrowser();
         }
 
+        /// <summary>
+        /// Opens the settings
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var f = new frmSettings(S))
             {
-                if(f.ShowDialog()==DialogResult.OK)
+                if (f.ShowDialog() == DialogResult.OK)
                 {
                     InitBrowser();
                 }
             }
         }
+
+        #endregion
     }
 }
