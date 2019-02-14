@@ -5,18 +5,39 @@ using System.Windows.Forms;
 
 namespace ImgurTitleEditor
 {
+    /// <summary>
+    /// Form that builds the thumbnail cache
+    /// </summary>
     public partial class frmCacheBuilder : Form
     {
+        /// <summary>
+        /// Imgur API handler
+        /// </summary>
         private Imgur I;
+        /// <summary>
+        /// Cache builder thread
+        /// </summary>
         private Thread T;
+        /// <summary>
+        /// Cancels thread if "True"
+        /// </summary>
         private bool Exit = false;
 
+        /// <summary>
+        /// Initializes a new cache builder
+        /// </summary>
+        /// <param name="S">Current settings</param>
         public frmCacheBuilder(Settings S)
         {
             InitializeComponent();
             I = new Imgur(S);
         }
 
+        /// <summary>
+        /// Cancels the cach builder
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void frmCacheBuilder_FormClosed(object sender, FormClosedEventArgs e)
         {
             Exit = true;
@@ -27,6 +48,11 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Starts the cache builder
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void frmCacheBuilder_Shown(object sender, EventArgs e)
         {
             T = new Thread(delegate ()
