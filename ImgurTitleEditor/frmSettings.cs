@@ -64,5 +64,15 @@ namespace ImgurTitleEditor
             Clipboard.SetText(IMGUR_REGISTRATION);
             MessageBox.Show($"{IMGUR_REGISTRATION} copied to clipboard.", "OAuth2 Registration", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
+
+        private void tbApiSecret_Enter(object sender, EventArgs e)
+        {
+            tbApiSecret.UseSystemPasswordChar = false;
+        }
+
+        private void tbApiSecret_Leave(object sender, EventArgs e)
+        {
+            tbApiSecret.UseSystemPasswordChar = true;
+        }
     }
 }

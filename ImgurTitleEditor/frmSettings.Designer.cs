@@ -72,6 +72,9 @@
             this.tbApiSecret.Name = "tbApiSecret";
             this.tbApiSecret.Size = new System.Drawing.Size(378, 20);
             this.tbApiSecret.TabIndex = 3;
+            this.tbApiSecret.UseSystemPasswordChar = true;
+            this.tbApiSecret.Enter += new System.EventHandler(this.tbApiSecret_Enter);
+            this.tbApiSecret.Leave += new System.EventHandler(this.tbApiSecret_Leave);
             // 
             // tbApiId
             // 
