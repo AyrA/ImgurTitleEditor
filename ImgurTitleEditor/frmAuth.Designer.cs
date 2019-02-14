@@ -63,7 +63,7 @@
             this.Controls.Add(this.wbAuth);
             this.Controls.Add(this.tbURL);
             this.Name = "frmAuth";
-            this.Text = "frmAuth";
+            this.Text = "Authentication";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ResumeLayout(false);
             this.PerformLayout();

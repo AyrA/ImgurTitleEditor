@@ -11,7 +11,14 @@ namespace ImgurTitleEditor
         {
             S = Settings;
             InitializeComponent();
+            //This event can't be bound in the UI editor because it's missing
+            wbAuth.DocumentTitleChanged += WbAuth_DocumentTitleChanged;
             Init();
+        }
+
+        private void WbAuth_DocumentTitleChanged(object sender, EventArgs e)
+        {
+            Text = $"Authentication - {wbAuth.DocumentTitle}";
         }
 
         private void Init()
