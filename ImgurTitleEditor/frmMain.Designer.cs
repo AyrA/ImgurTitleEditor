@@ -155,7 +155,8 @@
             // uploadToolStripMenuItem
             // 
             this.uploadToolStripMenuItem.Name = "uploadToolStripMenuItem";
-            this.uploadToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.uploadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
+            this.uploadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.uploadToolStripMenuItem.Text = "&Upload";
             this.uploadToolStripMenuItem.Click += new System.EventHandler(this.uploadToolStripMenuItem_Click);
             // 
@@ -179,21 +180,21 @@
             // allImagesToolStripMenuItem
             // 
             this.allImagesToolStripMenuItem.Name = "allImagesToolStripMenuItem";
-            this.allImagesToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.allImagesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.allImagesToolStripMenuItem.Text = "&All Images";
             this.allImagesToolStripMenuItem.Click += new System.EventHandler(this.allImagesToolStripMenuItem_Click);
             // 
             // withTitleToolStripMenuItem
             // 
             this.withTitleToolStripMenuItem.Name = "withTitleToolStripMenuItem";
-            this.withTitleToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.withTitleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.withTitleToolStripMenuItem.Text = "&With Title";
             this.withTitleToolStripMenuItem.Click += new System.EventHandler(this.withTitleToolStripMenuItem_Click);
             // 
             // withoutTitleToolStripMenuItem
             // 
             this.withoutTitleToolStripMenuItem.Name = "withoutTitleToolStripMenuItem";
-            this.withoutTitleToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.withoutTitleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.withoutTitleToolStripMenuItem.Text = "With&out Title";
             this.withoutTitleToolStripMenuItem.Click += new System.EventHandler(this.withoutTitleToolStripMenuItem_Click);
             // 
