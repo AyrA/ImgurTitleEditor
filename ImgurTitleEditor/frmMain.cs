@@ -159,7 +159,7 @@ namespace ImgurTitleEditor
         /// <param name="e">Event arguments</param>
         private void allImagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowImages(ImageFilter.WithTitle, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
+            ShowImages(ImageFilter.All, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
         }
 
         /// <summary>
