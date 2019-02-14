@@ -100,7 +100,7 @@ namespace ImgurTitleEditor
                     }
                     else
                     {
-                        MessageBox.Show("Unable to authorize your client. Please try again", "Authorization Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Unable to authorize your client. Your current authorization will be kept. Please try again", "Authorization Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
