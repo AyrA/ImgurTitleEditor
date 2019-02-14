@@ -11,16 +11,16 @@ namespace ImgurTitleEditor
         {
             S = Settings;
             InitializeComponent();
+            DialogResult = DialogResult.Cancel;
             //This event can't be bound in the UI editor because it's missing
             wbAuth.DocumentTitleChanged += WbAuth_DocumentTitleChanged;
-            Init();
+            InitBrowser();
         }
 
-        private void Init()
+        private void InitBrowser()
         {
             //We don't really care about the "state" parameter but use it as a neat way to avoid caching
             wbAuth.Navigate($"https://api.imgur.com/oauth2/authorize?client_id={Uri.EscapeDataString(S.Client.Id)}&response_type=token&state={DateTime.UtcNow.Ticks}");
-            DialogResult = DialogResult.Cancel;
         }
 
         private void WbAuth_DocumentTitleChanged(object sender, EventArgs e)
@@ -62,7 +62,7 @@ Please add the Secret at any time before {S.Token.Expires.ToShortDateString()}",
 Message: {SearchParams["error"]}
 Do you want to try again?", "Authorization error.", MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
                     {
-                        Init();
+                        InitBrowser();
                     }
                     else
                     {
@@ -70,6 +70,27 @@ Do you want to try again?", "Authorization error.", MessageBoxButtons.YesNo, Mes
                         wbAuth.AllowNavigation = false;
                         Close();
                     }
+                }
+            }
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void restartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InitBrowser();
+        }
+
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var f = new frmSettings(S))
+            {
+                if(f.ShowDialog()==DialogResult.OK)
+                {
+                    InitBrowser();
                 }
             }
         }
