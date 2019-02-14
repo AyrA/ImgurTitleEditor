@@ -43,11 +43,19 @@ namespace ImgurTitleEditor
     [Serializable]
     public class UI
     {
+        public const int DEFAULT_PAGESIZE = 50;
+
+        public int PageSize;
         public int LastView;
         public bool MainWindowMaximized;
         public Size MainWindowSize;
         public bool PropertyWindowMaximized;
         public Size PropertyWindowSize;
+
+        public UI()
+        {
+            PageSize = DEFAULT_PAGESIZE;
+        }
     }
 
     [Serializable]
