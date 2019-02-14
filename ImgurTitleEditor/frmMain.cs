@@ -398,6 +398,33 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Shows a short info message
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
+        private void infoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show($@"ImgurTitleEditor - A tool to manage your imgur library
+Copyright (c) 2019 by Kevin Gut
+Licensed under MIT
+Version: {Application.ProductVersion}
+
+Imgur and the Imgur logo are a trademark of Imgur Inc.
+Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
+"About ImgurTitleEditor", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        /// <summary>
+        /// Opens the Github repository
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
+        private void visitWebsiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/AyrA/ImgurTitleEditor");
+        }
+
         #endregion
 
         #region Functions
