@@ -38,7 +38,7 @@ namespace ImgurTitleEditor
                 {
                     Client = new Client()
                     {
-                        //I recommend you also set the secret.
+                        //I recommend you also set a secret in the settings.
                         //Without a secret we can get a token, but not refresh it
                         Id = "a5e26e2dac343b6"
                     }
