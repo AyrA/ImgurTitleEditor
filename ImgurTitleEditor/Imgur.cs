@@ -10,45 +10,40 @@ using System.Threading.Tasks;
 
 namespace ImgurTitleEditor
 {
+    /// <summary>
+    /// Handles the Imgur API
+    /// </summary>
     public class Imgur
     {
+        /// <summary>
+        /// OAuth2 application registration URL
+        /// </summary>
         public const string IMGUR_REGISTRATION = "https://api.imgur.com/oauth2/addclient";
+        /// <summary>
+        /// Self reference
+        /// </summary>
         public const string SELF = "me";
 
+        /// <summary>
+        /// Current settings
+        /// </summary>
         private Settings S;
 
-        private HttpWebRequest Req(Uri URL, string BodyContent = null, bool UseAuth = true)
-        {
-#if DEBUG
-            Debug.WriteLine($"Prepare Imgur Request. URL={URL} UseAuth={UseAuth} BodyContent={BodyContent}");
-#endif
-
-            var R = WebRequest.CreateHttp(URL);
-            if (UseAuth)
-            {
-                R.Headers.Add($"Authorization: Bearer {S.Token.Access}");
-            }
-            else
-            {
-                R.Headers.Add($"Authorization: Client-ID {S.Client.Id}");
-            }
-            if (BodyContent != null)
-            {
-                R.Method = "POST";
-                R.ContentType = "application/x-www-form-urlencoded";
-                using (var SW = new StreamWriter(R.GetRequestStream()))
-                {
-                    SW.Write(BodyContent);
-                }
-            }
-            return R;
-        }
-
+        /// <summary>
+        /// Initializes a new Imgur client
+        /// </summary>
+        /// <param name="S">Settings</param>
         public Imgur(Settings S)
         {
             this.S = S;
         }
 
+        #region Public
+
+        /// <summary>
+        /// Tries to renew the current access token
+        /// </summary>
+        /// <returns>"True" on success</returns>
         public async Task<bool> RenewToken()
         {
             if (string.IsNullOrEmpty(S.Token.Refresh) || string.IsNullOrEmpty(S.Client.Secret) || string.IsNullOrEmpty(S.Client.Id))
@@ -78,6 +73,13 @@ namespace ImgurTitleEditor
             return false;
         }
 
+        /// <summary>
+        /// Sets the title and description of an image
+        /// </summary>
+        /// <param name="I">Imgur image</param>
+        /// <param name="Title">New title</param>
+        /// <param name="Description">New description</param>
+        /// <returns>"True" on success</returns>
         public async Task<bool> SetImageDescription(ImgurImage I, string Title, string Description)
         {
             var fd = BuildFormData(new Dictionary<string, string>() {
@@ -95,6 +97,11 @@ namespace ImgurTitleEditor
             return false;
         }
 
+        /// <summary>
+        /// Deletes an image
+        /// </summary>
+        /// <param name="I">Imgur image</param>
+        /// <returns>"True" on success</returns>
         public async Task<bool> DeleteImage(ImgurImage I)
         {
             var R = Req(new Uri($"https://api.imgur.com/3/image/{I.deletehash}"));
@@ -105,6 +112,14 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Uploads an image
+        /// </summary>
+        /// <param name="Data">Image data</param>
+        /// <param name="Filename">File name (fake or real, no path)</param>
+        /// <param name="Title">Image title</param>
+        /// <param name="Description">Image description</param>
+        /// <returns>Uploaded image</returns>
         public async Task<ImgurImage> UploadImage(byte[] Data, string Filename, string Title, string Description)
         {
             var fd = BuildFormData(new Dictionary<string, string>() {
@@ -133,6 +148,10 @@ namespace ImgurTitleEditor
             return null;
         }
 
+        /// <summary>
+        /// Gets the current account settings
+        /// </summary>
+        /// <returns>Account settings</returns>
         public async Task<ImgurAccountSettings> GetAccountSettings()
         {
             var R = Req(new Uri($"https://api.imgur.com/3/account/me/settings"));
@@ -146,6 +165,11 @@ namespace ImgurTitleEditor
             return null;
         }
 
+        /// <summary>
+        /// Gets the number of uploaded images
+        /// </summary>
+        /// <param name="AccountName">Account name</param>
+        /// <returns>Number of images</returns>
         public async Task<int> GetAccountImageCount(string AccountName = SELF)
         {
             var R = Req(new Uri($"https://api.imgur.com/3/account/{AccountName}/images/count"));
@@ -159,6 +183,12 @@ namespace ImgurTitleEditor
             return -1;
         }
 
+        /// <summary>
+        /// Gets all account images
+        /// </summary>
+        /// <param name="AccountName">Account name</param>
+        /// <returns>List of images</returns>
+        /// <remarks>If you use the .ToArray() method of Linq this can take a long time if there are many pages.</remarks>
         public IEnumerable<ImgurImage> GetAccountImages(string AccountName = SELF)
         {
             int Page = 0;
@@ -191,21 +221,80 @@ namespace ImgurTitleEditor
             }
         }
 
+        #endregion
+
+        #region Private
+
+        /// <summary>
+        /// Generates a request with the given properties
+        /// </summary>
+        /// <param name="URL">Request URL</param>
+        /// <param name="BodyContent">Body content (automatically makes this into POST)</param>
+        /// <param name="UseAuth">Use authenticated mode</param>
+        /// <returns>HTTP Request</returns>
+        private HttpWebRequest Req(Uri URL, string BodyContent = null, bool UseAuth = true)
+        {
+#if DEBUG
+            Debug.WriteLine($"Prepare Imgur Request. URL={URL} UseAuth={UseAuth} BodyContent={BodyContent}");
+#endif
+
+            var R = WebRequest.CreateHttp(URL);
+            if (UseAuth)
+            {
+                R.Headers.Add($"Authorization: Bearer {S.Token.Access}");
+            }
+            else
+            {
+                R.Headers.Add($"Authorization: Client-ID {S.Client.Id}");
+            }
+            if (BodyContent != null)
+            {
+                R.Method = "POST";
+                R.ContentType = "application/x-www-form-urlencoded";
+                using (var SW = new StreamWriter(R.GetRequestStream()))
+                {
+                    SW.Write(BodyContent);
+                }
+            }
+            return R;
+        }
+
+        /// <summary>
+        /// Checks if the given code is an error code
+        /// </summary>
+        /// <param name="Code">HTTP status code</param>
+        /// <returns>"True", if error</returns>
         private static bool IsErrorCode(HttpStatusCode Code)
         {
             return (int)Code >= 400;
         }
 
+        /// <summary>
+        /// Checks if the given code is a redirection or "no content" code
+        /// </summary>
+        /// <param name="Code">HTTP status code</param>
+        /// <returns>"True", if 300 code (redirection or no content)</returns>
         private static bool Is300Code(HttpStatusCode Code)
         {
             return (int)Code >= 300 && (int)Code < 400;
         }
 
+        /// <summary>
+        /// Checks if the given code is a success code
+        /// </summary>
+        /// <param name="Code">HTTP status code</param>
+        /// <returns>"True", if OK code (200-299)</returns>
         private static bool IsOkCode(HttpStatusCode Code)
         {
             return (int)Code >= 200 && (int)Code < 300;
         }
 
+        /// <summary>
+        /// Gets the response for a request
+        /// </summary>
+        /// <param name="R">Request</param>
+        /// <returns>Response</returns>
+        /// <remarks>This also returns a response on error instrad of raising an exception</remarks>
         private static async Task<HttpWebResponse> GetResponse(HttpWebRequest R)
         {
             try
@@ -222,6 +311,12 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Reads all content from a stream as string
+        /// </summary>
+        /// <param name="S">Stream</param>
+        /// <param name="LeaveOpen">Leave open after reading (will still not seek back)</param>
+        /// <returns>Stream content</returns>
         private static async Task<string> ReadAll(Stream S, bool LeaveOpen = false)
         {
             using (var SR = new StreamReader(S, Encoding.UTF8, false, 1024, LeaveOpen))
@@ -230,11 +325,22 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Builds url encoded form data
+        /// </summary>
+        /// <param name="Params">URL parameter dictionary</param>
+        /// <returns>URL encoded form data</returns>
+        /// <remarks>No further URL encoding necessary</remarks>
         private static string BuildFormData(IDictionary<string, string> Params)
         {
             return string.Join("&", Params.Select(m => $"{UrlEncode(m.Key)}={UrlEncode(m.Value)}"));
         }
 
+        /// <summary>
+        /// URL encodes a string of any length
+        /// </summary>
+        /// <param name="S">String</param>
+        /// <returns>URL encoded string</returns>
         private static string UrlEncode(string S)
         {
             //Uri.EscapeDataString has a limit
@@ -247,6 +353,18 @@ namespace ImgurTitleEditor
             return Uri.EscapeDataString(S);
         }
 
+        #endregion
+
+        #region Statics
+
+        /// <summary>
+        /// Downloads an image from Imgur
+        /// </summary>
+        /// <param name="I">Imgur image</param>
+        /// <param name="Size">Image size</param>
+        /// <param name="AllowVideo">Allow video files</param>
+        /// <returns>Image data</returns>
+        /// <remarks>If <paramref name="AllowVideo"/> is <see cref="false"/>, it will use <see cref="ImgurImageSize.HugeThumbnail"/> for video files</remarks>
         public static byte[] GetImage(ImgurImage I, ImgurImageSize Size, bool AllowVideo)
         {
             using (var WC = new WebClient())
@@ -258,5 +376,7 @@ namespace ImgurTitleEditor
                 return WC.DownloadData(I.GetImageUrl(Size == ImgurImageSize.Original ? ImgurImageSize.HugeThumbnail : Size));
             }
         }
+
+        #endregion
     }
 }
