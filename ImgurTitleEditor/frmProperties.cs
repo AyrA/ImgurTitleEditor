@@ -206,7 +206,15 @@ namespace ImgurTitleEditor
             this.I = I;
             Text = $"Image Properties [{I.name}] ({I.views} views)";
             tbTitle.Text = I.title;
-            tbDesc.Text = I.description;
+            //Imgur uses \n only
+            if (string.IsNullOrEmpty(I.description))
+            {
+                tbDesc.Text = string.Empty;
+            }
+            else
+            {
+                tbDesc.Lines = I.description.Split('\n');
+            }
             if (!I.animated)
             {
                 using (var MS = new MemoryStream(Cache.GetImage(I)))
