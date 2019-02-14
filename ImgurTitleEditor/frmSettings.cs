@@ -5,7 +5,9 @@ namespace ImgurTitleEditor
 {
     public partial class frmSettings : Form
     {
-        Settings S;
+        private const string IMGUR_REGISTRATION = "https://api.imgur.com/oauth2/addclient";
+        private Settings S;
+
         public frmSettings(Settings S)
         {
             this.S = S;
@@ -39,6 +41,28 @@ namespace ImgurTitleEditor
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("This will open your webbrowser. Please register an \"OAuth 2 Application without a callback URL\", then come back here and fill in the ID and secret.\r\n\r\nContinue? (Imgur Account Required)", "OAuth2 Registration", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+            {
+                try
+                {
+                    System.Diagnostics.Process.Start(IMGUR_REGISTRATION);
+                }
+                catch (Exception ex)
+                {
+                    Clipboard.SetText(IMGUR_REGISTRATION);
+                    MessageBox.Show($"Unable to navigate to {IMGUR_REGISTRATION}\r\nReason: {ex.Message}\r\n\r\nThe URL was copied to your clipboard to open it manually.", "OAuth2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void llCopy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Clipboard.SetText(IMGUR_REGISTRATION);
+            MessageBox.Show($"{IMGUR_REGISTRATION} copied to clipboard.", "OAuth2 Registration", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }

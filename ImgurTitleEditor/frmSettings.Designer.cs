@@ -41,6 +41,8 @@
             this.nudPageSize = new System.Windows.Forms.NumericUpDown();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnRegister = new System.Windows.Forms.Button();
+            this.llCopy = new System.Windows.Forms.LinkLabel();
             this.gbAPI.SuspendLayout();
             this.gbUI.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageSize)).BeginInit();
@@ -95,12 +97,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lblSecretInfo.AutoEllipsis = true;
-            this.lblSecretInfo.Location = new System.Drawing.Point(10, 80);
+            this.lblSecretInfo.Location = new System.Drawing.Point(10, 65);
             this.lblSecretInfo.Name = "lblSecretInfo";
-            this.lblSecretInfo.Size = new System.Drawing.Size(450, 40);
+            this.lblSecretInfo.Size = new System.Drawing.Size(450, 55);
             this.lblSecretInfo.TabIndex = 4;
             this.lblSecretInfo.Text = "The Client Secret is optional, but you will not be able to renew access tokens au" +
-    "tomatically if it\'s not set.";
+    "tomatically if it\'s not set.\r\nTo get a secret, click the \"Register\" button";
             // 
             // lblApiSecret
             // 
@@ -185,11 +187,38 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // btnRegister
+            // 
+            this.btnRegister.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnRegister.Location = new System.Drawing.Point(12, 256);
+            this.btnRegister.Name = "btnRegister";
+            this.btnRegister.Size = new System.Drawing.Size(75, 23);
+            this.btnRegister.TabIndex = 4;
+            this.btnRegister.Text = "&Register...";
+            this.btnRegister.UseVisualStyleBackColor = true;
+            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
+            // 
+            // llCopy
+            // 
+            this.llCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.llCopy.AutoSize = true;
+            this.llCopy.LinkColor = System.Drawing.Color.Blue;
+            this.llCopy.Location = new System.Drawing.Point(93, 261);
+            this.llCopy.Name = "llCopy";
+            this.llCopy.Size = new System.Drawing.Size(56, 13);
+            this.llCopy.TabIndex = 5;
+            this.llCopy.TabStop = true;
+            this.llCopy.Text = "Copy URL";
+            this.llCopy.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.llCopy.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llCopy_LinkClicked);
+            // 
             // frmSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(490, 291);
+            this.Controls.Add(this.llCopy);
+            this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.gbUI);
@@ -207,6 +236,7 @@
             this.gbUI.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageSize)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -224,5 +254,7 @@
         private System.Windows.Forms.NumericUpDown nudPageSize;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnRegister;
+        private System.Windows.Forms.LinkLabel llCopy;
     }
 }
