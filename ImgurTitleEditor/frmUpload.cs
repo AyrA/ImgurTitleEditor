@@ -7,23 +7,46 @@ using System.Windows.Forms;
 
 namespace ImgurTitleEditor
 {
+    /// <summary>
+    /// Form that handles file uploads
+    /// </summary>
     public partial class frmUpload : Form
     {
+        /// <summary>
+        /// Current settings
+        /// </summary>
         private Settings S;
+        /// <summary>
+        /// True, if the image is from the clipboard
+        /// </summary>
         private bool UseClipboard = false;
 
+        /// <summary>
+        /// Initializes a new upload form
+        /// </summary>
+        /// <param name="S">Current settings</param>
         public frmUpload(Settings S)
         {
             this.S = S;
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Close form
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
         }
 
+        /// <summary>
+        /// Selects an image
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void btnSelect_Click(object sender, EventArgs e)
         {
             if (OFD.ShowDialog() == DialogResult.OK)
@@ -41,6 +64,11 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Uploads the selected image
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private async void btnUpload_Click(object sender, EventArgs e)
         {
             byte[] Data = null;
@@ -88,10 +116,16 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Loads image from clipboard
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void btnClipboard_Click(object sender, EventArgs e)
         {
             if (Clipboard.ContainsImage())
             {
+                tbImage.Text = "image.png";
                 pbPreview.Image = Clipboard.GetImage();
                 UseClipboard = true;
             }
