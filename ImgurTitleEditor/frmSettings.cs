@@ -5,7 +5,6 @@ namespace ImgurTitleEditor
 {
     public partial class frmSettings : Form
     {
-        private const string IMGUR_REGISTRATION = "https://api.imgur.com/oauth2/addclient";
         private Settings S;
 
         public frmSettings(Settings S)
@@ -49,20 +48,20 @@ namespace ImgurTitleEditor
             {
                 try
                 {
-                    System.Diagnostics.Process.Start(IMGUR_REGISTRATION);
+                    System.Diagnostics.Process.Start(Imgur.IMGUR_REGISTRATION);
                 }
                 catch (Exception ex)
                 {
-                    Clipboard.SetText(IMGUR_REGISTRATION);
-                    MessageBox.Show($"Unable to navigate to {IMGUR_REGISTRATION}\r\nReason: {ex.Message}\r\n\r\nThe URL was copied to your clipboard to open it manually.", "OAuth2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Clipboard.SetText(Imgur.IMGUR_REGISTRATION);
+                    MessageBox.Show($"Unable to navigate to {Imgur.IMGUR_REGISTRATION}\r\nReason: {ex.Message}\r\n\r\nThe URL was copied to your clipboard to open it manually.", "OAuth2 Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
         private void llCopy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Clipboard.SetText(IMGUR_REGISTRATION);
-            MessageBox.Show($"{IMGUR_REGISTRATION} copied to clipboard.", "OAuth2 Registration", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            Clipboard.SetText(Imgur.IMGUR_REGISTRATION);
+            MessageBox.Show($"{Imgur.IMGUR_REGISTRATION} copied to clipboard.", "OAuth2 Registration", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void tbApiSecret_Enter(object sender, EventArgs e)

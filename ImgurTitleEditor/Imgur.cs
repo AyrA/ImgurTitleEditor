@@ -12,6 +12,7 @@ namespace ImgurTitleEditor
 {
     public class Imgur
     {
+        public const string IMGUR_REGISTRATION = "https://api.imgur.com/oauth2/addclient";
         public const string SELF = "me";
 
         private Settings S;
