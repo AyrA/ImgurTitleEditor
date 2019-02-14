@@ -8,21 +8,52 @@ using System.Windows.Forms;
 
 namespace ImgurTitleEditor
 {
+    /// <summary>
+    /// Main form that handles gallery browsing
+    /// </summary>
     public partial class frmMain : Form
     {
+        /// <summary>
+        /// Current gallery page
+        /// </summary>
         private int CurrentPage;
+        /// <summary>
+        /// Total number of gallery pages
+        /// </summary>
         private int Pages;
 
+        /// <summary>
+        /// Gallery view mode
+        /// </summary>
         private enum ImageFilter : int
         {
+            /// <summary>
+            /// All images
+            /// </summary>
             All = 0,
+            /// <summary>
+            /// Only images with a title
+            /// </summary>
             WithTitle = 1,
+            /// <summary>
+            /// Only images without a title
+            /// </summary>
             WithoutTitle = 2
         }
 
+        /// <summary>
+        /// Imgur API handler
+        /// </summary>
         private Imgur I;
+        /// <summary>
+        /// Current settings
+        /// </summary>
         private Settings S;
 
+        /// <summary>
+        /// Initializes a new main form
+        /// </summary>
+        /// <param name="S">Current settings</param>
         public frmMain(Settings S)
         {
             this.S = S;
@@ -64,11 +95,21 @@ namespace ImgurTitleEditor
 
         #region Events
 
+        /// <summary>
+        /// Exits the application
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        /// <summary>
+        /// (Re-)builds the cache
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void buildCacheToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Cache.Images == null || Cache.Images.Length == 0 || MessageBox.Show("Your cache is not empty. Only rebuild the cache if you uploaded or deleted images outside of this application. This process invokes a lot of API requests which can get you blocked if you do it too often.\r\nAre you sure you want to rescan it?", "Reset Cache", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
@@ -81,6 +122,11 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Authorizes the application using OAuth2
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void authorizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (S.Token.Expires < DateTime.UtcNow || MessageBox.Show($"This app is already authorized until {S.Token.Expires.ToShortDateString()} and connected to your account. Reauthorization will erase the cache.\r\nContinue?", "Authorization", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
@@ -106,27 +152,52 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Shows all images
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void allImagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowImages(ImageFilter.WithTitle, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
         }
 
+        /// <summary>
+        /// Shows images with a title
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void withTitleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Show images with title and keep filter intact (if set)
             ShowImages(ImageFilter.WithTitle, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
         }
 
+        /// <summary>
+        /// Shows images without a title
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void withoutTitleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowImages(ImageFilter.WithoutTitle, CurrentPage = 1, null);
         }
 
+        /// <summary>
+        /// Shows image properties
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void lvImages_DoubleClick(object sender, EventArgs e)
         {
             EditSelectedImageTitle();
         }
 
+        /// <summary>
+        /// Hides placeholder text
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void tbFilter_Enter(object sender, EventArgs e)
         {
             if ((bool)tbFilter.Tag)
@@ -137,6 +208,11 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Shows placeholder text
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void tbFilter_Leave(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(tbFilter.Text))
@@ -147,6 +223,11 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Handles ENTER key
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void tbFilter_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -156,6 +237,11 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Opens the upload form
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void uploadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var fUpload = new frmUpload(S))
@@ -167,6 +253,11 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Saves new size to settings
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void frmMain_ResizeEnd(object sender, EventArgs e)
         {
             S.UI.MainWindowMaximized = WindowState == FormWindowState.Maximized;
@@ -174,31 +265,61 @@ namespace ImgurTitleEditor
             Tools.SaveSettings(S, Program.SettingsFile);
         }
 
+        /// <summary>
+        /// Copies the URL of selected images
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void copyURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CopySelectedURL();
         }
 
+        /// <summary>
+        /// Saves the selected images to disk
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveSelectedImages(false);
         }
 
+        /// <summary>
+        /// Shows the properties of the first selected image
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void editTitleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EditSelectedImageTitle();
         }
 
+        /// <summary>
+        /// Deletes the selected image from cache and optionally imgur
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DeleteSelectedImages();
         }
 
+        /// <summary>
+        /// Downloads selected images to the cache
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void addToCacheToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveSelectedImages(true);
         }
 
+        /// <summary>
+        /// Handles various common key combinations
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void lvImages_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers == Keys.Control)
@@ -231,6 +352,11 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Shows previous page
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void btnPrevPage_Click(object sender, EventArgs e)
         {
             if (CurrentPage > 1)
@@ -239,6 +365,11 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Shows next page
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void btnNextPage_Click(object sender, EventArgs e)
         {
             if (CurrentPage < Pages)
@@ -247,6 +378,11 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Opens the settings
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var f = new frmSettings(S))
@@ -266,6 +402,9 @@ namespace ImgurTitleEditor
 
         #region Functions
 
+        /// <summary>
+        /// Initializes the page counters and goes to the first page
+        /// </summary>
         private void InitPages()
         {
             CurrentPage = 1;
@@ -273,6 +412,12 @@ namespace ImgurTitleEditor
             ShowImages((ImageFilter)S.UI.LastView, CurrentPage, (bool)tbFilter.Tag ? null : tbFilter.Text);
         }
 
+        /// <summary>
+        /// Gets a filteres image list
+        /// </summary>
+        /// <param name="IF">Image filter</param>
+        /// <param name="Search">Title/Desc/Name filter</param>
+        /// <returns></returns>
         private IEnumerable<ImgurImage> FilterImages(ImageFilter IF, string Search)
         {
             if (IF == ImageFilter.WithoutTitle)
@@ -289,6 +434,11 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Selects and returns the previous image
+        /// </summary>
+        /// <returns>Previous image</returns>
+        /// <remarks>Switches pages if needed</remarks>
         public ImgurImage PrevImage()
         {
             if (lvImages.SelectedItems.Count > 0)
@@ -316,6 +466,11 @@ namespace ImgurTitleEditor
             return null;
         }
 
+        /// <summary>
+        /// Selects and returns the next image
+        /// </summary>
+        /// <returns>Next image</returns>
+        /// <remarks>Switches pages if needed</remarks>
         public ImgurImage NextImage()
         {
             if (lvImages.SelectedItems.Count > 0)
@@ -342,6 +497,12 @@ namespace ImgurTitleEditor
             return null;
         }
 
+        /// <summary>
+        /// Shows images according to the given criteria
+        /// </summary>
+        /// <param name="Filter">Image filter</param>
+        /// <param name="Page">Page</param>
+        /// <param name="Search">Title/Desc/Name filter</param>
         private void ShowImages(ImageFilter Filter, int Page, string Search)
         {
             var RealPage = Math.Min(Pages, Math.Max(1, Page));
@@ -403,6 +564,13 @@ namespace ImgurTitleEditor
             lvImages.ResumeLayout();
         }
 
+        /// <summary>
+        /// Checks if the given search matches the given image
+        /// </summary>
+        /// <param name="I">Image</param>
+        /// <param name="Search">Search string</param>
+        /// <returns>"True", if match</returns>
+        /// <remarks>Case insensitive, will always match if search is null or empty</remarks>
         private static bool IsMatch(ImgurImage I, string Search)
         {
             if (string.IsNullOrEmpty(Search))
@@ -424,6 +592,9 @@ namespace ImgurTitleEditor
             return false;
         }
 
+        /// <summary>
+        /// Deletes the selected images
+        /// </summary>
         private async void DeleteSelectedImages()
         {
             var DelImgur = false;
@@ -455,6 +626,11 @@ namespace ImgurTitleEditor
             lvImages.ResumeLayout();
         }
 
+        /// <summary>
+        /// Downloads the selected image(s)
+        /// </summary>
+        /// <param name="CacheOnly">Don't prompt, download to cache only</param>
+        /// <remarks>Will show folder browse dialog if multiple images are selected and file save dialog if only one</remarks>
         private void SaveSelectedImages(bool CacheOnly)
         {
             switch (lvImages.SelectedItems.Count)
@@ -522,6 +698,9 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Opens the properties of the selected image
+        /// </summary>
         private void EditSelectedImageTitle()
         {
             if (lvImages.SelectedItems.Count > 0)
@@ -534,6 +713,9 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Copies the URL(s) of the selected image(s) to clipboard
+        /// </summary>
         private void CopySelectedURL()
         {
             var Links = string.Join("\r\n", lvImages.SelectedItems
