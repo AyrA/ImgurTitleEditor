@@ -16,16 +16,16 @@ namespace ImgurTitleEditor
             Init();
         }
 
-        private void WbAuth_DocumentTitleChanged(object sender, EventArgs e)
-        {
-            Text = $"Authentication - {wbAuth.DocumentTitle}";
-        }
-
         private void Init()
         {
             //We don't really care about the "state" parameter but use it as a neat way to avoid caching
             wbAuth.Navigate($"https://api.imgur.com/oauth2/authorize?client_id={Uri.EscapeDataString(S.Client.Id)}&response_type=token&state={DateTime.UtcNow.Ticks}");
             DialogResult = DialogResult.Cancel;
+        }
+
+        private void WbAuth_DocumentTitleChanged(object sender, EventArgs e)
+        {
+            Text = $"Authentication - {wbAuth.DocumentTitle}";
         }
 
         private void wbAuth_Navigated(object sender, WebBrowserNavigatedEventArgs e)
