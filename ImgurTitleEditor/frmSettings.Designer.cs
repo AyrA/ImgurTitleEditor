@@ -28,16 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSettings));
             this.gbAPI = new System.Windows.Forms.GroupBox();
-            this.lblApiId = new System.Windows.Forms.Label();
-            this.lblApiSecret = new System.Windows.Forms.Label();
-            this.tbApiId = new System.Windows.Forms.TextBox();
             this.tbApiSecret = new System.Windows.Forms.TextBox();
+            this.tbApiId = new System.Windows.Forms.TextBox();
+            this.lblApiId = new System.Windows.Forms.Label();
             this.lblSecretInfo = new System.Windows.Forms.Label();
+            this.lblApiSecret = new System.Windows.Forms.Label();
             this.gbUI = new System.Windows.Forms.GroupBox();
-            this.nudPageSize = new System.Windows.Forms.NumericUpDown();
-            this.lblPageSize = new System.Windows.Forms.Label();
             this.lblPageSizeInfo = new System.Windows.Forms.Label();
+            this.lblPageSize = new System.Windows.Forms.Label();
+            this.nudPageSize = new System.Windows.Forms.NumericUpDown();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gbAPI.SuspendLayout();
@@ -61,23 +62,14 @@
             this.gbAPI.TabStop = false;
             this.gbAPI.Text = "API Settings";
             // 
-            // lblApiId
+            // tbApiSecret
             // 
-            this.lblApiId.AutoSize = true;
-            this.lblApiId.Location = new System.Drawing.Point(10, 19);
-            this.lblApiId.Name = "lblApiId";
-            this.lblApiId.Size = new System.Drawing.Size(47, 13);
-            this.lblApiId.TabIndex = 0;
-            this.lblApiId.Text = "Client ID";
-            // 
-            // lblApiSecret
-            // 
-            this.lblApiSecret.AutoSize = true;
-            this.lblApiSecret.Location = new System.Drawing.Point(10, 45);
-            this.lblApiSecret.Name = "lblApiSecret";
-            this.lblApiSecret.Size = new System.Drawing.Size(67, 13);
-            this.lblApiSecret.TabIndex = 2;
-            this.lblApiSecret.Text = "Client Secret";
+            this.tbApiSecret.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbApiSecret.Location = new System.Drawing.Point(82, 42);
+            this.tbApiSecret.Name = "tbApiSecret";
+            this.tbApiSecret.Size = new System.Drawing.Size(378, 20);
+            this.tbApiSecret.TabIndex = 3;
             // 
             // tbApiId
             // 
@@ -88,14 +80,14 @@
             this.tbApiId.Size = new System.Drawing.Size(378, 20);
             this.tbApiId.TabIndex = 1;
             // 
-            // tbApiSecret
+            // lblApiId
             // 
-            this.tbApiSecret.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbApiSecret.Location = new System.Drawing.Point(82, 42);
-            this.tbApiSecret.Name = "tbApiSecret";
-            this.tbApiSecret.Size = new System.Drawing.Size(378, 20);
-            this.tbApiSecret.TabIndex = 3;
+            this.lblApiId.AutoSize = true;
+            this.lblApiId.Location = new System.Drawing.Point(10, 19);
+            this.lblApiId.Name = "lblApiId";
+            this.lblApiId.Size = new System.Drawing.Size(47, 13);
+            this.lblApiId.TabIndex = 0;
+            this.lblApiId.Text = "Client ID";
             // 
             // lblSecretInfo
             // 
@@ -110,6 +102,15 @@
             this.lblSecretInfo.Text = "The Client Secret is optional, but you will not be able to renew access tokens au" +
     "tomatically if it\'s not set.";
             // 
+            // lblApiSecret
+            // 
+            this.lblApiSecret.AutoSize = true;
+            this.lblApiSecret.Location = new System.Drawing.Point(10, 45);
+            this.lblApiSecret.Name = "lblApiSecret";
+            this.lblApiSecret.Size = new System.Drawing.Size(67, 13);
+            this.lblApiSecret.TabIndex = 2;
+            this.lblApiSecret.Text = "Client Secret";
+            // 
             // gbUI
             // 
             this.gbUI.Controls.Add(this.lblPageSizeInfo);
@@ -121,6 +122,29 @@
             this.gbUI.TabIndex = 1;
             this.gbUI.TabStop = false;
             this.gbUI.Text = "User Interface";
+            // 
+            // lblPageSizeInfo
+            // 
+            this.lblPageSizeInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblPageSizeInfo.AutoEllipsis = true;
+            this.lblPageSizeInfo.Location = new System.Drawing.Point(10, 42);
+            this.lblPageSizeInfo.Name = "lblPageSizeInfo";
+            this.lblPageSizeInfo.Size = new System.Drawing.Size(450, 55);
+            this.lblPageSizeInfo.TabIndex = 2;
+            this.lblPageSizeInfo.Text = "This setting configures how many items are shown at once on a page. Setting this " +
+    "beyond 200 items can cause serious delay when building pages. Set to 0 to show a" +
+    "ll items at once.";
+            // 
+            // lblPageSize
+            // 
+            this.lblPageSize.AutoSize = true;
+            this.lblPageSize.Location = new System.Drawing.Point(10, 21);
+            this.lblPageSize.Name = "lblPageSize";
+            this.lblPageSize.Size = new System.Drawing.Size(55, 13);
+            this.lblPageSize.TabIndex = 0;
+            this.lblPageSize.Text = "Page Size";
             // 
             // nudPageSize
             // 
@@ -138,29 +162,6 @@
             this.nudPageSize.Name = "nudPageSize";
             this.nudPageSize.Size = new System.Drawing.Size(84, 20);
             this.nudPageSize.TabIndex = 1;
-            // 
-            // lblPageSize
-            // 
-            this.lblPageSize.AutoSize = true;
-            this.lblPageSize.Location = new System.Drawing.Point(10, 21);
-            this.lblPageSize.Name = "lblPageSize";
-            this.lblPageSize.Size = new System.Drawing.Size(55, 13);
-            this.lblPageSize.TabIndex = 0;
-            this.lblPageSize.Text = "Page Size";
-            // 
-            // lblPageSizeInfo
-            // 
-            this.lblPageSizeInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblPageSizeInfo.AutoEllipsis = true;
-            this.lblPageSizeInfo.Location = new System.Drawing.Point(10, 42);
-            this.lblPageSizeInfo.Name = "lblPageSizeInfo";
-            this.lblPageSizeInfo.Size = new System.Drawing.Size(450, 55);
-            this.lblPageSizeInfo.TabIndex = 2;
-            this.lblPageSizeInfo.Text = "This setting configures how many items are shown at once on a page. Setting this " +
-    "beyond 200 items can cause serious delay when building pages. Set to 0 to show a" +
-    "ll items at once.";
             // 
             // btnOK
             // 
@@ -194,6 +195,7 @@
             this.Controls.Add(this.gbUI);
             this.Controls.Add(this.gbAPI);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmSettings";

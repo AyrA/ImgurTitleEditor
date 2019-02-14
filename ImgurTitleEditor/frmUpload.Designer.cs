@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmUpload));
             this.btnSelect = new System.Windows.Forms.Button();
             this.OFD = new System.Windows.Forms.OpenFileDialog();
             this.tbImage = new System.Windows.Forms.TextBox();
@@ -160,6 +161,7 @@
             this.Controls.Add(this.tbTitle);
             this.Controls.Add(this.tbImage);
             this.Controls.Add(this.btnSelect);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(500, 200);
             this.Name = "frmUpload";
             this.Text = "Image Upload";
