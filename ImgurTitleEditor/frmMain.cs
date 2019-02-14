@@ -201,23 +201,30 @@ namespace ImgurTitleEditor
 
         private void lvImages_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.A && e.Modifiers == Keys.Control)
+            if (e.Modifiers == Keys.Control)
             {
-                e.Handled = e.SuppressKeyPress = true;
-                //It's correct to not use "==" here
-                lvImages.Items.OfType<ListViewItem>().All(m => m.Selected = true);
+                if (e.KeyCode == Keys.A)
+                {
+                    e.Handled = e.SuppressKeyPress = true;
+                    //It's correct to not use "==" here
+                    lvImages.Items.OfType<ListViewItem>().All(m => m.Selected = true);
+                }
+                if (e.KeyCode == Keys.C)
+                {
+                    e.Handled = e.SuppressKeyPress = true;
+                    CopySelectedURL();
+                }
+                if (e.KeyCode == Keys.S)
+                {
+                    SaveSelectedImages(false);
+                }
             }
-            if (e.KeyCode == Keys.C && e.Modifiers == Keys.Control)
-            {
-                e.Handled = e.SuppressKeyPress = true;
-                CopySelectedURL();
-            }
-            if (e.KeyCode == Keys.Enter)
+            else if (e.KeyCode == Keys.Enter)
             {
                 e.Handled = e.SuppressKeyPress = true;
                 EditSelectedImageTitle();
             }
-            if (e.KeyCode == Keys.Delete)
+            else if (e.KeyCode == Keys.Delete)
             {
                 e.Handled = e.SuppressKeyPress = true;
                 DeleteSelectedImages();
@@ -338,7 +345,6 @@ namespace ImgurTitleEditor
         private void ShowImages(ImageFilter Filter, int Page, string Search)
         {
             var RealPage = Math.Min(Pages, Math.Max(1, Page));
-            lblPage.Text = Pages < 1 ? "" : $"Current Page: {Page}/{Pages}";
             lvImages.Tag = Filter;
             foreach (var i in listToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
             {
@@ -366,7 +372,13 @@ namespace ImgurTitleEditor
                 ImageSize = new Size(160, 160),
                 ColorDepth = ColorDepth.Depth32Bit
             };
-            var Iterator = S.UI.PageSize <= 0 ? FilterImages(Filter, Search) : FilterImages(Filter, Search).Skip(S.UI.PageSize * (RealPage - 1)).Take(S.UI.PageSize);
+            var Iterator = FilterImages(Filter, Search);
+            Pages = (int)Math.Ceiling(Iterator.Count() * 1.0 / S.UI.PageSize);
+            lblPage.Text = Pages < 1 ? "" : $"Current Page: {Page}/{Pages}";
+            if (S.UI.PageSize > 0)
+            {
+                Iterator = Iterator.Skip(S.UI.PageSize * (RealPage - 1)).Take(S.UI.PageSize);
+            }
             foreach (var I in Iterator)
             {
                 using (var MS = new MemoryStream(Cache.GetThumbnail(I)))
