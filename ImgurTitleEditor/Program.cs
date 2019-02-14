@@ -7,8 +7,18 @@ namespace ImgurTitleEditor
 {
     static class Program
     {
+        /// <summary>
+        /// Config file name
+        /// </summary>
         private const string CONFIG = "config.xml";
+
+        /// <summary>
+        /// Absolute settings file path and name
+        /// </summary>
         private static string _SettingsFile;
+        /// <summary>
+        /// Gets the full settings file path and name
+        /// </summary>
         public static string SettingsFile
         {
             get
@@ -52,6 +62,7 @@ namespace ImgurTitleEditor
                 Cache.Images = Cache.Images.Where(m => m != null).ToArray();
             }
 
+            //Try to refresh the token if expired
             var I = new Imgur(S);
             if (!string.IsNullOrEmpty(S.Token.Access) && S.Token.Expires < DateTime.UtcNow.AddDays(7))
             {
