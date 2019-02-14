@@ -40,7 +40,7 @@ namespace ImgurTitleEditor
                     }
                     else
                     {
-                        MessageBox.Show("Could not authorize this application", "No Authorization", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Could not authorize this application. Will exit now.", "No Authorization", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         Environment.Exit(1);
                         return;
                     }
