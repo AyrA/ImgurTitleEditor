@@ -10,7 +10,6 @@ namespace ImgurTitleEditor
 {
     public partial class frmMain : Form
     {
-        private const int PAGESIZE = 50;
         private int CurrentPage;
         private int Pages;
 
@@ -118,7 +117,7 @@ namespace ImgurTitleEditor
 
         private void withoutTitleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowImages(ImageFilter.WithoutTitle, CurrentPage = 1);
+            ShowImages(ImageFilter.WithoutTitle, CurrentPage = 1, null);
         }
 
         private void lvImages_DoubleClick(object sender, EventArgs e)
@@ -239,13 +238,30 @@ namespace ImgurTitleEditor
             }
         }
 
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var f = new frmSettings(S))
+            {
+                var PS = S.UI.PageSize;
+                if (f.ShowDialog() == DialogResult.OK)
+                {
+                    if (PS != S.UI.PageSize)
+                    {
+                        InitPages();
+                    }
+                }
+            }
+        }
+
         #endregion
+
+        #region Functions
 
         private void InitPages()
         {
             CurrentPage = 1;
-            Pages = (int)Math.Ceiling(FilterImages((ImageFilter)S.UI.LastView, null).Count() * 1.0 / PAGESIZE);
-            ShowImages((ImageFilter)S.UI.LastView, CurrentPage);
+            Pages = S.UI.PageSize <= 0 ? 0 : (int)Math.Ceiling(FilterImages((ImageFilter)S.UI.LastView, null).Count() * 1.0 / S.UI.PageSize);
+            ShowImages((ImageFilter)S.UI.LastView, CurrentPage, (bool)tbFilter.Tag ? null : tbFilter.Text);
         }
 
         private IEnumerable<ImgurImage> FilterImages(ImageFilter IF, string Search)
@@ -317,10 +333,10 @@ namespace ImgurTitleEditor
             return null;
         }
 
-        private void ShowImages(ImageFilter Filter, int Page, string Search = null)
+        private void ShowImages(ImageFilter Filter, int Page, string Search)
         {
             var RealPage = Math.Min(Pages, Math.Max(1, Page));
-            lblPage.Text = $"Current Page: {Page}/{Pages}";
+            lblPage.Text = Pages < 1 ? "" : $"Current Page: {Page}/{Pages}";
             lvImages.Tag = Filter;
             foreach (var i in listToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
             {
@@ -348,7 +364,8 @@ namespace ImgurTitleEditor
                 ImageSize = new Size(160, 160),
                 ColorDepth = ColorDepth.Depth32Bit
             };
-            foreach (var I in FilterImages(Filter, Search).Skip(PAGESIZE * (RealPage - 1)).Take(PAGESIZE))
+            var Iterator = S.UI.PageSize <= 0 ? FilterImages(Filter, Search) : FilterImages(Filter, Search).Skip(S.UI.PageSize * (RealPage - 1)).Take(S.UI.PageSize);
+            foreach (var I in Iterator)
             {
                 using (var MS = new MemoryStream(Cache.GetThumbnail(I)))
                 {
@@ -510,5 +527,7 @@ namespace ImgurTitleEditor
                 .Select(m => ((ImgurImage)m.Tag).GetImageUrl()));
             Clipboard.SetText(Links);
         }
+
+        #endregion
     }
 }
