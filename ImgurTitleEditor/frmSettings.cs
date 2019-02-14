@@ -3,10 +3,20 @@ using System.Windows.Forms;
 
 namespace ImgurTitleEditor
 {
+    /// <summary>
+    /// Handles application settings
+    /// </summary>
     public partial class frmSettings : Form
     {
+        /// <summary>
+        /// Current settings
+        /// </summary>
         private Settings S;
 
+        /// <summary>
+        /// Initializes a new settings form
+        /// </summary>
+        /// <param name="S">Current settings</param>
         public frmSettings(Settings S)
         {
             this.S = S;
@@ -17,6 +27,11 @@ namespace ImgurTitleEditor
             DialogResult = DialogResult.Cancel;
         }
 
+        /// <summary>
+        /// Validates and saves settings
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void btnOK_Click(object sender, EventArgs e)
         {
             bool Reauth = tbApiId.Text != S.Client.Id;
@@ -37,11 +52,21 @@ namespace ImgurTitleEditor
             Close();
         }
 
+        /// <summary>
+        /// Closes settings form
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
         }
 
+        /// <summary>
+        /// Opens the OAuth2 registration website in the default browser
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void btnRegister_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("This will open your webbrowser. Please register an \"OAuth 2 Application without a callback URL\", then come back here and fill in the ID and secret.\r\n\r\nContinue? (Imgur Account Required)", "OAuth2 Registration", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
@@ -58,17 +83,32 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Copies <see cref="Imgur.IMGUR_REGISTRATION"/> to the clipboard
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void llCopy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Clipboard.SetText(Imgur.IMGUR_REGISTRATION);
             MessageBox.Show($"{Imgur.IMGUR_REGISTRATION} copied to clipboard.", "OAuth2 Registration", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// Shows the client secret
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void tbApiSecret_Enter(object sender, EventArgs e)
         {
             tbApiSecret.UseSystemPasswordChar = false;
         }
 
+        /// <summary>
+        /// Hides the client secret
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void tbApiSecret_Leave(object sender, EventArgs e)
         {
             tbApiSecret.UseSystemPasswordChar = true;
