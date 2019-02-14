@@ -6,13 +6,34 @@ using System.Windows.Forms;
 
 namespace ImgurTitleEditor
 {
+    /// <summary>
+    /// Form that handles large image downloads
+    /// </summary>
     public partial class frmDownload : Form
     {
+        /// <summary>
+        /// Cancels thread if "True"
+        /// </summary>
         private bool Exit = false;
+        /// <summary>
+        /// Images to download
+        /// </summary>
         private List<ImgurImage> Images;
+        /// <summary>
+        /// Current settings
+        /// </summary>
         private Settings S;
+        /// <summary>
+        /// Download path
+        /// </summary>
         private string Path;
 
+        /// <summary>
+        /// Initializes new downloader form
+        /// </summary>
+        /// <param name="S">Current settings</param>
+        /// <param name="Images">Image list</param>
+        /// <param name="Path">Save path</param>
         public frmDownload(Settings S, IEnumerable<ImgurImage> Images, string Path)
         {
             this.S = S;
@@ -21,14 +42,23 @@ namespace ImgurTitleEditor
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Cancels the download
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             btnCancel.Text = "Cancelling...";
             btnCancel.Enabled = false;
             Exit = true;
-            //Close();
         }
 
+        /// <summary>
+        /// Starts the download
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void frmDownload_Shown(object sender, EventArgs e)
         {
             pbStatus.Maximum = Images.Count;
@@ -62,6 +92,9 @@ namespace ImgurTitleEditor
             T.Start();
         }
 
+        /// <summary>
+        /// Download complete handler
+        /// </summary>
         private void Done()
         {
             Close();
