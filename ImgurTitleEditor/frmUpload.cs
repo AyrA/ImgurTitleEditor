@@ -25,10 +25,18 @@ namespace ImgurTitleEditor
         /// Initializes a new upload form
         /// </summary>
         /// <param name="S">Current settings</param>
-        public frmUpload(Settings S)
+        /// <param name="FileName">Optional file name to initialize the form with</param>
+        /// <param name="I">Image to use as clipboard based upload</param>
+        public frmUpload(Settings S, string FileName = null, Image I = null)
         {
             this.S = S;
             InitializeComponent();
+            if (!string.IsNullOrEmpty(FileName))
+            {
+                tbImage.Text = I == null ? FileName : Path.GetFileName(FileName);
+                pbPreview.Image = I == null ? Image.FromFile(FileName) : (Image)I.Clone();
+                UseClipboard = I != null;
+            }
         }
 
         /// <summary>

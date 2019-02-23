@@ -425,6 +425,63 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
             System.Diagnostics.Process.Start("https://github.com/AyrA/ImgurTitleEditor");
         }
 
+        private void frmMain_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetFormats().Contains("FileDrop"))
+            {
+                e.Effect = DragDropEffects.Copy;
+            }
+        }
+
+        private void frmMain_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetFormats().Contains("FileDrop"))
+            {
+                var Data = (string[])e.Data.GetData("FileDrop");
+                BeginInvoke((MethodInvoker)delegate
+                {
+                    var Render = false;
+                    foreach (var FileName in Data)
+                    {
+                        if (File.Exists(FileName))
+                        {
+                            try
+                            {
+                                Image.FromFile(FileName).Dispose();
+                            }
+                            catch
+                            {
+                                MessageBox.Show($"{Path.GetFileName(FileName)} is not a valid image", "Invalid Image", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                continue;
+                            }
+                            using (var f = new frmUpload(S, FileName))
+                            {
+                                if (f.ShowDialog() != DialogResult.OK)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    Render = true;
+                                }
+                            }
+                        }
+                    }
+                    if (Render)
+                    {
+                        ShowImages((ImageFilter)lvImages.Tag, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
+                    }
+                });
+            }
+            else
+            {
+                BeginInvoke((MethodInvoker)delegate
+                {
+                    MessageBox.Show("Only files are allowed to be dropped", "Invalid Drag&Drop Operation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                });
+            }
+        }
+
         #endregion
 
         #region Functions
