@@ -425,6 +425,12 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
             System.Diagnostics.Process.Start("https://github.com/AyrA/ImgurTitleEditor");
         }
 
+        /// <summary>
+        /// Start of Drag and Drop handler.
+        /// Accepts any file drops
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void frmMain_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetFormats().Contains("FileDrop"))
@@ -433,11 +439,20 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
             }
         }
 
+        /// <summary>
+        /// End of Drag and Drop handler.
+        /// Processes file drops
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
         private void frmMain_DragDrop(object sender, DragEventArgs e)
         {
             if (e.Data.GetFormats().Contains("FileDrop"))
             {
+                //This is always a string array, even for single file drops
                 var Data = (string[])e.Data.GetData("FileDrop");
+                //BeginInvoke seems stupid because the event is already fired in the correct thread,
+                //but this prevents the Drop event from getting "stuck"
                 BeginInvoke((MethodInvoker)delegate
                 {
                     var Render = false;
