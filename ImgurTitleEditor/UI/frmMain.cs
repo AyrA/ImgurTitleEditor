@@ -447,6 +447,21 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
             }
         }
 
+        /// <summary>
+        /// Uploads multiple files
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
+        private void bulkUploadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var Uploader = new frmBulkUpload(S))
+            {
+                if(Uploader.ShowDialog()==DialogResult.OK)
+                {
+                    ShowImages((ImageFilter)lvImages.Tag, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
+                }
+            }
+        }
 
         /// <summary>
         /// Start of Drag and Drop handler.

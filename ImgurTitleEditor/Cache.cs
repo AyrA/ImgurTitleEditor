@@ -92,7 +92,10 @@ namespace ImgurTitleEditor
 
             if (!File.Exists(ImageFile))
             {
+                //Add image to cache if not found
                 File.WriteAllBytes(ImageFile, Imgur.GetImage(I, ImgurImageSize.Original, false));
+                //New images are at the start
+                Images = (new ImgurImage[] { I }).Concat(Images).ToArray();
             }
             return File.ReadAllBytes(ImageFile);
         }

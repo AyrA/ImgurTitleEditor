@@ -58,6 +58,12 @@
   <ItemGroup>
     <Compile Include="BoolConverter.cs" />
     <Compile Include="Cache.cs" />
+    <Compile Include="UI\frmBulkUpload.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmBulkUpload.Designer.cs">
+      <DependentUpon>frmBulkUpload.cs</DependentUpon>
+    </Compile>
     <Compile Include="NullIntConverter.cs" />
     <Compile Include="UI\frmAlbums.cs">
       <SubType>Form</SubType>
@@ -122,6 +128,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmAuth.resx">
       <DependentUpon>frmAuth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmBulkUpload.resx">
+      <DependentUpon>frmBulkUpload.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmCacheBuilder.resx">
       <DependentUpon>frmCacheBuilder.cs</DependentUpon>

@@ -278,6 +278,22 @@ namespace ImgurTitleEditor
             return null;
         }
 
+        /// <summary>
+        /// Deletes an album
+        /// </summary>
+        /// <param name="I">Imgur album</param>
+        /// <returns>"True" on success</returns>
+        /// <remarks>This will not delete images</remarks>
+        public async Task<bool> DeleteAlbum(ImgurAlbum A)
+        {
+            var R = Req(new Uri($"https://api.imgur.com/3/album/{A.deletehash}"));
+            R.Method = "DELETE";
+            using (var Res = await GetResponse(R))
+            {
+                return !IsErrorCode(Res.StatusCode);
+            }
+        }
+
         #endregion
 
         #region Private

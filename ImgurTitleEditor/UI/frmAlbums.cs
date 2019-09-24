@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ImgurTitleEditor
@@ -95,26 +96,43 @@ namespace ImgurTitleEditor
 
         private bool EditAlbum(ImgurAlbum Album)
         {
+            if (Album != null)
+            {
+
+            }
             return false;
         }
 
         private bool CopyUrl(ImgurAlbum[] Albums)
         {
-            var Links = string.Join("\r\n", Albums.Select(m => m.link));
-            try
+            if (Albums.Length > 0)
             {
-                Clipboard.Clear();
-                Clipboard.SetText(Links);
+                var Links = string.Join("\r\n", Albums.Select(m => m.link));
+                try
+                {
+                    Clipboard.Clear();
+                    Clipboard.SetText(Links);
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Unable to copy text to the clipboard. Maybe another application is using it right now.", "Clipboard error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            catch (Exception)
-            {
-                return false;
-            }
-            return true;
+            //This never needs changing the album list
+            return false;
         }
 
-        private bool DeleteAlbums(ImgurAlbum[] Album)
+        private bool DeleteAlbums(ImgurAlbum[] Albums)
         {
+            if (Albums.Length > 0)
+            {
+                Imgur I = new Imgur(S);
+                if (MessageBox.Show("Delete the selected albums? Images will not be deleted", $"Delete {Albums.Length} albums", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.Yes)
+                {
+                    Task.WaitAll(Albums.Select(m => I.DeleteAlbum(m)).ToArray());
+                    return true;
+                }
+            }
             return false;
         }
 
@@ -150,6 +168,42 @@ namespace ImgurTitleEditor
                     break;
             }
             if (needReload)
+            {
+                LoadAlbums();
+            }
+        }
+
+        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var Albums = GetSelectedAlbums();
+            if (EditAlbum(Albums.FirstOrDefault()))
+            {
+                LoadAlbums();
+            }
+        }
+
+        private void copyURLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var Albums = GetSelectedAlbums();
+            if (CopyUrl(Albums))
+            {
+                LoadAlbums();
+            }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var Albums = GetSelectedAlbums();
+            if (DeleteAlbums(Albums))
+            {
+                LoadAlbums();
+            }
+        }
+
+        private void lvAlbums_DoubleClick(object sender, EventArgs e)
+        {
+            var Albums = GetSelectedAlbums();
+            if (EditAlbum(Albums.FirstOrDefault()))
             {
                 LoadAlbums();
             }
