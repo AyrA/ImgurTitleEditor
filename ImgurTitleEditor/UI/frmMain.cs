@@ -426,6 +426,29 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         }
 
         /// <summary>
+        /// Opens the Album form
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
+        private void albumsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (S.Token == null || S.Token.Expires.ToUniversalTime() < DateTime.UtcNow)
+            {
+                MessageBox.Show(
+                    "An access token is required for this feature. Use the 'Authorization' menu item to get one.",
+                    "Token required", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+            else
+            {
+                using (var f = new frmAlbums(S))
+                {
+                    f.ShowDialog();
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Start of Drag and Drop handler.
         /// Accepts any file drops
         /// </summary>

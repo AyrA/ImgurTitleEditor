@@ -2,8 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -161,6 +164,47 @@ namespace ImgurTitleEditor
                 }
             }
             return ret;
+        }
+
+        /// <summary>
+        /// Gets an embedded resource from the application
+        /// </summary>
+        /// <param name="ResourceName">Full resource name</param>
+        /// <returns>Resource content</returns>
+        public static byte[] GetResource(string ResourceName)
+        {
+            var EA = Assembly.GetExecutingAssembly();
+            var FullName = $"ImgurTitleEditor.{ResourceName}";
+            if (EA.GetManifestResourceNames().Contains(FullName))
+            {
+                using (var S = EA.GetManifestResourceStream(FullName))
+                {
+                    using (var MS = new MemoryStream())
+                    {
+                        S.CopyTo(MS);
+                        return MS.ToArray();
+                    }
+                }
+            }
+#if DEBUG
+            Debug.WriteLine($"Attempted to get non-existing resource. Name={FullName}");
+#endif
+            return null;
+        }
+
+        public static byte[] ConvertImage(byte[] Input, ImageFormat Output)
+        {
+            using (var MS = new MemoryStream(Input, false))
+            {
+                using (var OUT = new MemoryStream())
+                {
+                    using (var I = Image.FromStream(MS))
+                    {
+                        I.Save(OUT, Output);
+                        return OUT.ToArray();
+                    }
+                }
+            }
         }
     }
 }

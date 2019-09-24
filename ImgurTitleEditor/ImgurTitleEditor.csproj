@@ -56,7 +56,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BoolConverter.cs" />
     <Compile Include="Cache.cs" />
+    <Compile Include="NullIntConverter.cs" />
+    <Compile Include="UI\frmAlbums.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmAlbums.Designer.cs">
+      <DependentUpon>frmAlbums.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmAuth.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +117,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Tools.cs" />
+    <EmbeddedResource Include="UI\frmAlbums.resx">
+      <DependentUpon>frmAlbums.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmAuth.resx">
       <DependentUpon>frmAuth.cs</DependentUpon>
     </EmbeddedResource>
@@ -154,7 +165,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="imgur.ico" />
+    <EmbeddedResource Include="imgur.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
