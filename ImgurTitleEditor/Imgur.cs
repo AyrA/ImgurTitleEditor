@@ -221,6 +221,44 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Gets all account images
+        /// </summary>
+        /// <param name="AccountName">Account name</param>
+        /// <returns>List of images</returns>
+        /// <remarks>If you use the .ToArray() method of Linq this can take a long time if there are many pages.</remarks>
+        public IEnumerable<ImgurAlbum> GetAccountAlbums(string AccountName = SELF)
+        {
+            int Page = 0;
+            while (Page >= 0)
+            {
+                var R = Req(new Uri($"https://api.imgur.com/3/account/{AccountName}/albums/{Page++}"));
+                using (var Res = GetResponse(R).Result)
+                {
+                    if (!IsErrorCode(Res.StatusCode))
+                    {
+                        var data = ReadAll(Res.GetResponseStream()).Result.FromJson<ImgurResponse<ImgurAlbum[]>>().data;
+                        if (data.Length == 0)
+                        {
+                            //EOF
+                            Page = -1;
+                        }
+                        else
+                        {
+                            foreach (var i in data)
+                            {
+                                yield return i;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Page = -1;
+                    }
+                }
+            }
+        }
+
         #endregion
 
         #region Private
