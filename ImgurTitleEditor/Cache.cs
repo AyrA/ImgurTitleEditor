@@ -166,6 +166,22 @@ namespace ImgurTitleEditor
         }
 
         /// <summary>
+        /// Gets the thumbnail associated with the given image id
+        /// </summary>
+        /// <param name="ImageId">Image id</param>
+        /// <returns>Image file, null if not found</returns>
+        /// <remarks>Downloads the image to cache if necessary</remarks>
+        public static byte[] GetThumbnail(string ImageId)
+        {
+            var Img = Images.FirstOrDefault(m => m.id == ImageId);
+            if (Img != null)
+            {
+                return GetThumbnail(Img);
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Remove a thumbnail by file name
         /// </summary>
         /// <param name="Name">File name</param>
@@ -236,12 +252,13 @@ namespace ImgurTitleEditor
         /// <remarks>This makes sure <paramref name="p2"/> is inside of <paramref name="p1"/></remarks>
         private static bool rm(string p1, string p2)
         {
-            var p = Path.Combine(p1, p2);
-            if (p.StartsWith(_imageDir))
+            var p = Path.GetFullPath(Path.Combine(p1, p2));
+            if (p.StartsWith(Path.GetFullPath(_imageDir)))
             {
                 try
                 {
                     File.Delete(p);
+                    return true;
                 }
                 catch
                 {

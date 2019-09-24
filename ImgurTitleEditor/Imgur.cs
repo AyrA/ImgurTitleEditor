@@ -259,6 +259,25 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Gets all images of an album
+        /// </summary>
+        /// <param name="AlbumId">Album Id</param>
+        /// <returns>List of images</returns>
+        public async Task<ImgurImage[]> GetAlbumImages(string AlbumId)
+        {
+            var R = Req(new Uri($"https://api.imgur.com/3/album/{AlbumId}/images"));
+            using (var Res = await GetResponse(R))
+            {
+                if (!IsErrorCode(Res.StatusCode))
+                {
+                    var data = await ReadAll(Res.GetResponseStream());
+                    return data.FromJson<ImgurResponse<ImgurImage[]>>().data;
+                }
+            }
+            return null;
+        }
+
         #endregion
 
         #region Private

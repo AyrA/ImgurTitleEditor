@@ -12,7 +12,9 @@ namespace ImgurTitleEditor
         [JsonConverter(typeof(UnixDateTimeConverter))]
         public DateTime datetime;
         public string cover;
+        [JsonConverter(typeof(NullIntConverter))]
         public int cover_width;
+        [JsonConverter(typeof(NullIntConverter))]
         public int cover_height;
         public string account_url;
         public int account_id;
@@ -21,6 +23,7 @@ namespace ImgurTitleEditor
         public long views;
         public string link;
         public bool favorite;
+        [JsonConverter(typeof(BoolConverter))]
         public bool nsfw;
         public string section;
         public int order;
