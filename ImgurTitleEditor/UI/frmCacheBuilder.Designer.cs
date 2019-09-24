@@ -63,6 +63,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmCacheBuilder";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Cache Builder";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmCacheBuilder_FormClosed);

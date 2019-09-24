@@ -63,6 +63,8 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmDownload";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Image Download";
             this.Shown += new System.EventHandler(this.frmDownload_Shown);
