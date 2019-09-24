@@ -232,6 +232,7 @@
             this.MinimizeBox = false;
             this.Name = "frmSettings";
             this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Settings";
             this.gbAPI.ResumeLayout(false);
             this.gbAPI.PerformLayout();

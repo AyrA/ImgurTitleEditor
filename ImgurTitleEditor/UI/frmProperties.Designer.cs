@@ -159,6 +159,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(400, 400);
             this.Name = "frmProperties";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Image Properties";
             this.Shown += new System.EventHandler(this.frmProperties_Shown);
             this.SizeChanged += new System.EventHandler(this.frmProperties_SizeChanged);

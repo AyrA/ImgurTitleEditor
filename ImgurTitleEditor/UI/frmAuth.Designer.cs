@@ -114,6 +114,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.mainMenu;
             this.Name = "frmAuth";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Authentication";
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
