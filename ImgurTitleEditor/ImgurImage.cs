@@ -104,7 +104,7 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Account ID of owner
         /// </summary>
-        public int account_id;
+        public int? account_id;
         /// <summary>
         /// "True" if this image is an ad
         /// </summary>
