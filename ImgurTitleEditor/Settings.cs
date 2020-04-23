@@ -15,15 +15,15 @@ namespace ImgurTitleEditor
         /// <summary>
         /// API client related settings
         /// </summary>
-        public Client Client;
+        public Client Client { get; set; }
         /// <summary>
         /// API tokens
         /// </summary>
-        public Token Token;
+        public Token Token { get; set; }
         /// <summary>
         /// User interface configuration/state
         /// </summary>
-        public UI UI;
+        public UI UI { get; set; }
 
         /// <summary>
         /// Initializes empty settings
@@ -78,28 +78,28 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Page size
         /// </summary>
-        public int PageSize;
+        public int PageSize { get; set; }
         /// <summary>
         /// Last type of view
         /// </summary>
         /// <remarks>See <see cref="frmMain.ImageFilter"/></remarks>
-        public int LastView;
+        public int LastView { get; set; }
         /// <summary>
-        /// "True", if the window was maximized
+        /// <see cref="true"/>, if the window was maximized
         /// </summary>
-        public bool MainWindowMaximized;
-        /// <summary>
-        /// Non-maximized window size
-        /// </summary>
-        public Size MainWindowSize;
-        /// <summary>
-        /// "True", if the window was maximized
-        /// </summary>
-        public bool PropertyWindowMaximized;
+        public bool MainWindowMaximized { get; set; }
         /// <summary>
         /// Non-maximized window size
         /// </summary>
-        public Size PropertyWindowSize;
+        public Size MainWindowSize { get; set; }
+        /// <summary>
+        /// <see cref="true"/>, if the window was maximized
+        /// </summary>
+        public bool PropertyWindowMaximized { get; set; }
+        /// <summary>
+        /// Non-maximized window size
+        /// </summary>
+        public Size PropertyWindowSize { get; set; }
 
         /// <summary>
         /// Initializes default values
@@ -119,15 +119,15 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Access token
         /// </summary>
-        public string Access;
+        public string Access { get; set; }
         /// <summary>
         /// Refresh token
         /// </summary>
-        public string Refresh;
+        public string Refresh { get; set; }
         /// <summary>
         /// Expiration time of access token
         /// </summary>
-        public DateTime Expires;
+        public DateTime Expires { get; set; }
 
         /// <summary>
         /// Initializes empty token settings
@@ -147,7 +147,7 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Client ID
         /// </summary>
-        public string Id;
+        public string Id { get; set; }
         /// <summary>
         /// Client secret
         /// </summary>
@@ -156,6 +156,6 @@ namespace ImgurTitleEditor
         /// Not having a secret merely prevents you from automatically renewing the token.
         /// Tokens seem to last for 10 years though
         /// </remarks>
-        public string Secret;
+        public string Secret { get; set; }
     }
 }
