@@ -27,7 +27,7 @@ namespace ImgurTitleEditor
         public static T FromJson<T>(this string Source, T Default = default(T))
         {
 #if DEBUG
-            Debug.WriteLine($"Deserialize JSON. Source={Source}");
+            Debug.WriteLine($"Deserialize JSON for {typeof(T).Name}. Source={Source}");
 #endif
 
             try
