@@ -52,12 +52,57 @@ namespace ImgurTitleEditor
             }
         }
 
+        private class AlbumEntry
+        {
+            public string DisplayName { get; private set; }
+            public string Id { get; private set; }
+            public AlbumEntry(ImgurAlbum A)
+            {
+                DisplayName = A.title;
+                if (string.IsNullOrEmpty(DisplayName))
+                {
+                    DisplayName = "ID=" + A.id;
+                }
+                Id = A.id;
+            }
+
+            public override string ToString()
+            {
+                return DisplayName;
+            }
+        }
+
         private Settings S;
 
         public frmBulkUpload(Settings S)
         {
             this.S = S;
             InitializeComponent();
+        }
+
+        private void FillAlbums()
+        {
+            var I = new Imgur(S);
+            var Albums = new List<ImgurAlbum>();
+            Invoke((MethodInvoker)delegate
+            {
+                cbAlbum.Enabled = false;
+                cbAlbum.Items.Clear();
+                cbAlbum.Items.Add("Working...");
+                cbAlbum.Items.Add("<none>");
+                cbAlbum.SelectedIndex = 0;
+            });
+            Albums.AddRange(I.GetAccountAlbums().OrderBy(m => m.title));
+            Invoke((MethodInvoker)delegate
+            {
+                cbAlbum.Items.RemoveAt(0);
+                cbAlbum.SelectedIndex = 0;
+                foreach (var A in Albums)
+                {
+                    cbAlbum.Items.Add(new AlbumEntry(A));
+                }
+                cbAlbum.Enabled = true;
+            });
         }
 
         private void btnAddImages_Click(object sender, EventArgs e)
@@ -110,43 +155,72 @@ namespace ImgurTitleEditor
             }
         }
 
-        private void btnStartUpload_Click(object sender, EventArgs e)
+        private async void btnStartUpload_Click(object sender, EventArgs e)
         {
-            btnStartUpload.Enabled = btnAddImages.Enabled = lbFileList.Enabled = false;
+            cbAlbum.Enabled = btnStartUpload.Enabled = btnAddImages.Enabled = lbFileList.Enabled = false;
             var ItemList = new Stack<FileNameItem>(lbFileList.Items.OfType<FileNameItem>().Reverse());
             var I = new Imgur(S);
 
             if (ItemList.Count > 0)
             {
-                Thread T = new Thread(delegate ()
+                string AlbumId = cbAlbum.SelectedIndex > 0 ? ((AlbumEntry)cbAlbum.SelectedItem).Id : null;
+                List<string> Images = AlbumId == null ? null : (await I.GetAlbumImages(AlbumId)).Select(m => m.id).ToList();
+
+                while (ItemList.Count > 0)
                 {
-                    while (ItemList.Count > 0)
+                    var Current = ItemList.Pop();
+                    var Img = await I.UploadImage(
+                        File.ReadAllBytes(Current.LongName),
+                        Path.GetFileName(Current.LongName),
+                        FormatFileString(tbTitle.Text, Current.LongName),
+                        cbDescDate.Checked ? DateTime.UtcNow.ToString(@"yyyy-MM-dd HH:mm:ss \U\T\C") : "");
+                    if (Img != null)
                     {
-                        var Current = ItemList.Pop();
-                        Cache.GetImage(I.UploadImage(
-                            File.ReadAllBytes(Current.LongName),
-                            Path.GetFileName(Current.LongName),
-                            Path.GetFileNameWithoutExtension(Current.LongName),
-                            DateTime.UtcNow.ToString(@"yyyy-MM-dd HH:mm:ss \U\T\C")
-                            ).Result);
-                        Invoke((MethodInvoker)delegate
+                        if (Images != null)
                         {
-                            lbFileList.Items.RemoveAt(0);
-                        });
+                            Images.Add(Img.id);
+                        }
+                        Cache.GetImage(Img);
+                        lbFileList.Items.RemoveAt(0);
                     }
-                    Invoke((MethodInvoker)delegate
+                    else
                     {
-                        btnStartUpload.Enabled = btnAddImages.Enabled = lbFileList.Enabled = true;
-                        DialogResult = DialogResult.OK;
-                    });
-                });
-                T.IsBackground = true;
-                T.Start();
+                        break;
+                    }
+                }
+                if (Images != null)
+                {
+                    await I.SetAlbumImages(AlbumId, Images);
+                }
+                cbAlbum.Enabled = btnStartUpload.Enabled = btnAddImages.Enabled = lbFileList.Enabled = true;
+                if (lbFileList.Items.Count == 0)
+                {
+                    DialogResult = DialogResult.OK;
+                }
             }
             else
             {
                 MessageBox.Show("Please select at least one file to upload.", "No files", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private static string FormatFileString(string Format, string FullFileName)
+        {
+            var FileName = Path.GetFileName(FullFileName);
+            var NameOnly = Path.GetFileNameWithoutExtension(FileName);
+            var Ext = NameOnly.Length == FileName.Length ? string.Empty : FileName.Substring(NameOnly.Length + 1);
+            return Format
+                .Replace("%N", NameOnly)
+                .Replace("%X", Ext);
+        }
+
+        private void frmBulkUpload_Load(object sender, EventArgs e)
+        {
+            Thread T = new Thread(FillAlbums)
+            {
+                IsBackground = true
+            };
+            T.Start();
         }
     }
 }
