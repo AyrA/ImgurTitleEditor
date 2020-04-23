@@ -27,7 +27,7 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Current settings
         /// </summary>
-        private Settings S;
+        private readonly Settings S;
 
         /// <summary>
         /// Initializes a new Imgur client
@@ -43,7 +43,7 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Tries to renew the current access token
         /// </summary>
-        /// <returns>"True" on success</returns>
+        /// <returns><see cref="true"/> on success</returns>
         public async Task<bool> RenewToken()
         {
             if (string.IsNullOrEmpty(S.Token.Refresh) || string.IsNullOrEmpty(S.Client.Secret) || string.IsNullOrEmpty(S.Client.Id))
@@ -79,7 +79,7 @@ namespace ImgurTitleEditor
         /// <param name="I">Imgur image</param>
         /// <param name="Title">New title</param>
         /// <param name="Description">New description</param>
-        /// <returns>"True" on success</returns>
+        /// <returns><see cref="true"/> on success</returns>
         public async Task<bool> SetImageDescription(ImgurImage I, string Title, string Description)
         {
             var fd = BuildFormData(new Dictionary<string, string>() {
@@ -101,7 +101,7 @@ namespace ImgurTitleEditor
         /// Deletes an image
         /// </summary>
         /// <param name="I">Imgur image</param>
-        /// <returns>"True" on success</returns>
+        /// <returns><see cref="true"/> on success</returns>
         public async Task<bool> DeleteImage(ImgurImage I)
         {
             var R = Req(new Uri($"https://api.imgur.com/3/image/{I.deletehash}"));
@@ -279,6 +279,13 @@ namespace ImgurTitleEditor
             return null;
         }
 
+        /// <summary>
+        /// Adds images to an existing album
+        /// </summary>
+        /// <param name="AlbumId">Album Id</param>
+        /// <param name="ImageId">Image Ids</param>
+        /// <param name="Clear">true, to clear existing images from the album first</param>
+        /// <returns><see cref="true"/> on success</returns>
         public async Task<bool> AddImagesToAlbum(string AlbumId, IEnumerable<string> ImageId, bool Clear = false)
         {
             var URL = $"https://api.imgur.com/3/album/{AlbumId}";
@@ -294,6 +301,12 @@ namespace ImgurTitleEditor
             }
         }
 
+        /// <summary>
+        /// Sets images of an album, replacing any existing ones
+        /// </summary>
+        /// <param name="AlbumId">Album Id</param>
+        /// <param name="ImageId">Image Ids</param>
+        /// <returns><see cref="true"/> on success</returns>
         public async Task<bool> SetAlbumImages(string AlbumId, IEnumerable<string> ImageId)
         {
             return await AddImagesToAlbum(AlbumId, ImageId, true);
@@ -304,7 +317,7 @@ namespace ImgurTitleEditor
         /// Deletes an album
         /// </summary>
         /// <param name="I">Imgur album</param>
-        /// <returns>"True" on success</returns>
+        /// <returns><see cref="true"/> on success</returns>
         /// <remarks>This will not delete images</remarks>
         public async Task<bool> DeleteAlbum(ImgurAlbum A)
         {
@@ -358,7 +371,7 @@ namespace ImgurTitleEditor
         /// Checks if the given code is an error code
         /// </summary>
         /// <param name="Code">HTTP status code</param>
-        /// <returns>"True", if error</returns>
+        /// <returns><see cref="true"/>, if error</returns>
         private static bool IsErrorCode(HttpStatusCode Code)
         {
             return (int)Code >= 400;
@@ -368,7 +381,7 @@ namespace ImgurTitleEditor
         /// Checks if the given code is a redirection or "no content" code
         /// </summary>
         /// <param name="Code">HTTP status code</param>
-        /// <returns>"True", if 300 code (redirection or no content)</returns>
+        /// <returns><see cref="true"/>, if 300 code (redirection or no content)</returns>
         private static bool Is300Code(HttpStatusCode Code)
         {
             return (int)Code >= 300 && (int)Code < 400;
@@ -378,7 +391,7 @@ namespace ImgurTitleEditor
         /// Checks if the given code is a success code
         /// </summary>
         /// <param name="Code">HTTP status code</param>
-        /// <returns>"True", if OK code (200-299)</returns>
+        /// <returns><see cref="true"/>, if OK code (200-299)</returns>
         private static bool IsOkCode(HttpStatusCode Code)
         {
             return (int)Code >= 200 && (int)Code < 300;
