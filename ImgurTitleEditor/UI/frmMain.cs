@@ -456,7 +456,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         {
             using (var Uploader = new frmBulkUpload(S))
             {
-                if(Uploader.ShowDialog()==DialogResult.OK)
+                if (Uploader.ShowDialog() == DialogResult.OK)
                 {
                     ShowImages((ImageFilter)lvImages.Tag, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
                 }
@@ -750,7 +750,8 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
             }
             foreach (var Img in Images)
             {
-                if (Cache.RemoveImage(Img) && DelImgur)
+                Cache.RemoveImage(Img);
+                if (DelImgur)
                 {
                     await I.DeleteImage(Img);
                 }
