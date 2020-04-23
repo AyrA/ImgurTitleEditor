@@ -120,15 +120,16 @@ namespace ImgurTitleEditor
         /// <param name="Title">Image title</param>
         /// <param name="Description">Image description</param>
         /// <returns>Uploaded image</returns>
-        public async Task<ImgurImage> UploadImage(byte[] Data, string Filename, string Title, string Description)
+        public async Task<ImgurImage> UploadImage(byte[] Data, string Filename, string Title, string Description, string AlbumId = null)
         {
             var fd = BuildFormData(new Dictionary<string, string>() {
                 {"image", Convert.ToBase64String(Data) },
                 {"type", "base64" },
                 {"name", Filename },
                 {"title", Title },
-                {"description", Description }
-            });
+                {"description", Description },
+                {"album", AlbumId }
+            }, true);
 
             var R = Req(new Uri($"https://api.imgur.com/3/image"), fd);
             using (var Res = await GetResponse(R))
@@ -278,6 +279,27 @@ namespace ImgurTitleEditor
             return null;
         }
 
+        public async Task<bool> AddImagesToAlbum(string AlbumId, IEnumerable<string> ImageId, bool Clear = false)
+        {
+            var URL = $"https://api.imgur.com/3/album/{AlbumId}";
+            if (!Clear)
+            {
+                URL += "/add";
+            }
+            var Joined = string.Join("&", ImageId.Select(m => $"ids[]={m}").ToArray());
+            var R = Req(new Uri(URL), Joined);
+            using (var Res = await GetResponse(R))
+            {
+                return !IsErrorCode(Res.StatusCode);
+            }
+        }
+
+        public async Task<bool> SetAlbumImages(string AlbumId, IEnumerable<string> ImageId)
+        {
+            return await AddImagesToAlbum(AlbumId, ImageId, true);
+        }
+
+
         /// <summary>
         /// Deletes an album
         /// </summary>
@@ -302,7 +324,7 @@ namespace ImgurTitleEditor
         /// Generates a request with the given properties
         /// </summary>
         /// <param name="URL">Request URL</param>
-        /// <param name="BodyContent">Body content (automatically makes this into POST)</param>
+        /// <param name="BodyContent">URL encoded body content (automatically makes this into POST)</param>
         /// <param name="UseAuth">Use authenticated mode</param>
         /// <returns>HTTP Request</returns>
         private HttpWebRequest Req(Uri URL, string BodyContent = null, bool UseAuth = true)
@@ -402,11 +424,16 @@ namespace ImgurTitleEditor
         /// Builds url encoded form data
         /// </summary>
         /// <param name="Params">URL parameter dictionary</param>
+        /// <param name="StripNull">Strip params where the key or value is <see cref="null"/></param>
         /// <returns>URL encoded form data</returns>
         /// <remarks>No further URL encoding necessary</remarks>
-        private static string BuildFormData(IDictionary<string, string> Params)
+        private static string BuildFormData(IDictionary<string, string> Params, bool StripNull = false)
         {
-            return string.Join("&", Params.Select(m => $"{UrlEncode(m.Key)}={UrlEncode(m.Value)}"));
+            var Selector = Params
+                .Where(m => !StripNull || (m.Key != null & m.Value != null))
+                .Select(m => $"{UrlEncode(m.Key)}={UrlEncode(m.Value)}")
+                .ToArray();
+            return string.Join("&", Selector);
         }
 
         /// <summary>
