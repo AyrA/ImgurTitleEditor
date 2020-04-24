@@ -13,7 +13,7 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Imgur API handler
         /// </summary>
-        private Imgur I;
+        private readonly Imgur I;
         /// <summary>
         /// Cache builder thread
         /// </summary>

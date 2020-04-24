@@ -15,7 +15,7 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Current settings
         /// </summary>
-        private Settings S;
+        private readonly Settings S;
         /// <summary>
         /// True, if the image is from the clipboard
         /// </summary>

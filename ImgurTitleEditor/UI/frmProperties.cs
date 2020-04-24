@@ -38,7 +38,7 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Current settings
         /// </summary>
-        private Settings S;
+        private readonly Settings S;
         /// <summary>
         /// Next action to perform
         /// </summary>

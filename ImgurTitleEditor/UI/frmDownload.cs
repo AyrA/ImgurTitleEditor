@@ -18,15 +18,15 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Images to download
         /// </summary>
-        private List<ImgurImage> Images;
+        private readonly List<ImgurImage> Images;
         /// <summary>
         /// Current settings
         /// </summary>
-        private Settings S;
+        private readonly Settings S;
         /// <summary>
         /// Download path
         /// </summary>
-        private string Path;
+        private readonly string Path;
 
         /// <summary>
         /// Initializes new downloader form
