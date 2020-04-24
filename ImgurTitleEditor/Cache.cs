@@ -11,19 +11,19 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Cache directory
         /// </summary>
-        private static string _cacheDir;
+        private static readonly string _cacheDir;
         /// <summary>
         /// Thumbnail directory
         /// </summary>
-        private static string _thumbDir;
+        private static readonly string _thumbDir;
         /// <summary>
         /// Image directory
         /// </summary>
-        private static string _imageDir;
+        private static readonly string _imageDir;
         /// <summary>
         /// Image metadata list
         /// </summary>
-        private static string _imageList;
+        private static readonly string _imageList;
 
         /// <summary>
         /// Gets or sets Imgur images
@@ -107,7 +107,7 @@ namespace ImgurTitleEditor
         /// <returns>True if removed</returns>
         public static bool RemoveImage(string Name)
         {
-            return rm(_imageDir, Name);
+            return RemoveFile(_imageDir, Name);
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace ImgurTitleEditor
         /// <returns>True if removed</returns>
         public static bool RemoveThumbnail(string Name)
         {
-            return rm(_thumbDir, Name);
+            return RemoveFile(_thumbDir, Name);
         }
 
         /// <summary>
@@ -241,9 +241,9 @@ namespace ImgurTitleEditor
         static Cache()
         {
             _cacheDir = Path.Combine(Path.GetDirectoryName(Program.SettingsFile), "Cache");
-            _thumbDir = MD("Thumbnail");
-            _imageDir = MD("Image");
-            _imageList = Path.Combine(MD("Meta"), "images.xml");
+            _thumbDir = MakeDir("Thumbnail");
+            _imageDir = MakeDir("Image");
+            _imageList = Path.Combine(MakeDir("Meta"), "images.xml");
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace ImgurTitleEditor
         /// <param name="p2">File path</param>
         /// <returns>True, if deleted</returns>
         /// <remarks>This makes sure <paramref name="p2"/> is inside of <paramref name="p1"/></remarks>
-        private static bool rm(string p1, string p2)
+        private static bool RemoveFile(string p1, string p2)
         {
             var p = Path.GetFullPath(Path.Combine(p1, p2));
             if (p.StartsWith(Path.GetFullPath(_imageDir)))
@@ -277,7 +277,7 @@ namespace ImgurTitleEditor
         /// <param name="DirName">Directory path/name</param>
         /// <returns>Absolute directory path</returns>
         /// <remarks>This makes sure that <paramref name="DirName"/> is inside of <see cref="_cacheDir"/></remarks>
-        private static string MD(string DirName)
+        private static string MakeDir(string DirName)
         {
             var D = Path.Combine(_cacheDir, DirName);
             if (D.StartsWith(_cacheDir) && !Directory.Exists(D))
