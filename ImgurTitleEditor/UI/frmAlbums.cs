@@ -62,7 +62,7 @@ namespace ImgurTitleEditor
                             IL.Images.Add(Image.FromStream(MS));
                         }
                     }
-                    var Item = new ListViewItem(Album.title == null ? string.Empty : Album.title)
+                    var Item = new ListViewItem(Album.title ?? string.Empty)
                     {
                         ImageIndex = string.IsNullOrEmpty(Album.cover) ? 0 : IL.Images.Count - 1,
                         Tag = Album,
