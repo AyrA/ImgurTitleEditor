@@ -24,7 +24,7 @@ namespace ImgurTitleEditor
         /// <param name="Source">JSON data</param>
         /// <param name="Default">Default to return on error</param>
         /// <returns>Deserialized object on success, <paramref name="Default"/> on error</returns>
-        public static T FromJson<T>(this string Source, T Default = default(T))
+        public static T FromJson<T>(this string Source, T Default = default)
         {
 #if DEBUG
             Debug.WriteLine($"Deserialize JSON for {typeof(T).Name}. Source={Source}");
@@ -81,7 +81,7 @@ namespace ImgurTitleEditor
         {
             if (string.IsNullOrWhiteSpace(s))
             {
-                return default(T);
+                return default;
             }
             XmlSerializer S = new XmlSerializer(typeof(T));
             using (var TW = new StringReader(s))
@@ -121,8 +121,7 @@ namespace ImgurTitleEditor
         /// <returns>Int64 or default value</returns>
         public static long LongOrDefault(string Source, long Default = long.MinValue)
         {
-            long L;
-            return long.TryParse(Source, out L) ? L : Default;
+            return long.TryParse(Source, out long L) ? L : Default;
         }
 
         /// <summary>
@@ -133,8 +132,7 @@ namespace ImgurTitleEditor
         /// <returns>Int32 or default value</returns>
         public static long IntOrDefault(string Source, int Default = int.MinValue)
         {
-            int I;
-            return int.TryParse(Source, out I) ? I : Default;
+            return int.TryParse(Source, out int I) ? I : Default;
         }
 
         /// <summary>
