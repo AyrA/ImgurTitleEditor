@@ -136,7 +136,7 @@ namespace ImgurTitleEditor
             return false;
         }
 
-        private void lvAlbums_KeyDown(object sender, KeyEventArgs e)
+        private void LvAlbums_KeyDown(object sender, KeyEventArgs e)
         {
             var needReload = false;
             var Albums = GetSelectedAlbums();
@@ -173,7 +173,7 @@ namespace ImgurTitleEditor
             }
         }
 
-        private void editToolStripMenuItem_Click(object sender, EventArgs e)
+        private void EditToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var Albums = GetSelectedAlbums();
             if (EditAlbum(Albums.FirstOrDefault()))
@@ -182,7 +182,7 @@ namespace ImgurTitleEditor
             }
         }
 
-        private void copyURLToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopyURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var Albums = GetSelectedAlbums();
             if (CopyUrl(Albums))
@@ -191,7 +191,7 @@ namespace ImgurTitleEditor
             }
         }
 
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var Albums = GetSelectedAlbums();
             if (DeleteAlbums(Albums))
@@ -200,7 +200,7 @@ namespace ImgurTitleEditor
             }
         }
 
-        private void lvAlbums_DoubleClick(object sender, EventArgs e)
+        private void LvAlbums_DoubleClick(object sender, EventArgs e)
         {
             var Albums = GetSelectedAlbums();
             if (EditAlbum(Albums.FirstOrDefault()))

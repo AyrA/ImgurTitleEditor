@@ -47,8 +47,8 @@
             this.lvAlbums.Size = new System.Drawing.Size(492, 473);
             this.lvAlbums.TabIndex = 0;
             this.lvAlbums.UseCompatibleStateImageBehavior = false;
-            this.lvAlbums.DoubleClick += new System.EventHandler(this.lvAlbums_DoubleClick);
-            this.lvAlbums.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvAlbums_KeyDown);
+            this.lvAlbums.DoubleClick += new System.EventHandler(this.LvAlbums_DoubleClick);
+            this.lvAlbums.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LvAlbums_KeyDown);
             // 
             // CMS
             // 
@@ -65,7 +65,7 @@
             this.editToolStripMenuItem.ShortcutKeyDisplayString = "Enter";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.editToolStripMenuItem.Text = "&Edit";
-            this.editToolStripMenuItem.Click += new System.EventHandler(this.editToolStripMenuItem_Click);
+            this.editToolStripMenuItem.Click += new System.EventHandler(this.EditToolStripMenuItem_Click);
             // 
             // copyURLToolStripMenuItem
             // 
@@ -73,7 +73,7 @@
             this.copyURLToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
             this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.copyURLToolStripMenuItem.Text = "&Copy URL";
-            this.copyURLToolStripMenuItem.Click += new System.EventHandler(this.copyURLToolStripMenuItem_Click);
+            this.copyURLToolStripMenuItem.Click += new System.EventHandler(this.CopyURLToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
@@ -81,7 +81,7 @@
             this.deleteToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
             this.deleteToolStripMenuItem.Text = "&Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
             // frmAlbums
             // 
