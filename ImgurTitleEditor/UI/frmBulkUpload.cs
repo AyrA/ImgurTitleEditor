@@ -72,7 +72,7 @@ namespace ImgurTitleEditor
             }
         }
 
-        private Settings S;
+        private readonly Settings S;
 
         public FrmBulkUpload(Settings S)
         {

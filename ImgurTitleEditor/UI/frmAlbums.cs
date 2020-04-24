@@ -12,7 +12,7 @@ namespace ImgurTitleEditor
 {
     public partial class frmAlbums : Form
     {
-        private Settings S;
+        private readonly Settings S;
 
         public frmAlbums(Settings S)
         {
