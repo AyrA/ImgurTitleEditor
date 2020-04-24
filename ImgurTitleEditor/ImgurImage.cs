@@ -159,7 +159,7 @@ namespace ImgurTitleEditor
         public Uri GetImageUrl(ImgurImageSize Size = ImgurImageSize.Original)
         {
             string s;
-            var ext = link.Split('.').Last();
+            string ext = link.Split('.').Last();
             switch (Size)
             {
                 case ImgurImageSize.Original:

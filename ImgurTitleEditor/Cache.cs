@@ -58,8 +58,8 @@ namespace ImgurTitleEditor
         /// <returns>True, if thumbnail and image could be removed too. False on error</returns>
         public static bool RemoveImage(ImgurImage I)
         {
-            var ImageFile = Path.Combine(_imageDir, GetImageName(I));
-            var ThumbFile = Path.Combine(_thumbDir, GetThumbnailName(I));
+            string ImageFile = Path.Combine(_imageDir, GetImageName(I));
+            string ThumbFile = Path.Combine(_thumbDir, GetThumbnailName(I));
             try
             {
                 File.Delete(ImageFile);
@@ -88,7 +88,7 @@ namespace ImgurTitleEditor
         /// <remarks>Downloads the image to cache if necessary</remarks>
         public static byte[] GetImage(ImgurImage I)
         {
-            var ImageFile = Path.Combine(_imageDir, GetImageName(I));
+            string ImageFile = Path.Combine(_imageDir, GetImageName(I));
 
             if (!File.Exists(ImageFile))
             {
@@ -136,8 +136,8 @@ namespace ImgurTitleEditor
         /// <returns>true, if all images deleted</returns>
         public static bool ClearImages()
         {
-            var ret = true;
-            foreach (var img in Directory.GetFiles(_imageDir))
+            bool ret = true;
+            foreach (string img in Directory.GetFiles(_imageDir))
             {
                 try
                 {
@@ -159,7 +159,7 @@ namespace ImgurTitleEditor
         /// <remarks>Downloads the image to cache if necessary</remarks>
         public static byte[] GetThumbnail(ImgurImage I)
         {
-            var ThumbFile = Path.Combine(_thumbDir, GetThumbnailName(I));
+            string ThumbFile = Path.Combine(_thumbDir, GetThumbnailName(I));
 
             if (!File.Exists(ThumbFile))
             {
@@ -176,7 +176,7 @@ namespace ImgurTitleEditor
         /// <remarks>Downloads the image to cache if necessary</remarks>
         public static byte[] GetThumbnail(string ImageId)
         {
-            var Img = Images.FirstOrDefault(m => m.id == ImageId);
+            ImgurImage Img = Images.FirstOrDefault(m => m.id == ImageId);
             if (Img != null)
             {
                 return GetThumbnail(Img);
@@ -220,8 +220,8 @@ namespace ImgurTitleEditor
         /// <returns>true, if all thumbnails deleted</returns>
         public static bool ClearThumbnails()
         {
-            var ret = true;
-            foreach (var thumb in Directory.GetFiles(_thumbDir))
+            bool ret = true;
+            foreach (string thumb in Directory.GetFiles(_thumbDir))
             {
                 try
                 {
@@ -255,7 +255,7 @@ namespace ImgurTitleEditor
         /// <remarks>This makes sure <paramref name="p2"/> is inside of <paramref name="p1"/></remarks>
         private static bool RemoveFile(string p1, string p2)
         {
-            var p = Path.GetFullPath(Path.Combine(p1, p2));
+            string p = Path.GetFullPath(Path.Combine(p1, p2));
             if (p.StartsWith(Path.GetFullPath(_imageDir)))
             {
                 try
@@ -279,7 +279,7 @@ namespace ImgurTitleEditor
         /// <remarks>This makes sure that <paramref name="DirName"/> is inside of <see cref="_cacheDir"/></remarks>
         private static string MakeDir(string DirName)
         {
-            var D = Path.Combine(_cacheDir, DirName);
+            string D = Path.Combine(_cacheDir, DirName);
             if (D.StartsWith(_cacheDir) && !Directory.Exists(D))
             {
                 Directory.CreateDirectory(D);

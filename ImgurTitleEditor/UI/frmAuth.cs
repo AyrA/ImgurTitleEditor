@@ -59,7 +59,7 @@ namespace ImgurTitleEditor
             //Set the current URL in the Textbox
             tbURL.Text = wbAuth.Url.ToString();
             //Extract fragments and check if certain values are there
-            var Parts = Tools.ParseFragment(wbAuth.Url, false);
+            System.Collections.Generic.Dictionary<string, string> Parts = Tools.ParseFragment(wbAuth.Url, false);
             if ("access_token|refresh_token|expires_in".Split('|').All(m => Parts.ContainsKey(m) && !string.IsNullOrWhiteSpace(Parts[m])))
             {
                 if (Tools.LongOrDefault(Parts["expires_in"]) > 0)
@@ -81,7 +81,7 @@ Please add the Secret at any time before {S.Token.Expires.ToShortDateString()}",
             }
             else
             {
-                var SearchParams = Tools.ParseFragment(wbAuth.Url, true);
+                System.Collections.Generic.Dictionary<string, string> SearchParams = Tools.ParseFragment(wbAuth.Url, true);
                 if (SearchParams.ContainsKey("error"))
                 {
                     if (MessageBox.Show($@"There was a problem authorizing this application.
@@ -127,7 +127,7 @@ Do you want to try again?", "Authorization error.", MessageBoxButtons.YesNo, Mes
         /// <param name="e">Event arguments</param>
         private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var f = new FrmSettings(S))
+            using (FrmSettings f = new FrmSettings(S))
             {
                 if (f.ShowDialog() == DialogResult.OK)
                 {

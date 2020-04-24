@@ -61,7 +61,7 @@ namespace ImgurTitleEditor
             {
                 while (Images.Count > 0 && !Exit)
                 {
-                    var I = Images[0];
+                    ImgurImage I = Images[0];
                     Images.RemoveAt(0);
                     //Just cache if path is not defined
                     if (string.IsNullOrEmpty(Path))
@@ -70,7 +70,7 @@ namespace ImgurTitleEditor
                     }
                     else
                     {
-                        var FileName = System.IO.Path.Combine(Path, I.GetImageUrl().Segments.Last());
+                        string FileName = System.IO.Path.Combine(Path, I.GetImageUrl().Segments.Last());
                         if (FileName.StartsWith(Path))
                         {
                             System.IO.File.WriteAllBytes(FileName, Cache.GetImage(I));

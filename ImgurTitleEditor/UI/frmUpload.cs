@@ -84,7 +84,7 @@ namespace ImgurTitleEditor
             {
                 if (UseClipboard)
                 {
-                    using (var MS = new MemoryStream())
+                    using (MemoryStream MS = new MemoryStream())
                     {
                         pbPreview.Image.Save(MS, ImageFormat.Png);
                         Data = MS.ToArray();
@@ -101,10 +101,10 @@ namespace ImgurTitleEditor
             }
             if (Data != null)
             {
-                var I = new Imgur(S);
+                Imgur I = new Imgur(S);
                 try
                 {
-                    var img = await I.UploadImage(Data, Path.GetFileName(tbImage.Text), tbTitle.Text, tbDescription.Text);
+                    ImgurImage img = await I.UploadImage(Data, Path.GetFileName(tbImage.Text), tbTitle.Text, tbDescription.Text);
                     if (img != null)
                     {
                         //Add new image

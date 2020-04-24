@@ -82,8 +82,8 @@ namespace ImgurTitleEditor
 
         private void FillAlbums()
         {
-            var I = new Imgur(S);
-            var Albums = new List<ImgurAlbum>();
+            Imgur I = new Imgur(S);
+            List<ImgurAlbum> Albums = new List<ImgurAlbum>();
             Invoke((MethodInvoker)delegate
             {
                 cbAlbum.Enabled = false;
@@ -97,7 +97,7 @@ namespace ImgurTitleEditor
             {
                 cbAlbum.Items.RemoveAt(0);
                 cbAlbum.SelectedIndex = 0;
-                foreach (var A in Albums)
+                foreach (ImgurAlbum A in Albums)
                 {
                     cbAlbum.Items.Add(new AlbumEntry(A));
                 }
@@ -109,9 +109,9 @@ namespace ImgurTitleEditor
         {
             if (OFD.ShowDialog() == DialogResult.OK)
             {
-                var Names = OFD.FileNames.Select(m => new FileNameItem(m)).ToArray();
-                var Existing = lbFileList.Items.OfType<FileNameItem>().ToArray();
-                foreach (var Item in Names)
+                FileNameItem[] Names = OFD.FileNames.Select(m => new FileNameItem(m)).ToArray();
+                FileNameItem[] Existing = lbFileList.Items.OfType<FileNameItem>().ToArray();
+                foreach (FileNameItem Item in Names)
                 {
                     if (Existing.All(m => !m.Equals(Item)))
                     {
@@ -123,7 +123,7 @@ namespace ImgurTitleEditor
 
         private void LbFileList_KeyDown(object sender, KeyEventArgs e)
         {
-            var Index = lbFileList.SelectedIndex;
+            int Index = lbFileList.SelectedIndex;
             if (Index >= 0)
             {
                 if (e.KeyCode == Keys.Delete)
@@ -134,7 +134,7 @@ namespace ImgurTitleEditor
                 {
                     if (Index > 0)
                     {
-                        var Item = lbFileList.SelectedItem;
+                        object Item = lbFileList.SelectedItem;
                         lbFileList.Items.Remove(Item);
                         lbFileList.Items.Insert(--Index, Item);
                     }
@@ -143,7 +143,7 @@ namespace ImgurTitleEditor
                 {
                     if (Index < lbFileList.Items.Count - 1)
                     {
-                        var Item = lbFileList.SelectedItem;
+                        object Item = lbFileList.SelectedItem;
                         lbFileList.Items.Remove(Item);
                         lbFileList.Items.Insert(++Index, Item);
                     }
@@ -158,8 +158,8 @@ namespace ImgurTitleEditor
         private async void BtnStartUpload_Click(object sender, EventArgs e)
         {
             cbAlbum.Enabled = btnStartUpload.Enabled = btnAddImages.Enabled = lbFileList.Enabled = false;
-            var ItemList = new Stack<FileNameItem>(lbFileList.Items.OfType<FileNameItem>().Reverse());
-            var I = new Imgur(S);
+            Stack<FileNameItem> ItemList = new Stack<FileNameItem>(lbFileList.Items.OfType<FileNameItem>().Reverse());
+            Imgur I = new Imgur(S);
 
             if (ItemList.Count > 0)
             {
@@ -168,8 +168,8 @@ namespace ImgurTitleEditor
 
                 while (ItemList.Count > 0)
                 {
-                    var Current = ItemList.Pop();
-                    var Img = await I.UploadImage(
+                    FileNameItem Current = ItemList.Pop();
+                    ImgurImage Img = await I.UploadImage(
                         File.ReadAllBytes(Current.LongName),
                         Path.GetFileName(Current.LongName),
                         FormatFileString(tbTitle.Text, Current.LongName),
@@ -215,9 +215,9 @@ namespace ImgurTitleEditor
 
         private static string FormatFileString(string Format, string FullFileName)
         {
-            var FileName = Path.GetFileName(FullFileName);
-            var NameOnly = Path.GetFileNameWithoutExtension(FileName);
-            var Ext = NameOnly.Length == FileName.Length ? string.Empty : FileName.Substring(NameOnly.Length + 1);
+            string FileName = Path.GetFileName(FullFileName);
+            string NameOnly = Path.GetFileNameWithoutExtension(FileName);
+            string Ext = NameOnly.Length == FileName.Length ? string.Empty : FileName.Substring(NameOnly.Length + 1);
             return Format
                 .Replace("%N", NameOnly)
                 .Replace("%X", Ext);

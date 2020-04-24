@@ -25,7 +25,7 @@ namespace ImgurTitleEditor
         private void LoadAlbums()
         {
             Imgur I = new Imgur(S);
-            var IL = new ImageList()
+            ImageList IL = new ImageList()
             {
                 ImageSize = new Size(160, 160),
                 ColorDepth = ColorDepth.Depth32Bit
@@ -35,19 +35,19 @@ namespace ImgurTitleEditor
             lvAlbums.Enabled = false;
             Thread T = new Thread(delegate ()
             {
-                using (var MS = new MemoryStream(Tools.ConvertImage(Tools.GetResource("imgur.ico"), ImageFormat.Jpeg), false))
+                using (MemoryStream MS = new MemoryStream(Tools.ConvertImage(Tools.GetResource("imgur.ico"), ImageFormat.Jpeg), false))
                 {
                     IL.Images.Add(Image.FromStream(MS));
                 }
-                var Entries = new List<ListViewItem>();
+                List<ListViewItem> Entries = new List<ListViewItem>();
 
-                foreach (var Album in I.GetAccountAlbums())
+                foreach (ImgurAlbum Album in I.GetAccountAlbums())
                 {
                     if (Album.cover == null)
                     {
                         if (Album.images_count > 0)
                         {
-                            var AlbumImages = I.GetAlbumImages(Album.id).Result;
+                            ImgurImage[] AlbumImages = I.GetAlbumImages(Album.id).Result;
                             if (AlbumImages != null)
                             {
                                 //Use first image as cover
@@ -57,12 +57,12 @@ namespace ImgurTitleEditor
                     }
                     if (!string.IsNullOrEmpty(Album.cover))
                     {
-                        using (var MS = new MemoryStream(Cache.GetThumbnail(Album.cover), false))
+                        using (MemoryStream MS = new MemoryStream(Cache.GetThumbnail(Album.cover), false))
                         {
                             IL.Images.Add(Image.FromStream(MS));
                         }
                     }
-                    var Item = new ListViewItem(Album.title ?? string.Empty)
+                    ListViewItem Item = new ListViewItem(Album.title ?? string.Empty)
                     {
                         ImageIndex = string.IsNullOrEmpty(Album.cover) ? 0 : IL.Images.Count - 1,
                         Tag = Album,
@@ -111,7 +111,7 @@ namespace ImgurTitleEditor
         {
             if (Albums.Length > 0)
             {
-                var Links = string.Join("\r\n", Albums.Select(m => m.link));
+                string Links = string.Join("\r\n", Albums.Select(m => m.link));
                 try
                 {
                     Clipboard.Clear();
@@ -142,8 +142,8 @@ namespace ImgurTitleEditor
 
         private void LvAlbums_KeyDown(object sender, KeyEventArgs e)
         {
-            var needReload = false;
-            var Albums = GetSelectedAlbums();
+            bool needReload = false;
+            ImgurAlbum[] Albums = GetSelectedAlbums();
 
             switch (e.KeyCode)
             {
@@ -179,7 +179,7 @@ namespace ImgurTitleEditor
 
         private void EditToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var Albums = GetSelectedAlbums();
+            ImgurAlbum[] Albums = GetSelectedAlbums();
             if (EditAlbum(Albums.FirstOrDefault()))
             {
                 LoadAlbums();
@@ -188,7 +188,7 @@ namespace ImgurTitleEditor
 
         private void CopyURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var Albums = GetSelectedAlbums();
+            ImgurAlbum[] Albums = GetSelectedAlbums();
             if (CopyUrl(Albums))
             {
                 LoadAlbums();
@@ -197,7 +197,7 @@ namespace ImgurTitleEditor
 
         private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var Albums = GetSelectedAlbums();
+            ImgurAlbum[] Albums = GetSelectedAlbums();
             if (DeleteAlbums(Albums))
             {
                 LoadAlbums();
@@ -206,7 +206,7 @@ namespace ImgurTitleEditor
 
         private void LvAlbums_DoubleClick(object sender, EventArgs e)
         {
-            var Albums = GetSelectedAlbums();
+            ImgurAlbum[] Albums = GetSelectedAlbums();
             if (EditAlbum(Albums.FirstOrDefault()))
             {
                 LoadAlbums();

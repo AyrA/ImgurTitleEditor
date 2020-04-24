@@ -57,13 +57,13 @@ namespace ImgurTitleEditor
         {
             T = new Thread(delegate ()
             {
-                var Images = new List<ImgurImage>();
-                var ImageCount = I.GetAccountImageCount().Result;
+                List<ImgurImage> Images = new List<ImgurImage>();
+                int ImageCount = I.GetAccountImageCount().Result;
                 Invoke((MethodInvoker)delegate
                 {
                     pbMeta.Maximum = pbThumbnail.Maximum = ImageCount;
                 });
-                foreach (var img in I.GetAccountImages())
+                foreach (ImgurImage img in I.GetAccountImages())
                 {
                     Images.Add(img);
                     if (Exit)
@@ -73,10 +73,10 @@ namespace ImgurTitleEditor
                     Invoke((MethodInvoker)delegate { ++pbMeta.Value; });
                 }
                 Cache.Images = Images.ToArray();
-                var ThumbNames = new List<string>(Cache.GetThumbnails());
-                var ImageNames = new List<string>(Cache.GetImages());
+                List<string> ThumbNames = new List<string>(Cache.GetThumbnails());
+                List<string> ImageNames = new List<string>(Cache.GetImages());
 
-                foreach (var img in Images)
+                foreach (ImgurImage img in Images)
                 {
                     Cache.GetThumbnail(img);
                     ThumbNames.Remove(Cache.GetThumbnailName(img));
@@ -87,11 +87,11 @@ namespace ImgurTitleEditor
                     }
                     Invoke((MethodInvoker)delegate { ++pbThumbnail.Value; });
                 }
-                foreach (var tName in ThumbNames)
+                foreach (string tName in ThumbNames)
                 {
                     Cache.RemoveThumbnail(tName);
                 }
-                foreach (var tName in ImageNames)
+                foreach (string tName in ImageNames)
                 {
                     Cache.RemoveImage(tName);
                 }

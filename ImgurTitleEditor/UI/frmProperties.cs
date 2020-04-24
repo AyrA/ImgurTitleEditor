@@ -61,7 +61,7 @@ namespace ImgurTitleEditor
             }
             else
             {
-                var ConfigSize = S.UI.PropertyWindowSize;
+                Size ConfigSize = S.UI.PropertyWindowSize;
                 if (ConfigSize.Height >= MinimumSize.Height && ConfigSize.Width >= MinimumSize.Width)
                 {
                     Size = ConfigSize;
@@ -83,7 +83,7 @@ namespace ImgurTitleEditor
             if (Save())
             {
                 LastAction = ActionType.Newer;
-                var img = Application.OpenForms.OfType<FrmMain>().First().PrevImage();
+                ImgurImage img = Application.OpenForms.OfType<FrmMain>().First().PrevImage();
                 if (img != null)
                 {
                     SetImage(img);
@@ -101,7 +101,7 @@ namespace ImgurTitleEditor
             if (Save())
             {
                 LastAction = ActionType.Older;
-                var img = Application.OpenForms.OfType<FrmMain>().First().NextImage();
+                ImgurImage img = Application.OpenForms.OfType<FrmMain>().First().NextImage();
                 if (img != null)
                 {
                     SetImage(img);
@@ -217,9 +217,9 @@ namespace ImgurTitleEditor
             }
             if (!I.animated)
             {
-                using (var MS = new MemoryStream(Cache.GetImage(I)))
+                using (MemoryStream MS = new MemoryStream(Cache.GetImage(I)))
                 {
-                    using (var img = Image.FromStream(MS))
+                    using (Image img = Image.FromStream(MS))
                     {
                         pbImage.Image = (Image)img.Clone();
                     }
@@ -229,9 +229,9 @@ namespace ImgurTitleEditor
             {
                 //var Imgur = new Imgur(S);
                 //This is a temporary solution until I can figure out how to play GIF animations again
-                using (var MS = new MemoryStream(Imgur.GetImage(I, ImgurImageSize.HugeThumbnail, false)))
+                using (MemoryStream MS = new MemoryStream(Imgur.GetImage(I, ImgurImageSize.HugeThumbnail, false)))
                 {
-                    using (var img = Image.FromStream(MS))
+                    using (Image img = Image.FromStream(MS))
                     {
                         pbImage.Image = (Image)img.Clone();
                     }
@@ -248,16 +248,16 @@ namespace ImgurTitleEditor
         /// <returns>"True", if saved</returns>
         private bool Save()
         {
-            var newTitle = string.IsNullOrEmpty(tbTitle.Text) ? null : tbTitle.Text;
-            var newDesc = string.IsNullOrEmpty(tbDesc.Text) ? null : tbDesc.Text;
+            string newTitle = string.IsNullOrEmpty(tbTitle.Text) ? null : tbTitle.Text;
+            string newDesc = string.IsNullOrEmpty(tbDesc.Text) ? null : tbDesc.Text;
             if (I.title != newTitle || I.description != newDesc)
             {
                 //Replace empty strings with null
                 I.title = newTitle;
                 I.description = newDesc;
 
-                var imgur = new Imgur(S);
-                var Result = false;
+                Imgur imgur = new Imgur(S);
+                bool Result = false;
                 Exception TaskException = null;
                 Task.Run(async delegate
                 {
@@ -274,8 +274,8 @@ namespace ImgurTitleEditor
                 if (Result)
                 {
                     //Replace updated image in cache
-                    var All = Cache.Images;
-                    for (var i = 0; i < All.Length; i++)
+                    ImgurImage[] All = Cache.Images;
+                    for (int i = 0; i < All.Length; i++)
                     {
                         if (All[i].id == I.id)
                         {

@@ -41,8 +41,8 @@ namespace ImgurTitleEditor
         /// <returns>Serialized settings</returns>
         public string Save()
         {
-            var X = new XmlSerializer(typeof(Settings));
-            using (var MS = new MemoryStream())
+            XmlSerializer X = new XmlSerializer(typeof(Settings));
+            using (MemoryStream MS = new MemoryStream())
             {
                 X.Serialize(MS,this);
                 return Encoding.UTF8.GetString(MS.ToArray());
@@ -56,8 +56,8 @@ namespace ImgurTitleEditor
         /// <returns>Deserialized settings</returns>
         public static Settings Load(string Content)
         {
-            var X = new XmlSerializer(typeof(Settings));
-            using (var SR = new StringReader(Content))
+            XmlSerializer X = new XmlSerializer(typeof(Settings));
+            using (StringReader SR = new StringReader(Content))
             {
                 return (Settings)X.Deserialize(SR);
             }

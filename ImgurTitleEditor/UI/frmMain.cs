@@ -63,7 +63,7 @@ namespace ImgurTitleEditor
             //If the date is still in the past, the user has to do so manually.
             if (S.Token.Expires < DateTime.UtcNow)
             {
-                using (var f = new frmAuth(S))
+                using (frmAuth f = new frmAuth(S))
                 {
                     if (f.ShowDialog() == DialogResult.OK)
                     {
@@ -84,7 +84,7 @@ namespace ImgurTitleEditor
             }
             else
             {
-                var ConfigSize = S.UI.MainWindowSize;
+                Size ConfigSize = S.UI.MainWindowSize;
                 if (ConfigSize.Height >= MinimumSize.Height && ConfigSize.Width >= MinimumSize.Width)
                 {
                     Size = ConfigSize;
@@ -114,7 +114,7 @@ namespace ImgurTitleEditor
         {
             if (Cache.Images == null || Cache.Images.Length == 0 || MessageBox.Show("Your cache is not empty. Only rebuild the cache if you uploaded or deleted images outside of this application. This process invokes a lot of API requests which can get you blocked if you do it too often.\r\nAre you sure you want to rescan it?", "Reset Cache", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
-                using (var fCache = new frmCacheBuilder(S))
+                using (frmCacheBuilder fCache = new frmCacheBuilder(S))
                 {
                     fCache.ShowDialog();
                     InitPages();
@@ -131,13 +131,13 @@ namespace ImgurTitleEditor
         {
             if (S.Token.Expires < DateTime.UtcNow || MessageBox.Show($"This app is already authorized until {S.Token.Expires.ToShortDateString()} and connected to your account. Reauthorization will erase the cache.\r\nContinue?", "Authorization", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
-                using (var fAuth = new frmAuth(S))
+                using (frmAuth fAuth = new frmAuth(S))
                 {
                     if (fAuth.ShowDialog() == DialogResult.OK)
                     {
                         Cache.ClearThumbnails();
                         Cache.ClearImages();
-                        using (var fCache = new frmCacheBuilder(S))
+                        using (frmCacheBuilder fCache = new frmCacheBuilder(S))
                         {
                             fCache.ShowDialog();
                         }
@@ -244,7 +244,7 @@ namespace ImgurTitleEditor
         /// <param name="e">Event arguments</param>
         private void UploadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var fUpload = new FrmUpload(S))
+            using (FrmUpload fUpload = new FrmUpload(S))
             {
                 if (fUpload.ShowDialog() == DialogResult.OK)
                 {
@@ -385,9 +385,9 @@ namespace ImgurTitleEditor
         /// <param name="e">Event arguments</param>
         private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var f = new FrmSettings(S))
+            using (FrmSettings f = new FrmSettings(S))
             {
-                var PS = S.UI.PageSize;
+                int PS = S.UI.PageSize;
                 if (f.ShowDialog() == DialogResult.OK)
                 {
                     if (PS != S.UI.PageSize)
@@ -440,7 +440,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
             }
             else
             {
-                using (var f = new frmAlbums(S))
+                using (frmAlbums f = new frmAlbums(S))
                 {
                     f.ShowDialog();
                 }
@@ -454,7 +454,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         /// <param name="e">Event arguments</param>
         private void BulkUploadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var Uploader = new FrmBulkUpload(S))
+            using (FrmBulkUpload Uploader = new FrmBulkUpload(S))
             {
                 if (Uploader.ShowDialog() == DialogResult.OK)
                 {
@@ -488,13 +488,13 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
             if (e.Data.GetFormats().Contains("FileDrop"))
             {
                 //This is always a string array, even for single file drops
-                var Data = (string[])e.Data.GetData("FileDrop");
+                string[] Data = (string[])e.Data.GetData("FileDrop");
                 //BeginInvoke seems stupid because the event is already fired in the correct thread,
                 //but this prevents the Drop event from getting "stuck"
                 BeginInvoke((MethodInvoker)delegate
                 {
-                    var Render = false;
-                    foreach (var FileName in Data)
+                    bool Render = false;
+                    foreach (string FileName in Data)
                     {
                         if (File.Exists(FileName))
                         {
@@ -507,7 +507,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                                 MessageBox.Show($"{Path.GetFileName(FileName)} is not a valid image", "Invalid Image", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 continue;
                             }
-                            using (var f = new FrmUpload(S, FileName))
+                            using (FrmUpload f = new FrmUpload(S, FileName))
                             {
                                 if (f.ShowDialog() != DialogResult.OK)
                                 {
@@ -580,12 +580,12 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         {
             if (lvImages.SelectedItems.Count > 0)
             {
-                var I = lvImages.SelectedItems[0];
+                ListViewItem I = lvImages.SelectedItems[0];
                 //Update title in case it was changed in the form
                 I.Text = ((ImgurImage)I.Tag).title;
                 if (I.Index > 0)
                 {
-                    var PrevItem = lvImages.Items[I.Index - 1];
+                    ListViewItem PrevItem = lvImages.Items[I.Index - 1];
                     lvImages.SelectedItems.Clear();
                     PrevItem.Selected = true;
                     PrevItem.EnsureVisible();
@@ -612,11 +612,11 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         {
             if (lvImages.SelectedItems.Count > 0)
             {
-                var I = lvImages.SelectedItems[0];
+                ListViewItem I = lvImages.SelectedItems[0];
                 I.Text = ((ImgurImage)I.Tag).title;
                 if (I.Index < lvImages.Items.Count - 1)
                 {
-                    var NextItem = lvImages.Items[I.Index + 1];
+                    ListViewItem NextItem = lvImages.Items[I.Index + 1];
                     lvImages.SelectedItems.Clear();
                     NextItem.Selected = true;
                     NextItem.EnsureVisible();
@@ -642,9 +642,9 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         /// <param name="Search">Title/Desc/Name filter</param>
         private void ShowImages(ImageFilter Filter, int Page, string Search)
         {
-            var RealPage = Math.Min(Pages, Math.Max(1, Page));
+            int RealPage = Math.Min(Pages, Math.Max(1, Page));
             lvImages.Tag = Filter;
-            foreach (var i in listToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
+            foreach (ToolStripMenuItem i in listToolStripMenuItem.DropDownItems.OfType<ToolStripMenuItem>())
             {
                 i.Checked = false;
             }
@@ -663,27 +663,27 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
             S.UI.LastView = (int)Filter;
             Tools.SaveSettings(S, Program.SettingsFile);
 
-            var Index = 0;
-            var Items = new List<ListViewItem>();
-            var IL = new ImageList()
+            int Index = 0;
+            List<ListViewItem> Items = new List<ListViewItem>();
+            ImageList IL = new ImageList()
             {
                 ImageSize = new Size(160, 160),
                 ColorDepth = ColorDepth.Depth32Bit
             };
-            var Iterator = FilterImages(Filter, Search);
+            IEnumerable<ImgurImage> Iterator = FilterImages(Filter, Search);
             Pages = (int)Math.Ceiling(Iterator.Count() * 1.0 / S.UI.PageSize);
             lblPage.Text = Pages < 1 ? "" : $"Current Page: {Page}/{Pages}";
             if (S.UI.PageSize > 0)
             {
                 Iterator = Iterator.Skip(S.UI.PageSize * (RealPage - 1)).Take(S.UI.PageSize);
             }
-            foreach (var I in Iterator)
+            foreach (ImgurImage I in Iterator)
             {
-                using (var MS = new MemoryStream(Cache.GetThumbnail(I)))
+                using (MemoryStream MS = new MemoryStream(Cache.GetThumbnail(I)))
                 {
                     IL.Images.Add(Image.FromStream(MS));
                 }
-                var Item = new ListViewItem(I.title ?? string.Empty)
+                ListViewItem Item = new ListViewItem(I.title ?? string.Empty)
                 {
                     ImageIndex = Index,
                     Tag = I,
@@ -716,12 +716,12 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
             {
                 return true;
             }
-            var Strings = new string[] {
+            IEnumerable<string> Strings = new string[] {
                 I.title,
                 I.description,
                 I.name
             }.Where(m => !string.IsNullOrEmpty(m));
-            foreach (var s in Strings)
+            foreach (string s in Strings)
             {
                 if (s.ToLower().Contains(Search.ToLower()))
                 {
@@ -736,8 +736,8 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         /// </summary>
         private async void DeleteSelectedImages()
         {
-            var DelImgur = false;
-            var Images = lvImages.SelectedItems.OfType<ListViewItem>().Select(m => (ImgurImage)m.Tag).ToArray();
+            bool DelImgur = false;
+            ImgurImage[] Images = lvImages.SelectedItems.OfType<ListViewItem>().Select(m => (ImgurImage)m.Tag).ToArray();
             switch (MessageBox.Show($"You are about to delete {Images.Length} images from the cache.\r\nRemove them from your Imgur Account too?", "Delete Images", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button3))
             {
                 case DialogResult.Yes:
@@ -750,7 +750,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                     MessageBox.Show("No images deleted. Operation cancelled by user.", "Delete Images", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
             }
-            foreach (var Img in Images)
+            foreach (ImgurImage Img in Images)
             {
                 Cache.RemoveImage(Img);
                 if (DelImgur)
@@ -759,7 +759,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                 }
             }
             lvImages.SuspendLayout();
-            foreach (var Item in lvImages.SelectedItems.OfType<ListViewItem>().ToArray())
+            foreach (ListViewItem Item in lvImages.SelectedItems.OfType<ListViewItem>().ToArray())
             {
                 lvImages.Items.Remove(Item);
             }
@@ -784,9 +784,9 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                     }
                     else
                     {
-                        using (var SFD = new SaveFileDialog())
+                        using (SaveFileDialog SFD = new SaveFileDialog())
                         {
-                            var Img = (ImgurImage)lvImages.SelectedItems[0].Tag;
+                            ImgurImage Img = (ImgurImage)lvImages.SelectedItems[0].Tag;
                             SFD.DefaultExt = Img.link.Split('.').Last();
                             if (Img.name != null)
                             {
@@ -808,26 +808,26 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                 default:
                     if (CacheOnly)
                     {
-                        var Images = lvImages.SelectedItems
+                        IEnumerable<ImgurImage> Images = lvImages.SelectedItems
                                     .OfType<ListViewItem>()
                                     .Select(m => (ImgurImage)m.Tag);
-                        using (var fDownload = new FrmDownload(Images, null))
+                        using (FrmDownload fDownload = new FrmDownload(Images, null))
                         {
                             fDownload.ShowDialog();
                         }
                     }
                     else
                     {
-                        using (var FBD = new FolderBrowserDialog())
+                        using (FolderBrowserDialog FBD = new FolderBrowserDialog())
                         {
                             FBD.Description = $"Saving {lvImages.SelectedItems.Count} Images";
                             FBD.ShowNewFolderButton = true;
                             if (FBD.ShowDialog(this) == DialogResult.OK)
                             {
-                                var Images = lvImages.SelectedItems
+                                IEnumerable<ImgurImage> Images = lvImages.SelectedItems
                                     .OfType<ListViewItem>()
                                     .Select(m => (ImgurImage)m.Tag);
-                                using (var fDownload = new FrmDownload(Images, FBD.SelectedPath))
+                                using (FrmDownload fDownload = new FrmDownload(Images, FBD.SelectedPath))
                                 {
                                     fDownload.ShowDialog();
                                 }
@@ -845,8 +845,8 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         {
             if (lvImages.SelectedItems.Count > 0)
             {
-                var I = (ImgurImage)lvImages.SelectedItems[0].Tag;
-                using (var prop = new frmProperties(S, I))
+                ImgurImage I = (ImgurImage)lvImages.SelectedItems[0].Tag;
+                using (frmProperties prop = new frmProperties(S, I))
                 {
                     prop.ShowDialog();
                 }
@@ -858,7 +858,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         /// </summary>
         private void CopySelectedURL()
         {
-            var Links = string.Join("\r\n", lvImages.SelectedItems
+            string Links = string.Join("\r\n", lvImages.SelectedItems
                 .OfType<ListViewItem>()
                 .Select(m => ((ImgurImage)m.Tag).GetImageUrl()));
             Clipboard.SetText(Links);
