@@ -78,7 +78,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnPrev_Click(object sender, EventArgs e)
+        private void BtnPrev_Click(object sender, EventArgs e)
         {
             if (Save())
             {
@@ -96,7 +96,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnNext_Click(object sender, EventArgs e)
+        private void BtnNext_Click(object sender, EventArgs e)
         {
             if (Save())
             {
@@ -114,7 +114,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnOK_Click(object sender, EventArgs e)
+        private void BtnOK_Click(object sender, EventArgs e)
         {
             LastAction = ActionType.None;
             if (Save())
@@ -129,7 +129,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
@@ -140,7 +140,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void frmProperties_Resize(object sender, EventArgs e)
+        private void FrmProperties_Resize(object sender, EventArgs e)
         {
             ScaleImage();
         }
@@ -150,7 +150,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void tbTitle_KeyDown(object sender, KeyEventArgs e)
+        private void TbTitle_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -164,7 +164,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void frmProperties_Shown(object sender, EventArgs e)
+        private void FrmProperties_Shown(object sender, EventArgs e)
         {
             ScaleImage();
         }
@@ -174,7 +174,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void tbDesc_KeyDown(object sender, KeyEventArgs e)
+        private void TbDesc_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter && e.Modifiers == Keys.Control)
             {
@@ -188,7 +188,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void frmProperties_SizeChanged(object sender, EventArgs e)
+        private void FrmProperties_SizeChanged(object sender, EventArgs e)
         {
             S.UI.PropertyWindowMaximized = WindowState == FormWindowState.Maximized;
             S.UI.PropertyWindowSize = Size;
@@ -327,13 +327,13 @@ namespace ImgurTitleEditor
             switch (LastAction)
             {
                 case ActionType.Newer:
-                    btnPrev_Click(null, null);
+                    BtnPrev_Click(null, null);
                     break;
                 case ActionType.Older:
-                    btnNext_Click(null, null);
+                    BtnNext_Click(null, null);
                     break;
                 case ActionType.None:
-                    btnOK_Click(null, null);
+                    BtnOK_Click(null, null);
                     break;
             }
         }

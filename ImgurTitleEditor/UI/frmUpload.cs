@@ -10,7 +10,7 @@ namespace ImgurTitleEditor
     /// <summary>
     /// Form that handles file uploads
     /// </summary>
-    public partial class frmUpload : Form
+    public partial class FrmUpload : Form
     {
         /// <summary>
         /// Current settings
@@ -27,7 +27,7 @@ namespace ImgurTitleEditor
         /// <param name="S">Current settings</param>
         /// <param name="FileName">Optional file name to initialize the form with</param>
         /// <param name="I">Image to use as clipboard based upload</param>
-        public frmUpload(Settings S, string FileName = null, Image I = null)
+        public FrmUpload(Settings S, string FileName = null, Image I = null)
         {
             this.S = S;
             InitializeComponent();
@@ -44,7 +44,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             DialogResult = DialogResult.Cancel;
             Close();
@@ -55,7 +55,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnSelect_Click(object sender, EventArgs e)
+        private void BtnSelect_Click(object sender, EventArgs e)
         {
             if (OFD.ShowDialog() == DialogResult.OK)
             {
@@ -77,7 +77,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private async void btnUpload_Click(object sender, EventArgs e)
+        private async void BtnUpload_Click(object sender, EventArgs e)
         {
             byte[] Data = null;
             try
@@ -129,7 +129,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnClipboard_Click(object sender, EventArgs e)
+        private void BtnClipboard_Click(object sender, EventArgs e)
         {
             if (Clipboard.ContainsImage())
             {

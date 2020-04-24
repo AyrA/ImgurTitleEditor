@@ -38,7 +38,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void frmCacheBuilder_FormClosed(object sender, FormClosedEventArgs e)
+        private void FrmCacheBuilder_FormClosed(object sender, FormClosedEventArgs e)
         {
             Exit = true;
             if(T.IsAlive)
@@ -53,7 +53,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void frmCacheBuilder_Shown(object sender, EventArgs e)
+        private void FrmCacheBuilder_Shown(object sender, EventArgs e)
         {
             T = new Thread(delegate ()
             {

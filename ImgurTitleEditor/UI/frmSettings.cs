@@ -6,7 +6,7 @@ namespace ImgurTitleEditor
     /// <summary>
     /// Handles application settings
     /// </summary>
-    public partial class frmSettings : Form
+    public partial class FrmSettings : Form
     {
         /// <summary>
         /// Current settings
@@ -17,7 +17,7 @@ namespace ImgurTitleEditor
         /// Initializes a new settings form
         /// </summary>
         /// <param name="S">Current settings</param>
-        public frmSettings(Settings S)
+        public FrmSettings(Settings S)
         {
             this.S = S;
             InitializeComponent();
@@ -32,7 +32,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnOK_Click(object sender, EventArgs e)
+        private void BtnOK_Click(object sender, EventArgs e)
         {
             bool Reauth = tbApiId.Text != S.Client.Id;
             if (string.IsNullOrEmpty(tbApiId.Text))
@@ -57,7 +57,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -67,7 +67,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnRegister_Click(object sender, EventArgs e)
+        private void BtnRegister_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("This will open your webbrowser. Please register an \"OAuth 2 Application without a callback URL\", then come back here and fill in the ID and secret.\r\n\r\nContinue? (Imgur Account Required)", "OAuth2 Registration", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
             {
@@ -88,7 +88,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void llCopy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LlCopy_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Clipboard.SetText(Imgur.IMGUR_REGISTRATION);
             MessageBox.Show($"{Imgur.IMGUR_REGISTRATION} copied to clipboard.", "OAuth2 Registration", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -99,7 +99,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void tbApiSecret_Enter(object sender, EventArgs e)
+        private void TbApiSecret_Enter(object sender, EventArgs e)
         {
             tbApiSecret.UseSystemPasswordChar = false;
         }
@@ -109,7 +109,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void tbApiSecret_Leave(object sender, EventArgs e)
+        private void TbApiSecret_Leave(object sender, EventArgs e)
         {
             tbApiSecret.UseSystemPasswordChar = true;
         }

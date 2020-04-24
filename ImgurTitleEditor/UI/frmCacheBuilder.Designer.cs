@@ -67,8 +67,8 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Cache Builder";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmCacheBuilder_FormClosed);
-            this.Shown += new System.EventHandler(this.frmCacheBuilder_Shown);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmCacheBuilder_FormClosed);
+            this.Shown += new System.EventHandler(this.FrmCacheBuilder_Shown);
             this.ResumeLayout(false);
 
         }

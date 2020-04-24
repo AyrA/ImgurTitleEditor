@@ -1,6 +1,6 @@
 ﻿namespace ImgurTitleEditor
 {
-    partial class frmDownload
+    partial class FrmDownload
     {
         /// <summary>
         /// Required designer variable.
@@ -50,7 +50,7 @@
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // frmDownload
             // 
@@ -67,7 +67,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Image Download";
-            this.Shown += new System.EventHandler(this.frmDownload_Shown);
+            this.Shown += new System.EventHandler(this.FrmDownload_Shown);
             this.ResumeLayout(false);
 
         }

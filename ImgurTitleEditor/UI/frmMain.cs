@@ -244,7 +244,7 @@ namespace ImgurTitleEditor
         /// <param name="e">Event arguments</param>
         private void UploadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var fUpload = new frmUpload(S))
+            using (var fUpload = new FrmUpload(S))
             {
                 if (fUpload.ShowDialog() == DialogResult.OK)
                 {
@@ -385,7 +385,7 @@ namespace ImgurTitleEditor
         /// <param name="e">Event arguments</param>
         private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var f = new frmSettings(S))
+            using (var f = new FrmSettings(S))
             {
                 var PS = S.UI.PageSize;
                 if (f.ShowDialog() == DialogResult.OK)
@@ -507,7 +507,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                                 MessageBox.Show($"{Path.GetFileName(FileName)} is not a valid image", "Invalid Image", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 continue;
                             }
-                            using (var f = new frmUpload(S, FileName))
+                            using (var f = new FrmUpload(S, FileName))
                             {
                                 if (f.ShowDialog() != DialogResult.OK)
                                 {
@@ -811,7 +811,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                         var Images = lvImages.SelectedItems
                                     .OfType<ListViewItem>()
                                     .Select(m => (ImgurImage)m.Tag);
-                        using (var fDownload = new frmDownload(Images, null))
+                        using (var fDownload = new FrmDownload(Images, null))
                         {
                             fDownload.ShowDialog();
                         }
@@ -827,7 +827,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                                 var Images = lvImages.SelectedItems
                                     .OfType<ListViewItem>()
                                     .Select(m => (ImgurImage)m.Tag);
-                                using (var fDownload = new frmDownload(Images, FBD.SelectedPath))
+                                using (var fDownload = new FrmDownload(Images, FBD.SelectedPath))
                                 {
                                     fDownload.ShowDialog();
                                 }

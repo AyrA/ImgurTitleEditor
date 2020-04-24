@@ -9,7 +9,7 @@ namespace ImgurTitleEditor
     /// <summary>
     /// Form that handles large image downloads
     /// </summary>
-    public partial class frmDownload : Form
+    public partial class FrmDownload : Form
     {
         /// <summary>
         /// Cancels thread if "True"
@@ -30,7 +30,7 @@ namespace ImgurTitleEditor
         /// <param name="S">Current settings</param>
         /// <param name="Images">Image list</param>
         /// <param name="Path">Save path</param>
-        public frmDownload(IEnumerable<ImgurImage> Images, string Path)
+        public FrmDownload(IEnumerable<ImgurImage> Images, string Path)
         {
             this.Images = Images.ToList();
             this.Path = Path;
@@ -42,7 +42,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void BtnCancel_Click(object sender, EventArgs e)
         {
             btnCancel.Text = "Cancelling...";
             btnCancel.Enabled = false;
@@ -54,7 +54,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void frmDownload_Shown(object sender, EventArgs e)
+        private void FrmDownload_Shown(object sender, EventArgs e)
         {
             pbStatus.Maximum = Images.Count;
             Thread T = new Thread(delegate ()

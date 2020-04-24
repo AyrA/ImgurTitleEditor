@@ -1,6 +1,6 @@
 ﻿namespace ImgurTitleEditor
 {
-    partial class frmUpload
+    partial class FrmUpload
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmUpload));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmUpload));
             this.btnSelect = new System.Windows.Forms.Button();
             this.OFD = new System.Windows.Forms.OpenFileDialog();
             this.tbImage = new System.Windows.Forms.TextBox();
@@ -51,7 +51,7 @@
             this.btnSelect.TabIndex = 1;
             this.btnSelect.Text = "&Select...";
             this.btnSelect.UseVisualStyleBackColor = true;
-            this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
+            this.btnSelect.Click += new System.EventHandler(this.BtnSelect_Click);
             // 
             // OFD
             // 
@@ -92,7 +92,7 @@
             this.btnUpload.TabIndex = 5;
             this.btnUpload.Text = "&Upload";
             this.btnUpload.UseVisualStyleBackColor = true;
-            this.btnUpload.Click += new System.EventHandler(this.btnUpload_Click);
+            this.btnUpload.Click += new System.EventHandler(this.BtnUpload_Click);
             // 
             // btnCancel
             // 
@@ -103,7 +103,7 @@
             this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // pbPreview
             // 
@@ -126,7 +126,7 @@
             this.btnClipboard.TabIndex = 4;
             this.btnClipboard.Text = "&Clipboard";
             this.btnClipboard.UseVisualStyleBackColor = true;
-            this.btnClipboard.Click += new System.EventHandler(this.btnClipboard_Click);
+            this.btnClipboard.Click += new System.EventHandler(this.BtnClipboard_Click);
             // 
             // lblTitle
             // 

@@ -54,7 +54,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void wbAuth_Navigated(object sender, WebBrowserNavigatedEventArgs e)
+        private void WbAuth_Navigated(object sender, WebBrowserNavigatedEventArgs e)
         {
             //Set the current URL in the Textbox
             tbURL.Text = wbAuth.Url.ToString();
@@ -105,7 +105,7 @@ Do you want to try again?", "Authorization error.", MessageBoxButtons.YesNo, Mes
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Close();
         }
@@ -115,7 +115,7 @@ Do you want to try again?", "Authorization error.", MessageBoxButtons.YesNo, Mes
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void restartToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RestartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             InitBrowser();
         }
@@ -125,9 +125,9 @@ Do you want to try again?", "Authorization error.", MessageBoxButtons.YesNo, Mes
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var f = new frmSettings(S))
+            using (var f = new FrmSettings(S))
             {
                 if (f.ShowDialog() == DialogResult.OK)
                 {

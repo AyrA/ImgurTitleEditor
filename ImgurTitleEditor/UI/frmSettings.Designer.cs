@@ -1,6 +1,6 @@
 ﻿namespace ImgurTitleEditor
 {
-    partial class frmSettings
+    partial class FrmSettings
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSettings));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmSettings));
             this.gbAPI = new System.Windows.Forms.GroupBox();
             this.tbApiSecret = new System.Windows.Forms.TextBox();
             this.tbApiId = new System.Windows.Forms.TextBox();
@@ -73,8 +73,8 @@
             this.tbApiSecret.Size = new System.Drawing.Size(378, 20);
             this.tbApiSecret.TabIndex = 3;
             this.tbApiSecret.UseSystemPasswordChar = true;
-            this.tbApiSecret.Enter += new System.EventHandler(this.tbApiSecret_Enter);
-            this.tbApiSecret.Leave += new System.EventHandler(this.tbApiSecret_Leave);
+            this.tbApiSecret.Enter += new System.EventHandler(this.TbApiSecret_Enter);
+            this.tbApiSecret.Leave += new System.EventHandler(this.TbApiSecret_Leave);
             // 
             // tbApiId
             // 
@@ -177,7 +177,7 @@
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "&OK";
             this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnOK.Click += new System.EventHandler(this.BtnOK_Click);
             // 
             // btnCancel
             // 
@@ -188,7 +188,7 @@
             this.btnCancel.TabIndex = 3;
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // btnRegister
             // 
@@ -199,7 +199,7 @@
             this.btnRegister.TabIndex = 4;
             this.btnRegister.Text = "&Register...";
             this.btnRegister.UseVisualStyleBackColor = true;
-            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
+            this.btnRegister.Click += new System.EventHandler(this.BtnRegister_Click);
             // 
             // llCopy
             // 
@@ -213,7 +213,7 @@
             this.llCopy.TabStop = true;
             this.llCopy.Text = "Copy URL";
             this.llCopy.VisitedLinkColor = System.Drawing.Color.Blue;
-            this.llCopy.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llCopy_LinkClicked);
+            this.llCopy.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LlCopy_LinkClicked);
             // 
             // frmSettings
             // 

@@ -67,7 +67,7 @@
             this.tbTitle.Name = "tbTitle";
             this.tbTitle.Size = new System.Drawing.Size(321, 20);
             this.tbTitle.TabIndex = 1;
-            this.tbTitle.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbTitle_KeyDown);
+            this.tbTitle.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TbTitle_KeyDown);
             // 
             // tbDesc
             // 
@@ -80,7 +80,7 @@
             this.tbDesc.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbDesc.Size = new System.Drawing.Size(321, 81);
             this.tbDesc.TabIndex = 3;
-            this.tbDesc.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbDesc_KeyDown);
+            this.tbDesc.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TbDesc_KeyDown);
             // 
             // pbImage
             // 
@@ -104,7 +104,7 @@
             this.btnPrev.TabIndex = 4;
             this.btnPrev.Text = "&<<";
             this.btnPrev.UseVisualStyleBackColor = true;
-            this.btnPrev.Click += new System.EventHandler(this.btnPrev_Click);
+            this.btnPrev.Click += new System.EventHandler(this.BtnPrev_Click);
             // 
             // btnNext
             // 
@@ -115,7 +115,7 @@
             this.btnNext.TabIndex = 5;
             this.btnNext.Text = "&>>";
             this.btnNext.UseVisualStyleBackColor = true;
-            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            this.btnNext.Click += new System.EventHandler(this.BtnNext_Click);
             // 
             // btnOK
             // 
@@ -126,7 +126,7 @@
             this.btnOK.TabIndex = 6;
             this.btnOK.Text = "&OK";
             this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnOK.Click += new System.EventHandler(this.BtnOK_Click);
             // 
             // btnCancel
             // 
@@ -138,7 +138,7 @@
             this.btnCancel.TabIndex = 7;
             this.btnCancel.Text = "&Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // frmProperties
             // 
@@ -161,9 +161,9 @@
             this.Name = "frmProperties";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Image Properties";
-            this.Shown += new System.EventHandler(this.frmProperties_Shown);
-            this.SizeChanged += new System.EventHandler(this.frmProperties_SizeChanged);
-            this.Resize += new System.EventHandler(this.frmProperties_Resize);
+            this.Shown += new System.EventHandler(this.FrmProperties_Shown);
+            this.SizeChanged += new System.EventHandler(this.FrmProperties_SizeChanged);
+            this.Resize += new System.EventHandler(this.FrmProperties_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.pbImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
