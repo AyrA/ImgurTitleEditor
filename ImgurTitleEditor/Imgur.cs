@@ -378,26 +378,6 @@ namespace ImgurTitleEditor
         }
 
         /// <summary>
-        /// Checks if the given code is a redirection or "no content" code
-        /// </summary>
-        /// <param name="Code">HTTP status code</param>
-        /// <returns><see cref="true"/>, if 300 code (redirection or no content)</returns>
-        private static bool Is300Code(HttpStatusCode Code)
-        {
-            return (int)Code >= 300 && (int)Code < 400;
-        }
-
-        /// <summary>
-        /// Checks if the given code is a success code
-        /// </summary>
-        /// <param name="Code">HTTP status code</param>
-        /// <returns><see cref="true"/>, if OK code (200-299)</returns>
-        private static bool IsOkCode(HttpStatusCode Code)
-        {
-            return (int)Code >= 200 && (int)Code < 300;
-        }
-
-        /// <summary>
         /// Gets the response for a request
         /// </summary>
         /// <param name="R">Request</param>
