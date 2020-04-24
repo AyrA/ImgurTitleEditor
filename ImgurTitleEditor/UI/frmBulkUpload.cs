@@ -233,7 +233,7 @@ namespace ImgurTitleEditor
                 btnStartUpload.Enabled =
                 btnAddImages.Enabled =
                 lbFileList.Enabled =
-                true;
+                State;
         }
 
         private static string FormatFileString(string Format, string FullFileName)
