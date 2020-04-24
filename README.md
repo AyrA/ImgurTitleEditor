@@ -6,21 +6,26 @@ This application allows you to manage Imgur image uploads easily
 
 ## Cache
 
-All images and metadata are cached local. Only changes are sent to the Imgur API
+All images and metadata are cached locally.
+Only changes are sent to the Imgur API.
+It **will not** download your entire gallery every time you open the application,
+which makes it suitable for very large galleries.
 
 ## Manage Titles and Descriptions
 
 The core feature of this application is to manage image titles and descriptions.
 This can no longer be easily done on Imgur itself.
-If you have many images, it's worth setting this metadata to allow you to search for images
+If you have many images, it's worth setting this metadata to allow you to search for images later.
 
 ## Image Filter
 
-The main view can filter images. The search is performed against the title, description and file name
+The main view can filter images. The search is performed against the title, description and file name.
+You can also select to only display images with or without a title.
 
 ## Mass Actions
 
 Downloading, caching, URL copy, and deleting can be performed on multiple images at once.
+A mass uploader makes uploading many images easy.
 
 ## Proper OAuth usage
 
@@ -30,11 +35,13 @@ Only a token is saved that you can revoke at any time in your account settings.
 
 # Compiled Binaries
 
-Check the [Releases](https://github.com/AyrA/ImgurTitleEditor/releases) section for compiled binaries.
+Check the [Releases](https://github.com/AyrA/ImgurTitleEditor/releases) section for compiled binaries,
+or use [GitLoad](https://gitload.net/AyrA/ImgurTitleEditor) to browse releases more easily.
 
 # Building
 
-No special requirements. You can hardcode your own client ID in `Program.cs` if you want.
+No special requirements.
+You can hardcode your own client ID in `Program.cs` if you want.
 
 # How to use
 
@@ -47,13 +54,14 @@ This chapter explains the different windows of the application
 
 ## Authorization Window
 
-This is the first window you are present with when you have not yet authorized or when you chose to reauthorize.
-Just follow the steps presented on the main area of the form.
-You can also reach the settings window from the menu if you wish to change your client ID or set the secret.
+This is the first window you are presented with when you have not yet authorized, or when you choose to reauthorize.
+Just follow the steps shown on the main area of the form.
+You can also reach the settings window from the menu,
+if you wish to change your client ID or set the secret before authorizing.
 
 ## Settings Window
 
-This allows you to change application settings
+This allows you to change application settings.
 
 ### Client ID
 
@@ -65,6 +73,8 @@ The default ID should work as I registered it for this specific Application.
 This is used to renew the client ID.
 It's not needed for the application to work but you will not be able to renew your token.
 This means once the authorization expires, you have to manually do it again.
+
+The secret is usually hidden, but can be revealed by setting the input focus into the text area.
 
 ### Page Size
 
@@ -87,9 +97,11 @@ Registering an application is optional. You need to do it if you want a client s
 
 The cache builder is automatically opened once you are authorized.
 It will download all image metadata and then all thumbnails.
-It's highly recommended that you let it finish or you will experience extremely sluggish performance.
+**It's highly recommended that you let it finish or you will experience extremely sluggish performance.**
 
-You can also open the cache builder from the main window file menu.
+You can also open the cache builder from the main window file menu at any time.
+This is recommended if you uploaded images outside of this application,
+or if you performed any other operation on them (for example setting a description) outside of this application.
 
 ## Main Window
 
@@ -100,7 +112,7 @@ Common keyboard combinations work:
 - `[CTRL]`+`[A]` Select everything
 - `[CTRL]`+`[C]` Copy URLs to clipboard
 - `[CTRL]`+`[S]` Download images
-- `[DEL]` Delete images
+- `[DEL]` Delete images with confirmation
 - `[ENTER]` (or double click) Edit title and description
 
 The list also features a context menu for common actions.
@@ -115,7 +127,7 @@ Pressing `[ENTER]` in the title box or `[CTRL]`+`[ENTER]` in the description box
 
 Using the `[<<]` and `[>>]` buttons will save your changes (if any) and advance to the next/previous image.
 Once you do this, the form will remember this action, and until you close it,
-the text box hotkeys mentioned will perform this action too rather than closing the form.
+the text box hotkeys mentioned above will perform this action too rather than closing the form.
 The paging mechanism respects the current filter setup in the main window.
 
 ## Upload Window
@@ -127,6 +139,27 @@ Select the image you want, enter title and description, then press "Upload".
 
 Alternatively, click the "Clipboard" button to upload the image in your clipboard.
 In that case you can set a file name too if you wish but it's not necessary.
+
+You can also initiate an upload by dragging an image onto the application.
+
+## Bulk Uploader
+
+The bulk uploader allows you to upload many images and optionally assign them to an album.
+
+The bottom text box allows you to set the title assigned to the uploaded images.
+The variables %N and %X can be used as placeholder for the file name and extension.
+It defaults to `%N.%X` which is essentially the name as displayed by windows explorer (without the path)
+
+The uploader closes automatically after all uploads are completed
+
+### Rate limits
+
+The Imgur API enforces a few rate limits. If you upload more than 10 to 20 images you might run into this problem.
+If the upload of files stops (controls become editable again) but there are still images left in the list,
+try to upload again in a few minutes.
+
+You do not need to add the images that were already removed from the list again.
+Images that were removed were successfully uploaded and added to the album.
 
 # License and Terms
 
