@@ -811,7 +811,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                         var Images = lvImages.SelectedItems
                                     .OfType<ListViewItem>()
                                     .Select(m => (ImgurImage)m.Tag);
-                        using (var fDownload = new frmDownload(S, Images, null))
+                        using (var fDownload = new frmDownload(Images, null))
                         {
                             fDownload.ShowDialog();
                         }
@@ -827,7 +827,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                                 var Images = lvImages.SelectedItems
                                     .OfType<ListViewItem>()
                                     .Select(m => (ImgurImage)m.Tag);
-                                using (var fDownload = new frmDownload(S, Images, FBD.SelectedPath))
+                                using (var fDownload = new frmDownload(Images, FBD.SelectedPath))
                                 {
                                     fDownload.ShowDialog();
                                 }

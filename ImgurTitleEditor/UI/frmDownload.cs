@@ -20,10 +20,6 @@ namespace ImgurTitleEditor
         /// </summary>
         private readonly List<ImgurImage> Images;
         /// <summary>
-        /// Current settings
-        /// </summary>
-        private readonly Settings S;
-        /// <summary>
         /// Download path
         /// </summary>
         private readonly string Path;
@@ -34,9 +30,8 @@ namespace ImgurTitleEditor
         /// <param name="S">Current settings</param>
         /// <param name="Images">Image list</param>
         /// <param name="Path">Save path</param>
-        public frmDownload(Settings S, IEnumerable<ImgurImage> Images, string Path)
+        public frmDownload(IEnumerable<ImgurImage> Images, string Path)
         {
-            this.S = S;
             this.Images = Images.ToList();
             this.Path = Path;
             InitializeComponent();
