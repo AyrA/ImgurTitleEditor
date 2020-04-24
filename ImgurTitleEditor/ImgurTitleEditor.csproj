@@ -58,6 +58,9 @@
   <ItemGroup>
     <Compile Include="BoolConverter.cs" />
     <Compile Include="Cache.cs" />
+    <Compile Include="ImgurErrorResponse.cs" />
+    <Compile Include="ImgurLimitResponse.cs" />
+    <Compile Include="ImgurRates.cs" />
     <Compile Include="UI\FrmBulkUpload.cs">
       <SubType>Form</SubType>
     </Compile>

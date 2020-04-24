@@ -157,7 +157,7 @@ namespace ImgurTitleEditor
 
         private async void BtnStartUpload_Click(object sender, EventArgs e)
         {
-            cbAlbum.Enabled = btnStartUpload.Enabled = btnAddImages.Enabled = lbFileList.Enabled = false;
+            SetControlState(false);
             Stack<FileNameItem> ItemList = new Stack<FileNameItem>(lbFileList.Items.OfType<FileNameItem>().Reverse());
             Imgur I = new Imgur(S);
 
@@ -166,6 +166,7 @@ namespace ImgurTitleEditor
                 string AlbumId = cbAlbum.SelectedIndex > 0 ? ((AlbumEntry)cbAlbum.SelectedItem).Id : null;
                 List<string> Images = AlbumId == null ? null : (await I.GetAlbumImages(AlbumId)).Select(m => m.id).ToList();
 
+                lbFileList.SelectedIndex = 0;
                 while (ItemList.Count > 0)
                 {
                     FileNameItem Current = ItemList.Pop();
@@ -185,17 +186,28 @@ namespace ImgurTitleEditor
                     }
                     else
                     {
-                        break;
+                        //Add failed image back to the queue
+                        ItemList.Push(Current);
+                        //Ask user to retry or cancel
+                        if (MessageBox.Show("Failed to upload an image. Response: " + I.LastError, "Upload failed", MessageBoxButtons.RetryCancel, MessageBoxIcon.Exclamation) == DialogResult.Cancel)
+                        {
+                            break;
+                        }
                     }
                 }
                 if (Images != null)
                 {
-                    await I.SetAlbumImages(AlbumId, Images);
+                    while (
+                        !await I.SetAlbumImages(AlbumId, Images) &&
+                        MessageBox.Show("Failed to add uploaded images to the album. Response: " + I.LastError, "Album change failed", MessageBoxButtons.RetryCancel, MessageBoxIcon.Exclamation) == DialogResult.Retry) ;
                 }
-                cbAlbum.Enabled = btnStartUpload.Enabled = btnAddImages.Enabled = lbFileList.Enabled = true;
                 if (lbFileList.Items.Count == 0)
                 {
                     DialogResult = DialogResult.OK;
+                }
+                else
+                {
+                    SetControlState(true);
                 }
             }
             else
@@ -211,6 +223,17 @@ namespace ImgurTitleEditor
                 IsBackground = true
             };
             T.Start();
+        }
+
+        private void SetControlState(bool State)
+        {
+            tbTitle.Enabled =
+                cbDescDate.Enabled =
+                cbAlbum.Enabled =
+                btnStartUpload.Enabled =
+                btnAddImages.Enabled =
+                lbFileList.Enabled =
+                true;
         }
 
         private static string FormatFileString(string Format, string FullFileName)

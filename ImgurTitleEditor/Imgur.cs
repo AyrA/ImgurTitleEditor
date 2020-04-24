@@ -24,10 +24,25 @@ namespace ImgurTitleEditor
         /// </summary>
         public const string SELF = "me";
 
+        public string LastError { get; private set; }
+
         /// <summary>
         /// Current settings
         /// </summary>
         private readonly Settings S;
+
+        /// <summary>
+        /// Tracks rate limits for the Imgur API
+        /// </summary>
+        public static ImgurRates RateLimit { get; private set; }
+
+        /// <summary>
+        /// Static initializer
+        /// </summary>
+        static Imgur()
+        {
+            RateLimit = new ImgurRates();
+        }
 
         /// <summary>
         /// Initializes a new Imgur client
@@ -50,20 +65,21 @@ namespace ImgurTitleEditor
             {
                 return false;
             }
-            var fd = BuildFormData(new Dictionary<string, string>() {
+            string fd = BuildFormData(new Dictionary<string, string>() {
                 {"refresh_token",S.Token.Refresh },
                 {"client_id",S.Client.Id },
                 {"client_secret",S.Client.Secret },
                 { "grant_type","refresh_token" }
             });
 
-            var R = Req(new Uri("https://api.imgur.com/oauth2/token"), fd);
+            HttpWebRequest R = Req(new Uri("https://api.imgur.com/oauth2/token"), fd);
 
-            using (var Res = await GetResponse(R))
+            using (HttpWebResponse Res = await GetResponse(R))
             {
-                if (!IsErrorCode(Res.StatusCode))
+                string data = await ReadAll(Res.GetResponseStream());
+                if (!ProcessErrorResponse(data) && !IsErrorCode(Res.StatusCode))
                 {
-                    var res = (await ReadAll(Res.GetResponseStream())).FromJson<ImgurResponse<ImgurAuthResponse>>().data;
+                    ImgurAuthResponse res = data.FromJson<ImgurResponse<ImgurAuthResponse>>().data;
                     S.Token.Access = res.access_token;
                     S.Token.Refresh = res.refresh_token;
                     S.Token.Expires = DateTime.UtcNow.AddSeconds(res.expires_in);
@@ -82,16 +98,17 @@ namespace ImgurTitleEditor
         /// <returns><see cref="true"/> on success</returns>
         public async Task<bool> SetImageDescription(ImgurImage I, string Title, string Description)
         {
-            var fd = BuildFormData(new Dictionary<string, string>() {
+            string fd = BuildFormData(new Dictionary<string, string>() {
                 {"title", string.IsNullOrEmpty(Title) ? string.Empty : Title },
                 {"description", string.IsNullOrEmpty(Description) ? string.Empty : Description }
             });
-            var R = Req(new Uri($"https://api.imgur.com/3/image/{I.id}"), fd);
-            using (var Res = await GetResponse(R))
+            HttpWebRequest R = Req(new Uri($"https://api.imgur.com/3/image/{I.id}"), fd);
+            using (HttpWebResponse Res = await GetResponse(R))
             {
-                if (!IsErrorCode(Res.StatusCode))
+                string data = await ReadAll(Res.GetResponseStream());
+                if (!ProcessErrorResponse(data) && !IsErrorCode(Res.StatusCode))
                 {
-                    return (await ReadAll(Res.GetResponseStream())).FromJson<ImgurResponse<bool>>().data;
+                    return data.FromJson<ImgurResponse<bool>>().data;
                 }
             }
             return false;
@@ -104,11 +121,12 @@ namespace ImgurTitleEditor
         /// <returns><see cref="true"/> on success</returns>
         public async Task<bool> DeleteImage(ImgurImage I)
         {
-            var R = Req(new Uri($"https://api.imgur.com/3/image/{I.deletehash}"));
+            HttpWebRequest R = Req(new Uri($"https://api.imgur.com/3/image/{I.deletehash}"));
             R.Method = "DELETE";
-            using (var Res = await GetResponse(R))
+            using (HttpWebResponse Res = await GetResponse(R))
             {
-                return !IsErrorCode(Res.StatusCode);
+                string data = await ReadAll(Res.GetResponseStream());
+                return !ProcessErrorResponse(data) && !IsErrorCode(Res.StatusCode);
             }
         }
 
@@ -122,7 +140,7 @@ namespace ImgurTitleEditor
         /// <returns>Uploaded image</returns>
         public async Task<ImgurImage> UploadImage(byte[] Data, string Filename, string Title, string Description, string AlbumId = null)
         {
-            var fd = BuildFormData(new Dictionary<string, string>() {
+            string fd = BuildFormData(new Dictionary<string, string>() {
                 {"image", Convert.ToBase64String(Data) },
                 {"type", "base64" },
                 {"name", Filename },
@@ -131,18 +149,18 @@ namespace ImgurTitleEditor
                 {"album", AlbumId }
             }, true);
 
-            var R = Req(new Uri($"https://api.imgur.com/3/image"), fd);
-            using (var Res = await GetResponse(R))
+            HttpWebRequest R = Req(new Uri($"https://api.imgur.com/3/image"), fd);
+            using (HttpWebResponse Res = await GetResponse(R))
             {
-                if (!IsErrorCode(Res.StatusCode))
+                string data = await ReadAll(Res.GetResponseStream());
+                if (!ProcessErrorResponse(data) && !IsErrorCode(Res.StatusCode))
                 {
-                    return (await ReadAll(Res.GetResponseStream())).FromJson<ImgurResponse<ImgurImage>>().data;
+                    return data.FromJson<ImgurResponse<ImgurImage>>().data;
                 }
 #if DEBUG
                 else
                 {
-                    var Response = await ReadAll(Res.GetResponseStream());
-                    Debug.WriteLine($"File upload error: {Response}");
+                    Debug.WriteLine($"File upload error: {data}");
                 }
 #endif
             }
@@ -155,12 +173,13 @@ namespace ImgurTitleEditor
         /// <returns>Account settings</returns>
         public async Task<ImgurAccountSettings> GetAccountSettings()
         {
-            var R = Req(new Uri($"https://api.imgur.com/3/account/me/settings"));
-            using (var Res = await GetResponse(R))
+            HttpWebRequest R = Req(new Uri($"https://api.imgur.com/3/account/me/settings"));
+            using (HttpWebResponse Res = await GetResponse(R))
             {
-                if (!IsErrorCode(Res.StatusCode))
+                string data = await ReadAll(Res.GetResponseStream());
+                if (!ProcessErrorResponse(data) && !IsErrorCode(Res.StatusCode))
                 {
-                    return (await ReadAll(Res.GetResponseStream())).FromJson<ImgurResponse<ImgurAccountSettings>>().data;
+                    return data.FromJson<ImgurResponse<ImgurAccountSettings>>().data;
                 }
             }
             return null;
@@ -173,12 +192,13 @@ namespace ImgurTitleEditor
         /// <returns>Number of images</returns>
         public async Task<int> GetAccountImageCount(string AccountName = SELF)
         {
-            var R = Req(new Uri($"https://api.imgur.com/3/account/{AccountName}/images/count"));
-            using (var Res = await GetResponse(R))
+            HttpWebRequest R = Req(new Uri($"https://api.imgur.com/3/account/{AccountName}/images/count"));
+            using (HttpWebResponse Res = await GetResponse(R))
             {
-                if (!IsErrorCode(Res.StatusCode))
+                string data = await ReadAll(Res.GetResponseStream());
+                if (!ProcessErrorResponse(data) && !IsErrorCode(Res.StatusCode))
                 {
-                    return (await ReadAll(Res.GetResponseStream())).FromJson<ImgurResponse<int>>().data;
+                    return data.FromJson<ImgurResponse<int>>().data;
                 }
             }
             return -1;
@@ -195,12 +215,13 @@ namespace ImgurTitleEditor
             int Page = 0;
             while (Page >= 0)
             {
-                var R = Req(new Uri($"https://api.imgur.com/3/account/{AccountName}/images/{Page++}"));
-                using (var Res = GetResponse(R).Result)
+                HttpWebRequest R = Req(new Uri($"https://api.imgur.com/3/account/{AccountName}/images/{Page++}"));
+                using (HttpWebResponse Res = GetResponse(R).Result)
                 {
-                    if (!IsErrorCode(Res.StatusCode))
+                    string response = ReadAll(Res.GetResponseStream()).Result;
+                    if (!ProcessErrorResponse(response) && !IsErrorCode(Res.StatusCode))
                     {
-                        var data = ReadAll(Res.GetResponseStream()).Result.FromJson<ImgurResponse<ImgurImage[]>>().data;
+                        ImgurImage[] data = response.FromJson<ImgurResponse<ImgurImage[]>>().data;
                         if (data.Length == 0)
                         {
                             //EOF
@@ -208,7 +229,7 @@ namespace ImgurTitleEditor
                         }
                         else
                         {
-                            foreach (var i in data)
+                            foreach (ImgurImage i in data)
                             {
                                 yield return i;
                             }
@@ -233,12 +254,13 @@ namespace ImgurTitleEditor
             int Page = 0;
             while (Page >= 0)
             {
-                var R = Req(new Uri($"https://api.imgur.com/3/account/{AccountName}/albums/{Page++}"));
-                using (var Res = GetResponse(R).Result)
+                HttpWebRequest R = Req(new Uri($"https://api.imgur.com/3/account/{AccountName}/albums/{Page++}"));
+                using (HttpWebResponse Res = GetResponse(R).Result)
                 {
-                    if (!IsErrorCode(Res.StatusCode))
+                    string response = ReadAll(Res.GetResponseStream()).Result;
+                    if (!ProcessErrorResponse(response) && !IsErrorCode(Res.StatusCode))
                     {
-                        var data = ReadAll(Res.GetResponseStream()).Result.FromJson<ImgurResponse<ImgurAlbum[]>>().data;
+                        ImgurAlbum[] data = response.FromJson<ImgurResponse<ImgurAlbum[]>>().data;
                         if (data.Length == 0)
                         {
                             //EOF
@@ -246,7 +268,7 @@ namespace ImgurTitleEditor
                         }
                         else
                         {
-                            foreach (var i in data)
+                            foreach (ImgurAlbum i in data)
                             {
                                 yield return i;
                             }
@@ -267,12 +289,12 @@ namespace ImgurTitleEditor
         /// <returns>List of images</returns>
         public async Task<ImgurImage[]> GetAlbumImages(string AlbumId)
         {
-            var R = Req(new Uri($"https://api.imgur.com/3/album/{AlbumId}/images"));
-            using (var Res = await GetResponse(R))
+            HttpWebRequest R = Req(new Uri($"https://api.imgur.com/3/album/{AlbumId}/images"));
+            using (HttpWebResponse Res = await GetResponse(R))
             {
-                if (!IsErrorCode(Res.StatusCode))
+                string data = await ReadAll(Res.GetResponseStream());
+                if (!ProcessErrorResponse(data) && !IsErrorCode(Res.StatusCode))
                 {
-                    var data = await ReadAll(Res.GetResponseStream());
                     return data.FromJson<ImgurResponse<ImgurImage[]>>().data;
                 }
             }
@@ -288,16 +310,17 @@ namespace ImgurTitleEditor
         /// <returns><see cref="true"/> on success</returns>
         public async Task<bool> AddImagesToAlbum(string AlbumId, IEnumerable<string> ImageId, bool Clear = false)
         {
-            var URL = $"https://api.imgur.com/3/album/{AlbumId}";
+            string URL = $"https://api.imgur.com/3/album/{AlbumId}";
             if (!Clear)
             {
                 URL += "/add";
             }
-            var Joined = string.Join("&", ImageId.Select(m => $"ids[]={m}").ToArray());
-            var R = Req(new Uri(URL), Joined);
-            using (var Res = await GetResponse(R))
+            string Joined = string.Join("&", ImageId.Select(m => $"ids[]={m}").ToArray());
+            HttpWebRequest R = Req(new Uri(URL), Joined);
+            using (HttpWebResponse Res = await GetResponse(R))
             {
-                return !IsErrorCode(Res.StatusCode);
+                string data = await ReadAll(Res.GetResponseStream());
+                return !ProcessErrorResponse(data) && !IsErrorCode(Res.StatusCode);
             }
         }
 
@@ -312,7 +335,6 @@ namespace ImgurTitleEditor
             return await AddImagesToAlbum(AlbumId, ImageId, true);
         }
 
-
         /// <summary>
         /// Deletes an album
         /// </summary>
@@ -321,11 +343,32 @@ namespace ImgurTitleEditor
         /// <remarks>This will not delete images</remarks>
         public async Task<bool> DeleteAlbum(ImgurAlbum A)
         {
-            var R = Req(new Uri($"https://api.imgur.com/3/album/{A.deletehash}"));
+            HttpWebRequest R = Req(new Uri($"https://api.imgur.com/3/album/{A.deletehash}"));
             R.Method = "DELETE";
-            using (var Res = await GetResponse(R))
+            using (HttpWebResponse Res = await GetResponse(R))
             {
-                return !IsErrorCode(Res.StatusCode);
+                string data = await ReadAll(Res.GetResponseStream());
+                return !ProcessErrorResponse(data) && !IsErrorCode(Res.StatusCode);
+            }
+        }
+
+        /// <summary>
+        /// Checks how many credits are available and updates the <see cref="RateLimit"/> values
+        /// </summary>
+        /// <returns>Task</returns>
+        public async Task<ImgurLimitResponse> CheckCredits()
+        {
+            HttpWebRequest R = Req(new Uri($"https://api.imgur.com/3/credits"));
+            using (HttpWebResponse Res = await GetResponse(R))
+            {
+                string data = await ReadAll(Res.GetResponseStream());
+                if (!ProcessErrorResponse(data) && !IsErrorCode(Res.StatusCode))
+                {
+                    ImgurResponse<ImgurLimitResponse> limits = data.FromJson<ImgurResponse<ImgurLimitResponse>>();
+                    RateLimit.SetValues(limits.data);
+                    return limits.data;
+                }
+                return null;
             }
         }
 
@@ -346,7 +389,7 @@ namespace ImgurTitleEditor
             Debug.WriteLine($"Prepare Imgur Request. URL={URL} UseAuth={UseAuth} BodyContent={BodyContent}");
 #endif
 
-            var R = WebRequest.CreateHttp(URL);
+            HttpWebRequest R = WebRequest.CreateHttp(URL);
             if (UseAuth)
             {
                 R.Headers.Add($"Authorization: Bearer {S.Token.Access}");
@@ -359,12 +402,21 @@ namespace ImgurTitleEditor
             {
                 R.Method = "POST";
                 R.ContentType = "application/x-www-form-urlencoded";
-                using (var SW = new StreamWriter(R.GetRequestStream()))
+                using (StreamWriter SW = new StreamWriter(R.GetRequestStream()))
                 {
                     SW.Write(BodyContent);
                 }
             }
             return R;
+        }
+
+        /// <summary>
+        /// Updates the rate limit values
+        /// </summary>
+        /// <param name="Res">HTTP Response</param>
+        private static void SetLimitValues(HttpWebResponse Res)
+        {
+            RateLimit.SetValues(Res);
         }
 
         /// <summary>
@@ -383,20 +435,48 @@ namespace ImgurTitleEditor
         /// <param name="R">Request</param>
         /// <returns>Response</returns>
         /// <remarks>This also returns a response on error instrad of raising an exception</remarks>
-        private static async Task<HttpWebResponse> GetResponse(HttpWebRequest R)
+        private async Task<HttpWebResponse> GetResponse(HttpWebRequest R)
         {
+            HttpWebResponse Res;
+            LastError = null;
             try
             {
-                return (HttpWebResponse)(await R.GetResponseAsync());
+                Res = (HttpWebResponse)(await R.GetResponseAsync());
             }
             catch (WebException ex)
             {
-                return (HttpWebResponse)ex.Response;
+                LastError = "API error: " + ex.Message;
+                Res = (HttpWebResponse)ex.Response;
             }
             catch
             {
-                return null;
+                Res = null;
             }
+            if (Res != null)
+            {
+                SetLimitValues(Res);
+            }
+            return Res;
+        }
+
+        /// <summary>
+        /// Processes an error response
+        /// </summary>
+        /// <param name="JsonData">Json body data</param>
+        /// <returns><see cref="true"/>, if the response was an error and was processed</returns>
+        private bool ProcessErrorResponse(string JsonData)
+        {
+            ImgurResponse<ImgurErrorResponse> Err;
+            try
+            {
+                Err = JsonData.FromJson<ImgurResponse<ImgurErrorResponse>>();
+            }
+            catch
+            {
+                return false;
+            }
+            LastError = Err.data.error;
+            return true;
         }
 
         /// <summary>
@@ -407,7 +487,7 @@ namespace ImgurTitleEditor
         /// <returns>Stream content</returns>
         private static async Task<string> ReadAll(Stream S, bool LeaveOpen = false)
         {
-            using (var SR = new StreamReader(S, Encoding.UTF8, false, 1024, LeaveOpen))
+            using (StreamReader SR = new StreamReader(S, Encoding.UTF8, false, 1024, LeaveOpen))
             {
                 return await SR.ReadToEndAsync();
             }
@@ -422,7 +502,7 @@ namespace ImgurTitleEditor
         /// <remarks>No further URL encoding necessary</remarks>
         private static string BuildFormData(IDictionary<string, string> Params, bool StripNull = false)
         {
-            var Selector = Params
+            string[] Selector = Params
                 .Where(m => !StripNull || (m.Key != null & m.Value != null))
                 .Select(m => $"{UrlEncode(m.Key)}={UrlEncode(m.Value)}")
                 .ToArray();
@@ -448,7 +528,7 @@ namespace ImgurTitleEditor
 
         #endregion
 
-        #region Statics
+        #region NonAPI
 
         /// <summary>
         /// Downloads an image from Imgur
@@ -460,7 +540,7 @@ namespace ImgurTitleEditor
         /// <remarks>If <paramref name="AllowVideo"/> is <see cref="false"/>, it will use <see cref="ImgurImageSize.HugeThumbnail"/> for video files</remarks>
         public static byte[] GetImage(ImgurImage I, ImgurImageSize Size, bool AllowVideo)
         {
-            using (var WC = new WebClient())
+            using (WebClient WC = new WebClient())
             {
                 if (AllowVideo || !I.type.ToLower().StartsWith("video/"))
                 {

@@ -40,10 +40,12 @@ namespace ImgurTitleEditor
             Settings S;
             if (File.Exists(SettingsFile))
             {
+                //Load existing settings
                 S = Tools.LoadSettings(SettingsFile);
             }
             else
             {
+                //Create default settings
                 S = new Settings()
                 {
                     Client = new Client()
@@ -57,13 +59,19 @@ namespace ImgurTitleEditor
             }
 
             //Clear any invalid items from the cache
-            if (Cache.Images != null && Cache.Images.Any(m => m == null))
+            if (Cache.Images != null)
             {
-                Cache.Images = Cache.Images.Where(m => m != null).ToArray();
+                ImgurImage[] CacheImages = Cache.Images;
+                if (CacheImages.Any(m => m == null))
+                {
+                    Cache.Images = CacheImages.Where(m => m != null).ToArray();
+                }
             }
 
-            //Try to refresh the token if expired
-            var I = new Imgur(S);
+            //Try to refresh the token if expired or close to expiration
+            Imgur I = new Imgur(S);
+            //Update initial credits values
+            I.CheckCredits().Wait();
             if (!string.IsNullOrEmpty(S.Token.Access) && S.Token.Expires < DateTime.UtcNow.AddDays(7))
             {
                 if (I.RenewToken().Result)
