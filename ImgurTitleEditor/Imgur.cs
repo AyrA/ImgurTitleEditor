@@ -137,6 +137,9 @@ namespace ImgurTitleEditor
         /// <param name="Filename">File name (fake or real, no path)</param>
         /// <param name="Title">Image title</param>
         /// <param name="Description">Image description</param>
+        /// <param name="AlbumId">
+        /// Album to add the image to. Imgur seems to prefer to insert images as the second position
+        /// </param>
         /// <returns>Uploaded image</returns>
         public async Task<ImgurImage> UploadImage(byte[] Data, string Filename, string Title, string Description, string AlbumId = null)
         {
