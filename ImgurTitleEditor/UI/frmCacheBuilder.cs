@@ -59,7 +59,8 @@ namespace ImgurTitleEditor
             {
                 var Images = new List<ImgurImage>();
                 var ImageCount = I.GetAccountImageCount().Result;
-                Invoke((MethodInvoker)delegate {
+                Invoke((MethodInvoker)delegate
+                {
                     pbMeta.Maximum = pbThumbnail.Maximum = ImageCount;
                 });
                 foreach (var img in I.GetAccountImages())
@@ -101,8 +102,10 @@ namespace ImgurTitleEditor
                         DialogResult = Exit ? DialogResult.Cancel : DialogResult.OK;
                     });
                 }
-            });
-            T.IsBackground = true;
+            })
+            {
+                IsBackground = true
+            };
             T.Start();
         }
     }

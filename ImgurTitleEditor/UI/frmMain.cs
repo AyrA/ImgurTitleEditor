@@ -683,10 +683,12 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                 {
                     IL.Images.Add(Image.FromStream(MS));
                 }
-                var Item = new ListViewItem(I.title == null ? string.Empty : I.title);
-                Item.ImageIndex = Index;
-                Item.Tag = I;
-                Item.ToolTipText = $"[{I.name}] {I.description}";
+                var Item = new ListViewItem(I.title == null ? string.Empty : I.title)
+                {
+                    ImageIndex = Index,
+                    Tag = I,
+                    ToolTipText = $"[{I.name}] {I.description}"
+                };
                 Items.Add(Item);
                 ++Index;
             }

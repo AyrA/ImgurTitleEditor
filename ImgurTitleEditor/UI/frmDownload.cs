@@ -87,8 +87,10 @@ namespace ImgurTitleEditor
                     Invoke((MethodInvoker)delegate { ++pbStatus.Value; });
                 }
                 Invoke((MethodInvoker)Done);
-            });
-            T.IsBackground = true;
+            })
+            {
+                IsBackground = true
+            };
             T.Start();
         }
 

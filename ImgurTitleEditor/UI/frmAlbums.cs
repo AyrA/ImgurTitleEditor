@@ -62,10 +62,12 @@ namespace ImgurTitleEditor
                             IL.Images.Add(Image.FromStream(MS));
                         }
                     }
-                    var Item = new ListViewItem(Album.title == null ? string.Empty : Album.title);
-                    Item.ImageIndex = string.IsNullOrEmpty(Album.cover) ? 0 : IL.Images.Count - 1;
-                    Item.Tag = Album;
-                    Item.ToolTipText = $"[{Album.title}] {Album.description}";
+                    var Item = new ListViewItem(Album.title == null ? string.Empty : Album.title)
+                    {
+                        ImageIndex = string.IsNullOrEmpty(Album.cover) ? 0 : IL.Images.Count - 1,
+                        Tag = Album,
+                        ToolTipText = $"[{Album.title}] {Album.description}"
+                    };
                     Entries.Add(Item);
                 }
                 Invoke((MethodInvoker)delegate
@@ -81,8 +83,10 @@ namespace ImgurTitleEditor
                     lvAlbums.ResumeLayout();
                     lvAlbums.Enabled = true;
                 });
-            });
-            T.IsBackground = true;
+            })
+            {
+                IsBackground = true
+            };
             T.Start();
         }
 
