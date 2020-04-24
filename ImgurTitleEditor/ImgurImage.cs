@@ -158,7 +158,7 @@ namespace ImgurTitleEditor
         /// <returns>Image url</returns>
         public Uri GetImageUrl(ImgurImageSize Size = ImgurImageSize.Original)
         {
-            string s = "";
+            string s;
             var ext = link.Split('.').Last();
             switch (Size)
             {
