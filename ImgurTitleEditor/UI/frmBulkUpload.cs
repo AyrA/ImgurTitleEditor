@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace ImgurTitleEditor
 {
-    public partial class frmBulkUpload : Form
+    public partial class FrmBulkUpload : Form
     {
         private struct FileNameItem
         {
@@ -74,7 +74,7 @@ namespace ImgurTitleEditor
 
         private Settings S;
 
-        public frmBulkUpload(Settings S)
+        public FrmBulkUpload(Settings S)
         {
             this.S = S;
             InitializeComponent();
@@ -105,7 +105,7 @@ namespace ImgurTitleEditor
             });
         }
 
-        private void btnAddImages_Click(object sender, EventArgs e)
+        private void BtnAddImages_Click(object sender, EventArgs e)
         {
             if (OFD.ShowDialog() == DialogResult.OK)
             {
@@ -121,7 +121,7 @@ namespace ImgurTitleEditor
             }
         }
 
-        private void lbFileList_KeyDown(object sender, KeyEventArgs e)
+        private void LbFileList_KeyDown(object sender, KeyEventArgs e)
         {
             var Index = lbFileList.SelectedIndex;
             if (Index >= 0)
@@ -155,7 +155,7 @@ namespace ImgurTitleEditor
             }
         }
 
-        private async void btnStartUpload_Click(object sender, EventArgs e)
+        private async void BtnStartUpload_Click(object sender, EventArgs e)
         {
             cbAlbum.Enabled = btnStartUpload.Enabled = btnAddImages.Enabled = lbFileList.Enabled = false;
             var ItemList = new Stack<FileNameItem>(lbFileList.Items.OfType<FileNameItem>().Reverse());
@@ -204,6 +204,15 @@ namespace ImgurTitleEditor
             }
         }
 
+        private void FrmBulkUpload_Load(object sender, EventArgs e)
+        {
+            Thread T = new Thread(FillAlbums)
+            {
+                IsBackground = true
+            };
+            T.Start();
+        }
+
         private static string FormatFileString(string Format, string FullFileName)
         {
             var FileName = Path.GetFileName(FullFileName);
@@ -212,15 +221,6 @@ namespace ImgurTitleEditor
             return Format
                 .Replace("%N", NameOnly)
                 .Replace("%X", Ext);
-        }
-
-        private void frmBulkUpload_Load(object sender, EventArgs e)
-        {
-            Thread T = new Thread(FillAlbums)
-            {
-                IsBackground = true
-            };
-            T.Start();
         }
     }
 }

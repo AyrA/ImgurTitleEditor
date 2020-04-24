@@ -82,7 +82,7 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Last type of view
         /// </summary>
-        /// <remarks>See <see cref="frmMain.ImageFilter"/></remarks>
+        /// <remarks>See <see cref="FrmMain.ImageFilter"/></remarks>
         public int LastView { get; set; }
         /// <summary>
         /// <see cref="true"/>, if the window was maximized

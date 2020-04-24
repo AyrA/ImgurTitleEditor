@@ -83,7 +83,7 @@ namespace ImgurTitleEditor
             if (Save())
             {
                 LastAction = ActionType.Newer;
-                var img = Application.OpenForms.OfType<frmMain>().First().PrevImage();
+                var img = Application.OpenForms.OfType<FrmMain>().First().PrevImage();
                 if (img != null)
                 {
                     SetImage(img);
@@ -101,7 +101,7 @@ namespace ImgurTitleEditor
             if (Save())
             {
                 LastAction = ActionType.Older;
-                var img = Application.OpenForms.OfType<frmMain>().First().NextImage();
+                var img = Application.OpenForms.OfType<FrmMain>().First().NextImage();
                 if (img != null)
                 {
                     SetImage(img);

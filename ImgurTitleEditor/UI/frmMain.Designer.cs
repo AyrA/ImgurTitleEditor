@@ -1,6 +1,6 @@
 ﻿namespace ImgurTitleEditor
 {
-    partial class frmMain
+    partial class FrmMain
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.lvImages = new System.Windows.Forms.ListView();
             this.CMS = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyURLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,8 +73,8 @@
             this.lvImages.Size = new System.Drawing.Size(568, 499);
             this.lvImages.TabIndex = 4;
             this.lvImages.UseCompatibleStateImageBehavior = false;
-            this.lvImages.DoubleClick += new System.EventHandler(this.lvImages_DoubleClick);
-            this.lvImages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvImages_KeyDown);
+            this.lvImages.DoubleClick += new System.EventHandler(this.LvImages_DoubleClick);
+            this.lvImages.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LvImages_KeyDown);
             // 
             // CMS
             // 
@@ -92,35 +92,35 @@
             this.copyURLToolStripMenuItem.Name = "copyURLToolStripMenuItem";
             this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.copyURLToolStripMenuItem.Text = "&Copy URL";
-            this.copyURLToolStripMenuItem.Click += new System.EventHandler(this.copyURLToolStripMenuItem_Click);
+            this.copyURLToolStripMenuItem.Click += new System.EventHandler(this.CopyURLToolStripMenuItem_Click);
             // 
             // saveImageToolStripMenuItem
             // 
             this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
             this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.saveImageToolStripMenuItem.Text = "&Save Image";
-            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.saveImageToolStripMenuItem_Click);
+            this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.SaveImageToolStripMenuItem_Click);
             // 
             // editTitleToolStripMenuItem
             // 
             this.editTitleToolStripMenuItem.Name = "editTitleToolStripMenuItem";
             this.editTitleToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.editTitleToolStripMenuItem.Text = "&Edit Title";
-            this.editTitleToolStripMenuItem.Click += new System.EventHandler(this.editTitleToolStripMenuItem_Click);
+            this.editTitleToolStripMenuItem.Click += new System.EventHandler(this.EditTitleToolStripMenuItem_Click);
             // 
             // addToCacheToolStripMenuItem
             // 
             this.addToCacheToolStripMenuItem.Name = "addToCacheToolStripMenuItem";
             this.addToCacheToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.addToCacheToolStripMenuItem.Text = "&Add to Cache";
-            this.addToCacheToolStripMenuItem.Click += new System.EventHandler(this.addToCacheToolStripMenuItem_Click);
+            this.addToCacheToolStripMenuItem.Click += new System.EventHandler(this.AddToCacheToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
             this.deleteToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
             this.deleteToolStripMenuItem.Text = "&Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
             // mnuMain
             // 
@@ -154,14 +154,14 @@
             this.authorizeToolStripMenuItem.Name = "authorizeToolStripMenuItem";
             this.authorizeToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.authorizeToolStripMenuItem.Text = "&Authorize";
-            this.authorizeToolStripMenuItem.Click += new System.EventHandler(this.authorizeToolStripMenuItem_Click);
+            this.authorizeToolStripMenuItem.Click += new System.EventHandler(this.AuthorizeToolStripMenuItem_Click);
             // 
             // buildCacheToolStripMenuItem
             // 
             this.buildCacheToolStripMenuItem.Name = "buildCacheToolStripMenuItem";
             this.buildCacheToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.buildCacheToolStripMenuItem.Text = "&Build Cache";
-            this.buildCacheToolStripMenuItem.Click += new System.EventHandler(this.buildCacheToolStripMenuItem_Click);
+            this.buildCacheToolStripMenuItem.Click += new System.EventHandler(this.BuildCacheToolStripMenuItem_Click);
             // 
             // uploadToolStripMenuItem
             // 
@@ -169,21 +169,21 @@
             this.uploadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
             this.uploadToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.uploadToolStripMenuItem.Text = "&Upload";
-            this.uploadToolStripMenuItem.Click += new System.EventHandler(this.uploadToolStripMenuItem_Click);
+            this.uploadToolStripMenuItem.Click += new System.EventHandler(this.UploadToolStripMenuItem_Click);
             // 
             // albumsToolStripMenuItem
             // 
             this.albumsToolStripMenuItem.Name = "albumsToolStripMenuItem";
             this.albumsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.albumsToolStripMenuItem.Text = "Albums";
-            this.albumsToolStripMenuItem.Click += new System.EventHandler(this.albumsToolStripMenuItem_Click);
+            this.albumsToolStripMenuItem.Click += new System.EventHandler(this.AlbumsToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             this.settingsToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.settingsToolStripMenuItem.Text = "&Settings";
-            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.SettingsToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -191,7 +191,7 @@
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // listToolStripMenuItem
             // 
@@ -208,21 +208,21 @@
             this.allImagesToolStripMenuItem.Name = "allImagesToolStripMenuItem";
             this.allImagesToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.allImagesToolStripMenuItem.Text = "&All Images";
-            this.allImagesToolStripMenuItem.Click += new System.EventHandler(this.allImagesToolStripMenuItem_Click);
+            this.allImagesToolStripMenuItem.Click += new System.EventHandler(this.AllImagesToolStripMenuItem_Click);
             // 
             // withTitleToolStripMenuItem
             // 
             this.withTitleToolStripMenuItem.Name = "withTitleToolStripMenuItem";
             this.withTitleToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.withTitleToolStripMenuItem.Text = "&With Title";
-            this.withTitleToolStripMenuItem.Click += new System.EventHandler(this.withTitleToolStripMenuItem_Click);
+            this.withTitleToolStripMenuItem.Click += new System.EventHandler(this.WithTitleToolStripMenuItem_Click);
             // 
             // withoutTitleToolStripMenuItem
             // 
             this.withoutTitleToolStripMenuItem.Name = "withoutTitleToolStripMenuItem";
             this.withoutTitleToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.withoutTitleToolStripMenuItem.Text = "With&out Title";
-            this.withoutTitleToolStripMenuItem.Click += new System.EventHandler(this.withoutTitleToolStripMenuItem_Click);
+            this.withoutTitleToolStripMenuItem.Click += new System.EventHandler(this.WithoutTitleToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -239,23 +239,23 @@
             this.infoToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.infoToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.infoToolStripMenuItem.Text = "&Info";
-            this.infoToolStripMenuItem.Click += new System.EventHandler(this.infoToolStripMenuItem_Click);
+            this.infoToolStripMenuItem.Click += new System.EventHandler(this.InfoToolStripMenuItem_Click);
             // 
             // visitWebsiteToolStripMenuItem
             // 
             this.visitWebsiteToolStripMenuItem.Name = "visitWebsiteToolStripMenuItem";
             this.visitWebsiteToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.visitWebsiteToolStripMenuItem.Text = "&Visit Website";
-            this.visitWebsiteToolStripMenuItem.Click += new System.EventHandler(this.visitWebsiteToolStripMenuItem_Click);
+            this.visitWebsiteToolStripMenuItem.Click += new System.EventHandler(this.VisitWebsiteToolStripMenuItem_Click);
             // 
             // tbFilter
             // 
             this.tbFilter.Name = "tbFilter";
             this.tbFilter.Size = new System.Drawing.Size(100, 21);
             this.tbFilter.ToolTipText = "Filter";
-            this.tbFilter.Enter += new System.EventHandler(this.tbFilter_Enter);
-            this.tbFilter.Leave += new System.EventHandler(this.tbFilter_Leave);
-            this.tbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbFilter_KeyDown);
+            this.tbFilter.Enter += new System.EventHandler(this.TbFilter_Enter);
+            this.tbFilter.Leave += new System.EventHandler(this.TbFilter_Leave);
+            this.tbFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.TbFilter_KeyDown);
             // 
             // btnPrevPage
             // 
@@ -265,7 +265,7 @@
             this.btnPrevPage.TabIndex = 1;
             this.btnPrevPage.Text = "&<<";
             this.btnPrevPage.UseVisualStyleBackColor = true;
-            this.btnPrevPage.Click += new System.EventHandler(this.btnPrevPage_Click);
+            this.btnPrevPage.Click += new System.EventHandler(this.BtnPrevPage_Click);
             // 
             // btnNextPage
             // 
@@ -276,7 +276,7 @@
             this.btnNextPage.TabIndex = 3;
             this.btnNextPage.Text = "&>>";
             this.btnNextPage.UseVisualStyleBackColor = true;
-            this.btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);
+            this.btnNextPage.Click += new System.EventHandler(this.BtnNextPage_Click);
             // 
             // lblPage
             // 
@@ -295,7 +295,7 @@
             this.bulkUploadToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.B)));
             this.bulkUploadToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.bulkUploadToolStripMenuItem.Text = "Bulk Upload";
-            this.bulkUploadToolStripMenuItem.Click += new System.EventHandler(this.bulkUploadToolStripMenuItem_Click);
+            this.bulkUploadToolStripMenuItem.Click += new System.EventHandler(this.BulkUploadToolStripMenuItem_Click);
             // 
             // frmMain
             // 
@@ -312,10 +312,10 @@
             this.MinimumSize = new System.Drawing.Size(300, 300);
             this.Name = "frmMain";
             this.Text = "Imgur Gallery";
-            this.ResizeEnd += new System.EventHandler(this.frmMain_ResizeEnd);
-            this.SizeChanged += new System.EventHandler(this.frmMain_ResizeEnd);
-            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.frmMain_DragDrop);
-            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.frmMain_DragEnter);
+            this.ResizeEnd += new System.EventHandler(this.FrmMain_ResizeEnd);
+            this.SizeChanged += new System.EventHandler(this.FrmMain_ResizeEnd);
+            this.DragDrop += new System.Windows.Forms.DragEventHandler(this.FrmMain_DragDrop);
+            this.DragEnter += new System.Windows.Forms.DragEventHandler(this.FrmMain_DragEnter);
             this.CMS.ResumeLayout(false);
             this.mnuMain.ResumeLayout(false);
             this.mnuMain.PerformLayout();

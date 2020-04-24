@@ -11,7 +11,7 @@ namespace ImgurTitleEditor
     /// <summary>
     /// Main form that handles gallery browsing
     /// </summary>
-    public partial class frmMain : Form
+    public partial class FrmMain : Form
     {
         /// <summary>
         /// Current gallery page
@@ -54,11 +54,11 @@ namespace ImgurTitleEditor
         /// Initializes a new main form
         /// </summary>
         /// <param name="S">Current settings</param>
-        public frmMain(Settings S)
+        public FrmMain(Settings S)
         {
             this.S = S;
             InitializeComponent();
-            tbFilter_Leave(null, null);
+            TbFilter_Leave(null, null);
             //Program.Main already tries to authorize.
             //If the date is still in the past, the user has to do so manually.
             if (S.Token.Expires < DateTime.UtcNow)
@@ -100,7 +100,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
@@ -110,7 +110,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void buildCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BuildCacheToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Cache.Images == null || Cache.Images.Length == 0 || MessageBox.Show("Your cache is not empty. Only rebuild the cache if you uploaded or deleted images outside of this application. This process invokes a lot of API requests which can get you blocked if you do it too often.\r\nAre you sure you want to rescan it?", "Reset Cache", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
@@ -127,7 +127,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void authorizeToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AuthorizeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (S.Token.Expires < DateTime.UtcNow || MessageBox.Show($"This app is already authorized until {S.Token.Expires.ToShortDateString()} and connected to your account. Reauthorization will erase the cache.\r\nContinue?", "Authorization", MessageBoxButtons.YesNo, MessageBoxIcon.Information, MessageBoxDefaultButton.Button2) == DialogResult.Yes)
             {
@@ -157,7 +157,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void allImagesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AllImagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowImages(ImageFilter.All, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
         }
@@ -167,7 +167,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void withTitleToolStripMenuItem_Click(object sender, EventArgs e)
+        private void WithTitleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Show images with title and keep filter intact (if set)
             ShowImages(ImageFilter.WithTitle, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
@@ -178,7 +178,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void withoutTitleToolStripMenuItem_Click(object sender, EventArgs e)
+        private void WithoutTitleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowImages(ImageFilter.WithoutTitle, CurrentPage = 1, null);
         }
@@ -188,7 +188,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void lvImages_DoubleClick(object sender, EventArgs e)
+        private void LvImages_DoubleClick(object sender, EventArgs e)
         {
             EditSelectedImageTitle();
         }
@@ -198,7 +198,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void tbFilter_Enter(object sender, EventArgs e)
+        private void TbFilter_Enter(object sender, EventArgs e)
         {
             if ((bool)tbFilter.Tag)
             {
@@ -213,7 +213,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void tbFilter_Leave(object sender, EventArgs e)
+        private void TbFilter_Leave(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(tbFilter.Text))
             {
@@ -228,7 +228,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void tbFilter_KeyDown(object sender, KeyEventArgs e)
+        private void TbFilter_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -242,7 +242,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void uploadToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UploadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var fUpload = new frmUpload(S))
             {
@@ -258,7 +258,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void frmMain_ResizeEnd(object sender, EventArgs e)
+        private void FrmMain_ResizeEnd(object sender, EventArgs e)
         {
             S.UI.MainWindowMaximized = WindowState == FormWindowState.Maximized;
             S.UI.MainWindowSize = Size;
@@ -270,7 +270,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void copyURLToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopyURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CopySelectedURL();
         }
@@ -280,7 +280,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void saveImageToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SaveImageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveSelectedImages(false);
         }
@@ -290,7 +290,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void editTitleToolStripMenuItem_Click(object sender, EventArgs e)
+        private void EditTitleToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EditSelectedImageTitle();
         }
@@ -300,7 +300,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void DeleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             DeleteSelectedImages();
         }
@@ -310,7 +310,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void addToCacheToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AddToCacheToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveSelectedImages(true);
         }
@@ -320,7 +320,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void lvImages_KeyDown(object sender, KeyEventArgs e)
+        private void LvImages_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Modifiers == Keys.Control)
             {
@@ -357,7 +357,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnPrevPage_Click(object sender, EventArgs e)
+        private void BtnPrevPage_Click(object sender, EventArgs e)
         {
             if (CurrentPage > 1)
             {
@@ -370,7 +370,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void btnNextPage_Click(object sender, EventArgs e)
+        private void BtnNextPage_Click(object sender, EventArgs e)
         {
             if (CurrentPage < Pages)
             {
@@ -383,7 +383,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var f = new frmSettings(S))
             {
@@ -403,7 +403,7 @@ namespace ImgurTitleEditor
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void infoToolStripMenuItem_Click(object sender, EventArgs e)
+        private void InfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show($@"ImgurTitleEditor - A tool to manage your imgur library
 Copyright (c) 2019 by Kevin Gut
@@ -420,7 +420,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void visitWebsiteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void VisitWebsiteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/AyrA/ImgurTitleEditor");
         }
@@ -430,7 +430,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void albumsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AlbumsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (S.Token == null || S.Token.Expires.ToUniversalTime() < DateTime.UtcNow)
             {
@@ -452,9 +452,9 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void bulkUploadToolStripMenuItem_Click(object sender, EventArgs e)
+        private void BulkUploadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (var Uploader = new frmBulkUpload(S))
+            using (var Uploader = new FrmBulkUpload(S))
             {
                 if (Uploader.ShowDialog() == DialogResult.OK)
                 {
@@ -469,7 +469,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void frmMain_DragEnter(object sender, DragEventArgs e)
+        private void FrmMain_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetFormats().Contains("FileDrop"))
             {
@@ -483,7 +483,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
         /// </summary>
         /// <param name="sender">Event sender</param>
         /// <param name="e">Event arguments</param>
-        private void frmMain_DragDrop(object sender, DragEventArgs e)
+        private void FrmMain_DragDrop(object sender, DragEventArgs e)
         {
             if (e.Data.GetFormats().Contains("FileDrop"))
             {

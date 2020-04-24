@@ -78,7 +78,7 @@ namespace ImgurTitleEditor
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmMain(S));
+            Application.Run(new FrmMain(S));
         }
     }
 }

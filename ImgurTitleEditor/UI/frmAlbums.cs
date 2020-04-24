@@ -19,7 +19,7 @@ namespace ImgurTitleEditor
             this.S = S;
             InitializeComponent();
             LoadAlbums();
-            WindowState = Application.OpenForms.OfType<frmMain>().First().WindowState;
+            WindowState = Application.OpenForms.OfType<FrmMain>().First().WindowState;
         }
 
         private void LoadAlbums()

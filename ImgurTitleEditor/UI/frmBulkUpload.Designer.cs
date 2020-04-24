@@ -1,6 +1,6 @@
 ﻿namespace ImgurTitleEditor
 {
-    partial class frmBulkUpload
+    partial class FrmBulkUpload
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBulkUpload));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmBulkUpload));
             this.btnAddImages = new System.Windows.Forms.Button();
             this.lbFileList = new System.Windows.Forms.ListBox();
             this.btnStartUpload = new System.Windows.Forms.Button();
@@ -49,7 +49,7 @@
             this.btnAddImages.TabIndex = 0;
             this.btnAddImages.Text = "&Add Images";
             this.btnAddImages.UseVisualStyleBackColor = true;
-            this.btnAddImages.Click += new System.EventHandler(this.btnAddImages_Click);
+            this.btnAddImages.Click += new System.EventHandler(this.BtnAddImages_Click);
             // 
             // lbFileList
             // 
@@ -61,7 +61,7 @@
             this.lbFileList.Name = "lbFileList";
             this.lbFileList.Size = new System.Drawing.Size(568, 277);
             this.lbFileList.TabIndex = 2;
-            this.lbFileList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbFileList_KeyDown);
+            this.lbFileList.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LbFileList_KeyDown);
             // 
             // btnStartUpload
             // 
@@ -72,7 +72,7 @@
             this.btnStartUpload.TabIndex = 1;
             this.btnStartUpload.Text = "&Upload all";
             this.btnStartUpload.UseVisualStyleBackColor = true;
-            this.btnStartUpload.Click += new System.EventHandler(this.btnStartUpload_Click);
+            this.btnStartUpload.Click += new System.EventHandler(this.BtnStartUpload_Click);
             // 
             // OFD
             // 
@@ -162,7 +162,7 @@
             this.Name = "frmBulkUpload";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Bulk File Upload";
-            this.Load += new System.EventHandler(this.frmBulkUpload_Load);
+            this.Load += new System.EventHandler(this.FrmBulkUpload_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
