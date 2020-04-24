@@ -17,6 +17,8 @@ namespace ImgurTitleEditor
     /// </summary>
     public static class Tools
     {
+        private static readonly DateTime Epoch = DateTime.Parse("1970-01-01T00:00:00Z").ToUniversalTime();
+
         /// <summary>
         /// Deserializes a JSON string into an object
         /// </summary>
@@ -38,6 +40,26 @@ namespace ImgurTitleEditor
             {
                 return Default;
             }
+        }
+
+        /// <summary>
+        /// Converts a unix timestamp into a Date object
+        /// </summary>
+        /// <param name="v">Unix timestamp</param>
+        /// <returns>Date object</returns>
+        public static DateTime ToDateTime(double v)
+        {
+            return Epoch.AddSeconds(v);
+        }
+
+        /// <summary>
+        /// Converts a date object into a unix timestamp
+        /// </summary>
+        /// <param name="DT">Date object</param>
+        /// <returns>Unix timestamp</returns>
+        public static double FromDateTime(DateTime DT)
+        {
+            return DT.ToUniversalTime().Subtract(Epoch).TotalSeconds;
         }
 
         /// <summary>
@@ -63,7 +85,7 @@ namespace ImgurTitleEditor
                 return null;
             }
             XmlSerializer S = new XmlSerializer(o.GetType());
-            using (var MS = new MemoryStream())
+            using (MemoryStream MS = new MemoryStream())
             {
                 S.Serialize(MS, o);
                 return Encoding.UTF8.GetString(MS.ToArray());
@@ -84,7 +106,7 @@ namespace ImgurTitleEditor
                 return default;
             }
             XmlSerializer S = new XmlSerializer(typeof(T));
-            using (var TW = new StringReader(s))
+            using (StringReader TW = new StringReader(s))
             {
                 return (T)S.Deserialize(TW);
             }
@@ -98,7 +120,7 @@ namespace ImgurTitleEditor
         /// <returns>Serialized settings data</returns>
         public static string SaveSettings(Settings S, string FileName)
         {
-            var Ret = S.Save();
+            string Ret = S.Save();
             File.WriteAllText(FileName, Ret);
             return Ret;
         }
@@ -143,14 +165,14 @@ namespace ImgurTitleEditor
         /// <returns>URL parameter dictionary</returns>
         public static Dictionary<string, string> ParseFragment(Uri U, bool UseQueryString)
         {
-            var F = UseQueryString ? U.Query : U.Fragment;
-            var ret = new Dictionary<string, string>();
+            string F = UseQueryString ? U.Query : U.Fragment;
+            Dictionary<string, string> ret = new Dictionary<string, string>();
             if (!string.IsNullOrWhiteSpace(F) && (F[0] == '#' || F[0] == '?'))
             {
-                foreach (var S in F.Substring(1).Split('&'))
+                foreach (string S in F.Substring(1).Split('&'))
                 {
-                    var K = S.Substring(0, S.Contains('=') ? S.IndexOf('=') : S.Length);
-                    var V = K.Length == S.Length ? null : S.Substring(K.Length + 1);
+                    string K = S.Substring(0, S.Contains('=') ? S.IndexOf('=') : S.Length);
+                    string V = K.Length == S.Length ? null : S.Substring(K.Length + 1);
                     if (ret.ContainsKey(K))
                     {
                         ret[K] += $", {V}";
@@ -171,13 +193,13 @@ namespace ImgurTitleEditor
         /// <returns>Resource content</returns>
         public static byte[] GetResource(string ResourceName)
         {
-            var EA = Assembly.GetExecutingAssembly();
-            var FullName = $"ImgurTitleEditor.{ResourceName}";
+            Assembly EA = Assembly.GetExecutingAssembly();
+            string FullName = $"ImgurTitleEditor.{ResourceName}";
             if (EA.GetManifestResourceNames().Contains(FullName))
             {
-                using (var S = EA.GetManifestResourceStream(FullName))
+                using (Stream S = EA.GetManifestResourceStream(FullName))
                 {
-                    using (var MS = new MemoryStream())
+                    using (MemoryStream MS = new MemoryStream())
                     {
                         S.CopyTo(MS);
                         return MS.ToArray();
@@ -192,11 +214,11 @@ namespace ImgurTitleEditor
 
         public static byte[] ConvertImage(byte[] Input, ImageFormat Output)
         {
-            using (var MS = new MemoryStream(Input, false))
+            using (MemoryStream MS = new MemoryStream(Input, false))
             {
-                using (var OUT = new MemoryStream())
+                using (MemoryStream OUT = new MemoryStream())
                 {
-                    using (var I = Image.FromStream(MS))
+                    using (Image I = Image.FromStream(MS))
                     {
                         I.Save(OUT, Output);
                         return OUT.ToArray();
