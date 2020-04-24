@@ -58,60 +58,60 @@
   <ItemGroup>
     <Compile Include="BoolConverter.cs" />
     <Compile Include="Cache.cs" />
-    <Compile Include="UI\frmBulkUpload.cs">
+    <Compile Include="UI\FrmBulkUpload.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmBulkUpload.Designer.cs">
-      <DependentUpon>frmBulkUpload.cs</DependentUpon>
+    <Compile Include="UI\FrmBulkUpload.Designer.cs">
+      <DependentUpon>FrmBulkUpload.cs</DependentUpon>
     </Compile>
     <Compile Include="NullIntConverter.cs" />
-    <Compile Include="UI\frmAlbums.cs">
+    <Compile Include="UI\FrmAlbums.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmAlbums.Designer.cs">
-      <DependentUpon>frmAlbums.cs</DependentUpon>
+    <Compile Include="UI\FrmAlbums.Designer.cs">
+      <DependentUpon>FrmAlbums.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmAuth.cs">
+    <Compile Include="UI\FrmAuth.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmAuth.Designer.cs">
-      <DependentUpon>frmAuth.cs</DependentUpon>
+    <Compile Include="UI\FrmAuth.Designer.cs">
+      <DependentUpon>FrmAuth.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmCacheBuilder.cs">
+    <Compile Include="UI\FrmCacheBuilder.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmCacheBuilder.Designer.cs">
-      <DependentUpon>frmCacheBuilder.cs</DependentUpon>
+    <Compile Include="UI\FrmCacheBuilder.Designer.cs">
+      <DependentUpon>FrmCacheBuilder.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmDownload.cs">
+    <Compile Include="UI\FrmDownload.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmDownload.Designer.cs">
-      <DependentUpon>frmDownload.cs</DependentUpon>
+    <Compile Include="UI\FrmDownload.Designer.cs">
+      <DependentUpon>FrmDownload.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmMain.cs">
+    <Compile Include="UI\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmMain.Designer.cs">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <Compile Include="UI\FrmMain.Designer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmProperties.cs">
+    <Compile Include="UI\FrmProperties.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmProperties.Designer.cs">
-      <DependentUpon>frmProperties.cs</DependentUpon>
+    <Compile Include="UI\FrmProperties.Designer.cs">
+      <DependentUpon>FrmProperties.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmSettings.cs">
+    <Compile Include="UI\FrmSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmSettings.Designer.cs">
-      <DependentUpon>frmSettings.cs</DependentUpon>
+    <Compile Include="UI\FrmSettings.Designer.cs">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmUpload.cs">
+    <Compile Include="UI\FrmUpload.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmUpload.Designer.cs">
-      <DependentUpon>frmUpload.cs</DependentUpon>
+    <Compile Include="UI\FrmUpload.Designer.cs">
+      <DependentUpon>FrmUpload.cs</DependentUpon>
     </Compile>
     <Compile Include="Imgur.cs" />
     <Compile Include="ImgurAccountSettings.cs" />
@@ -123,32 +123,32 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Tools.cs" />
-    <EmbeddedResource Include="UI\frmAlbums.resx">
-      <DependentUpon>frmAlbums.cs</DependentUpon>
+    <EmbeddedResource Include="UI\FrmAlbums.resx">
+      <DependentUpon>FrmAlbums.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmAuth.resx">
-      <DependentUpon>frmAuth.cs</DependentUpon>
+    <EmbeddedResource Include="UI\FrmAuth.resx">
+      <DependentUpon>FrmAuth.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmBulkUpload.resx">
-      <DependentUpon>frmBulkUpload.cs</DependentUpon>
+    <EmbeddedResource Include="UI\FrmBulkUpload.resx">
+      <DependentUpon>FrmBulkUpload.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmCacheBuilder.resx">
-      <DependentUpon>frmCacheBuilder.cs</DependentUpon>
+    <EmbeddedResource Include="UI\FrmCacheBuilder.resx">
+      <DependentUpon>FrmCacheBuilder.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmDownload.resx">
-      <DependentUpon>frmDownload.cs</DependentUpon>
+    <EmbeddedResource Include="UI\FrmDownload.resx">
+      <DependentUpon>FrmDownload.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmMain.resx">
-      <DependentUpon>frmMain.cs</DependentUpon>
+    <EmbeddedResource Include="UI\FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmProperties.resx">
-      <DependentUpon>frmProperties.cs</DependentUpon>
+    <EmbeddedResource Include="UI\FrmProperties.resx">
+      <DependentUpon>FrmProperties.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmSettings.resx">
-      <DependentUpon>frmSettings.cs</DependentUpon>
+    <EmbeddedResource Include="UI\FrmSettings.resx">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmUpload.resx">
-      <DependentUpon>frmUpload.cs</DependentUpon>
+    <EmbeddedResource Include="UI\FrmUpload.resx">
+      <DependentUpon>FrmUpload.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
