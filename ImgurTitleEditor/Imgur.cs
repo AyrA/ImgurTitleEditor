@@ -473,13 +473,21 @@ namespace ImgurTitleEditor
             try
             {
                 Err = JsonData.FromJson<ImgurResponse<ImgurErrorResponse>>();
+                if (Err == null || Err.data == null || Err.data.error == null)
+                {
+                    //Not an error
+                    return false;
+                }
             }
             catch
             {
                 return false;
             }
-            LastError = Err.data.error;
-            return true;
+            if (Err != null)
+            {
+                LastError = Err.data.error;
+            }
+            return Err != null && Err.data.error != null;
         }
 
         /// <summary>
