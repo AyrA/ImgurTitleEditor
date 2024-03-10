@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ImgurTitleEditor
@@ -199,7 +195,10 @@ namespace ImgurTitleEditor
                 {
                     while (
                         !await I.SetAlbumImages(AlbumId, Images) &&
-                        MessageBox.Show("Failed to add uploaded images to the album. Response: " + I.LastError, "Album change failed", MessageBoxButtons.RetryCancel, MessageBoxIcon.Exclamation) == DialogResult.Retry) ;
+                        MessageBox.Show("Failed to add uploaded images to the album. Response: " + I.LastError, "Album change failed", MessageBoxButtons.RetryCancel, MessageBoxIcon.Exclamation) == DialogResult.Retry)
+                    {
+                        ;
+                    }
                 }
                 if (lbFileList.Items.Count == 0)
                 {

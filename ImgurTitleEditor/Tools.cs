@@ -36,8 +36,10 @@ namespace ImgurTitleEditor
             {
                 return JsonConvert.DeserializeObject<T>(Source);
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.Print("JSON deserialization failed. {0}: {1}", ex.GetType().Name, ex.Message);
+                Debug.Print(ex.StackTrace);
                 return Default;
             }
         }

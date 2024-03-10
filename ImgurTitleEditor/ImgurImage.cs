@@ -125,7 +125,7 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Ad type
         /// </summary>
-        public int ad_type { get; set; }
+        public int? ad_type { get; set; }
         /// <summary>
         /// Ad URL
         /// </summary>
