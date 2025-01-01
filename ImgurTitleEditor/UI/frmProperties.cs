@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ImgurTitleEditor.Configuration;
+using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ImgurTitleEditor
+namespace ImgurTitleEditor.UI
 {
     /// <summary>
     /// Edits image properties

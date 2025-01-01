@@ -1,4 +1,4 @@
-﻿namespace ImgurTitleEditor
+﻿namespace ImgurTitleEditor.UI
 {
     partial class FrmMain
     {
@@ -57,6 +57,7 @@
             this.btnPrevPage = new System.Windows.Forms.Button();
             this.btnNextPage = new System.Windows.Forms.Button();
             this.lblPage = new System.Windows.Forms.Label();
+            this.addToAlbumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CMS.SuspendLayout();
             this.mnuMain.SuspendLayout();
             this.SuspendLayout();
@@ -82,43 +83,44 @@
             this.copyURLToolStripMenuItem,
             this.saveImageToolStripMenuItem,
             this.editTitleToolStripMenuItem,
+            this.addToAlbumToolStripMenuItem,
             this.addToCacheToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.CMS.Name = "CMS";
-            this.CMS.Size = new System.Drawing.Size(140, 114);
+            this.CMS.Size = new System.Drawing.Size(181, 158);
             // 
             // copyURLToolStripMenuItem
             // 
             this.copyURLToolStripMenuItem.Name = "copyURLToolStripMenuItem";
-            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.copyURLToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.copyURLToolStripMenuItem.Text = "&Copy URL";
             this.copyURLToolStripMenuItem.Click += new System.EventHandler(this.CopyURLToolStripMenuItem_Click);
             // 
             // saveImageToolStripMenuItem
             // 
             this.saveImageToolStripMenuItem.Name = "saveImageToolStripMenuItem";
-            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.saveImageToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveImageToolStripMenuItem.Text = "&Save Image";
             this.saveImageToolStripMenuItem.Click += new System.EventHandler(this.SaveImageToolStripMenuItem_Click);
             // 
             // editTitleToolStripMenuItem
             // 
             this.editTitleToolStripMenuItem.Name = "editTitleToolStripMenuItem";
-            this.editTitleToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.editTitleToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.editTitleToolStripMenuItem.Text = "&Edit Title";
             this.editTitleToolStripMenuItem.Click += new System.EventHandler(this.EditTitleToolStripMenuItem_Click);
             // 
             // addToCacheToolStripMenuItem
             // 
             this.addToCacheToolStripMenuItem.Name = "addToCacheToolStripMenuItem";
-            this.addToCacheToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
-            this.addToCacheToolStripMenuItem.Text = "&Add to Cache";
+            this.addToCacheToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addToCacheToolStripMenuItem.Text = "Add to &Cache";
             this.addToCacheToolStripMenuItem.Click += new System.EventHandler(this.AddToCacheToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deleteToolStripMenuItem.Text = "&Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.DeleteToolStripMenuItem_Click);
             // 
@@ -298,6 +300,13 @@
             this.lblPage.Text = "Current Page: 1";
             this.lblPage.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // addToAlbumToolStripMenuItem
+            // 
+            this.addToAlbumToolStripMenuItem.Name = "addToAlbumToolStripMenuItem";
+            this.addToAlbumToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addToAlbumToolStripMenuItem.Text = "&Add to Album";
+            this.addToAlbumToolStripMenuItem.Click += new System.EventHandler(this.AddToAlbumToolStripMenuItem_Click);
+            // 
             // FrmMain
             // 
             this.AllowDrop = true;
@@ -354,6 +363,7 @@
         private System.Windows.Forms.ToolStripMenuItem visitWebsiteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem albumsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bulkUploadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addToAlbumToolStripMenuItem;
     }
 }
 

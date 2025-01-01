@@ -1,8 +1,9 @@
-﻿using System;
+﻿using ImgurTitleEditor.Configuration;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ImgurTitleEditor
+namespace ImgurTitleEditor.UI
 {
     /// <summary>
     /// Form that handles OAuth2 authentication

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImgurTitleEditor.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -8,13 +9,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ImgurTitleEditor
+namespace ImgurTitleEditor.UI
 {
-    public partial class frmAlbums : Form
+    public partial class FrmAlbums : Form
     {
         private readonly Settings S;
 
-        public frmAlbums(Settings S)
+        public FrmAlbums(Settings S)
         {
             this.S = S;
             InitializeComponent();

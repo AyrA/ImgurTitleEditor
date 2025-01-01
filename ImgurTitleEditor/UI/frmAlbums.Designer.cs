@@ -1,6 +1,6 @@
-﻿namespace ImgurTitleEditor
+﻿namespace ImgurTitleEditor.UI
 {
-    partial class frmAlbums
+    partial class FrmAlbums
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAlbums));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmAlbums));
             this.lvAlbums = new System.Windows.Forms.ListView();
             this.CMS = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();

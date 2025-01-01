@@ -1,9 +1,10 @@
-﻿using System;
+﻿using ImgurTitleEditor.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ImgurTitleEditor
+namespace ImgurTitleEditor.UI
 {
     /// <summary>
     /// Form that builds the thumbnail cache
@@ -41,7 +42,7 @@ namespace ImgurTitleEditor
         private void FrmCacheBuilder_FormClosed(object sender, FormClosedEventArgs e)
         {
             Exit = true;
-            if(T.IsAlive)
+            if (T.IsAlive)
             {
                 //Give the thread some time to exit
                 T.Join(4000);

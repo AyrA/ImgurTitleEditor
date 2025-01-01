@@ -59,9 +59,18 @@
   <ItemGroup>
     <Compile Include="BoolConverter.cs" />
     <Compile Include="Cache.cs" />
+    <Compile Include="Configuration\Client.cs" />
+    <Compile Include="Configuration\Token.cs" />
+    <Compile Include="Configuration\UI.cs" />
     <Compile Include="ImgurErrorResponse.cs" />
     <Compile Include="ImgurLimitResponse.cs" />
     <Compile Include="ImgurRates.cs" />
+    <Compile Include="UI\FrmAddToAlbum.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmAddToAlbum.Designer.cs">
+      <DependentUpon>FrmAddToAlbum.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\FrmBulkUpload.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -125,8 +134,11 @@
     <Compile Include="ImgurResponse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Configuration\Settings.cs" />
     <Compile Include="Tools.cs" />
+    <EmbeddedResource Include="UI\FrmAddToAlbum.resx">
+      <DependentUpon>FrmAddToAlbum.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\FrmAlbums.resx">
       <DependentUpon>FrmAlbums.cs</DependentUpon>
     </EmbeddedResource>
@@ -181,6 +193,7 @@
   <ItemGroup>
     <EmbeddedResource Include="imgur.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

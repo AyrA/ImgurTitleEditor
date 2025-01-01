@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ImgurTitleEditor.Configuration;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace ImgurTitleEditor
+namespace ImgurTitleEditor.UI
 {
     /// <summary>
     /// Form that handles file uploads

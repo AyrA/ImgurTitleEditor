@@ -1,4 +1,4 @@
-﻿namespace ImgurTitleEditor
+﻿namespace ImgurTitleEditor.UI
 {
     partial class FrmBulkUpload
     {

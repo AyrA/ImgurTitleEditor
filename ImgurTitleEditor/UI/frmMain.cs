@@ -1,12 +1,12 @@
-﻿using System;
+﻿using ImgurTitleEditor.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 
-namespace ImgurTitleEditor
+namespace ImgurTitleEditor.UI
 {
     /// <summary>
     /// Main form that handles gallery browsing
@@ -440,7 +440,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
             }
             else
             {
-                using (frmAlbums f = new frmAlbums(S))
+                using (FrmAlbums f = new FrmAlbums(S))
                 {
                     f.ShowDialog();
                 }
@@ -459,6 +459,33 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                 if (Uploader.ShowDialog() == DialogResult.OK)
                 {
                     ShowImages((ImageFilter)lvImages.Tag, CurrentPage = 1, (bool)tbFilter.Tag ? null : tbFilter.Text);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds selected images to an album
+        /// </summary>
+        /// <param name="sender">Event sender</param>
+        /// <param name="e">Event arguments</param>
+        private void AddToAlbumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (S.Token == null || S.Token.Expires.ToUniversalTime() < DateTime.UtcNow)
+            {
+                MessageBox.Show(
+                    "An access token is required for this feature. Use the 'Authorization' menu item to get one.",
+                    "Token required", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            var images = lvImages.SelectedItems
+                .OfType<ListViewItem>()
+                .Select(m => (ImgurImage)m.Tag)
+                .ToArray();
+            if (images.Length > 0)
+            {
+                using (var frmAlbum = new FrmAddToAlbum(I, images))
+                {
+                    frmAlbum.ShowDialog();
                 }
             }
         }

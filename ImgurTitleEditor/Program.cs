@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ImgurTitleEditor.Configuration;
+using ImgurTitleEditor.UI;
+using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;

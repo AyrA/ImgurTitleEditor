@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImgurTitleEditor.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace ImgurTitleEditor
+namespace ImgurTitleEditor.UI
 {
     public partial class FrmBulkUpload : Form
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImgurTitleEditor.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -444,7 +445,7 @@ namespace ImgurTitleEditor
             LastError = null;
             try
             {
-                Res = (HttpWebResponse)(await R.GetResponseAsync());
+                Res = (HttpWebResponse)await R.GetResponseAsync();
             }
             catch (WebException ex)
             {
