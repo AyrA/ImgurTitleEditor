@@ -692,10 +692,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
                 Items.Add(Item);
                 ++Index;
             }
-            if (lvImages.LargeImageList != null)
-            {
-                lvImages.LargeImageList.Dispose();
-            }
+            lvImages.LargeImageList?.Dispose();
             lvImages.SuspendLayout();
             lvImages.LargeImageList = IL;
             lvImages.Items.Clear();

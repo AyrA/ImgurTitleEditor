@@ -74,10 +74,7 @@ namespace ImgurTitleEditor
                 {
                     lvAlbums.SuspendLayout();
                     lvAlbums.Items.Clear();
-                    if (lvAlbums.LargeImageList != null)
-                    {
-                        lvAlbums.LargeImageList.Dispose();
-                    }
+                    lvAlbums.LargeImageList?.Dispose();
                     lvAlbums.LargeImageList = IL;
                     lvAlbums.Items.AddRange(Entries.ToArray());
                     lvAlbums.ResumeLayout();

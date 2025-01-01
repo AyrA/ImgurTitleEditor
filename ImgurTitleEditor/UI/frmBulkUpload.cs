@@ -173,10 +173,7 @@ namespace ImgurTitleEditor
                         cbDescDate.Checked ? DateTime.UtcNow.ToString(@"yyyy-MM-dd HH:mm:ss \U\T\C") : "");
                     if (Img != null)
                     {
-                        if (Images != null)
-                        {
-                            Images.Add(Img.id);
-                        }
+                        Images?.Add(Img.id);
                         Cache.GetImage(Img);
                         lbFileList.Items.RemoveAt(0);
                     }
