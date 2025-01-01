@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace ImgurTitleEditor
 {
@@ -88,20 +85,28 @@ namespace ImgurTitleEditor
         /// <summary>
         /// Sets the limit values from HTTP headers
         /// </summary>
-        /// <param name="Res">HTTP response</param>
-        public void SetValues(HttpWebResponse Res)
+        /// <param name="result">HTTP response</param>
+        public void SetValues(HttpResponseMessage result)
         {
-            if (Res != null)
+            string hv(string s)
             {
-                UserLimit = Tools.LongOrDefault(Res.GetResponseHeader("X-RateLimit-UserLimit"), UserLimit);
-                UserRemaining = Tools.LongOrDefault(Res.GetResponseHeader("X-RateLimit-UserRemaining"), UserRemaining);
-                UserReset = Tools.ToDateTime(Tools.LongOrDefault(Res.GetResponseHeader("X-RateLimit-UserReset"), (long)Tools.FromDateTime(UserReset)));
-                ClientLimit = Tools.LongOrDefault(Res.GetResponseHeader("X-RateLimit-ClientLimit"), ClientLimit);
-                ClientRemaining = Tools.LongOrDefault(Res.GetResponseHeader("X-RateLimit-ClientRemaining"), ClientRemaining);
+                if (result.Headers.TryGetValues(s, out var values))
+                {
+                    return values.FirstOrDefault();
+                }
+                return null;
+            }
+            if (result != null)
+            {
+                UserLimit = Tools.LongOrDefault(hv("X-RateLimit-UserLimit"), UserLimit);
+                UserRemaining = Tools.LongOrDefault(hv("X-RateLimit-UserRemaining"), UserRemaining);
+                UserReset = Tools.ToDateTime(Tools.LongOrDefault(hv("X-RateLimit-UserReset"), (long)Tools.FromDateTime(UserReset)));
+                ClientLimit = Tools.LongOrDefault(hv("X-RateLimit-ClientLimit"), ClientLimit);
+                ClientRemaining = Tools.LongOrDefault(hv("X-RateLimit-ClientRemaining"), ClientRemaining);
 
-                PostLimit = Tools.LongOrDefault(Res.GetResponseHeader("X-Post-Rate-Limit-Limit"), PostLimit);
-                PostRemaining = Tools.LongOrDefault(Res.GetResponseHeader("X-Post-Rate-Limit-Remaining"), PostRemaining);
-                PostReset = Tools.ToDateTime(Tools.LongOrDefault(Res.GetResponseHeader("X-Post-Rate-Limit-Reset"), (long)Tools.FromDateTime(PostReset)));
+                PostLimit = Tools.LongOrDefault(hv("X-Post-Rate-Limit-Limit"), PostLimit);
+                PostRemaining = Tools.LongOrDefault(hv("X-Post-Rate-Limit-Remaining"), PostRemaining);
+                PostReset = Tools.ToDateTime(Tools.LongOrDefault(hv("X-Post-Rate-Limit-Reset"), (long)Tools.FromDateTime(PostReset)));
             }
         }
 

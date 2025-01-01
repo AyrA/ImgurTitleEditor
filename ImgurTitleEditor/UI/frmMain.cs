@@ -480,6 +480,7 @@ Imgur Inc. is in no way affiliated with the creator of ImgurTitleEditor.",
             var images = lvImages.SelectedItems
                 .OfType<ListViewItem>()
                 .Select(m => (ImgurImage)m.Tag)
+                .OrderBy(m => m.datetime)
                 .ToArray();
             if (images.Length > 0)
             {

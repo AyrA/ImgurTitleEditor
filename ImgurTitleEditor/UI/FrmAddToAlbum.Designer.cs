@@ -42,18 +42,19 @@
             this.CbAlbum.FormattingEnabled = true;
             this.CbAlbum.Location = new System.Drawing.Point(12, 12);
             this.CbAlbum.Name = "CbAlbum";
-            this.CbAlbum.Size = new System.Drawing.Size(643, 21);
+            this.CbAlbum.Size = new System.Drawing.Size(705, 21);
             this.CbAlbum.TabIndex = 0;
             // 
             // BtnAdd
             // 
             this.BtnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnAdd.Location = new System.Drawing.Point(661, 10);
+            this.BtnAdd.Location = new System.Drawing.Point(723, 10);
             this.BtnAdd.Name = "BtnAdd";
-            this.BtnAdd.Size = new System.Drawing.Size(127, 23);
-            this.BtnAdd.TabIndex = 2;
+            this.BtnAdd.Size = new System.Drawing.Size(65, 23);
+            this.BtnAdd.TabIndex = 1;
             this.BtnAdd.Text = "&Add";
             this.BtnAdd.UseVisualStyleBackColor = true;
+            this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
             // 
             // lvImages
             // 
@@ -64,7 +65,7 @@
             this.lvImages.Location = new System.Drawing.Point(12, 39);
             this.lvImages.Name = "lvImages";
             this.lvImages.Size = new System.Drawing.Size(776, 399);
-            this.lvImages.TabIndex = 5;
+            this.lvImages.TabIndex = 2;
             this.lvImages.UseCompatibleStateImageBehavior = false;
             // 
             // FrmAddToAlbum
